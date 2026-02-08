@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="PDVCSharp.Data/PDVCSharp.Data.csproj" />
+  <Project Path="PDVCSharp.Domain/PDVCSharp.Domain.csproj" />
+  <Project Path="PDVCSharp.WPF/PDVCSharp.WPF.csproj" />
+</Solution>
