@@ -52,5 +52,9 @@ namespace PDVCSharp.WPF.Sections
                 PlaceholderText.Visibility = Visibility.Visible;
             }
         }
+
+        private void TxtUsuario_TextChanged(object sender, TextChangedEventArgs e) {
+
+        }
     }
 }

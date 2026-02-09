@@ -9,7 +9,20 @@
 
     <StackPanel Margin="40" MaxWidth="500">
         <TextBlock  Text="Login" FontSize="40" FontWeight="SemiBold" />
-        <TextBox x:Name="TxtUsuario" Margin="0 40 0 20" FontSize="40" Foreground="#333" />
+        <Grid Margin="0 0 0 20" MaxWidth="500">
+            <TextBox x:Name="TxtUsuario" 
+             FontSize="40" 
+             Foreground="#333" />
+
+            <TextBlock x:Name="PlaceholderUsuario"
+               Text="Usuário"
+               FontSize="40"
+               Foreground="Gray"
+               IsHitTestVisible="False"
+               VerticalAlignment="Center"
+               Margin="10,0,0,0"
+               Visibility="Visible"/>
+        </Grid>
         <Grid Margin="0 0 0 40" MaxWidth="500">
             <PasswordBox x:Name="TxtPassword" 
                  FontSize="40" 
