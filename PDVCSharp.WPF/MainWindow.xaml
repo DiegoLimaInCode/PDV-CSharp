@@ -15,7 +15,7 @@
     <Grid x:Name="MainContainer">
         <sections:Login Visibility="Visible" />
         <sections:Venda Visibility="Collapsed" />
-        
+        <sections:Abertura Visibility="Collapsed"/>
     </Grid>
 
 </Window>

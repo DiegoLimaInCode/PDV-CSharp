@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:PDVCSharp.WPF.Sections"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
+
     <Grid>
         <DockPanel>
 
@@ -42,11 +42,10 @@
                     <Border CornerRadius="10" 
         BorderBrush="Gray" 
         BorderThickness="1"
-        HorizontalAlignment="Left" 
-        VerticalAlignment="Top"
+        HorizontalAlignment="Center" 
         Width="275" 
-        Height="50" 
-        Margin="220,16,0,0">
+        Height="50"
+        Margin="-90, 15, 0, 0"                    >
                         <Grid>
                             <TextBox x:Name="PlaceHolder_ValueBox" 
             BorderThickness="0" 
@@ -84,9 +83,10 @@
 
 
             </StackPanel>
+            
         </DockPanel>
-        <TextBlock Text="📶" Foreground="White" FontSize="10" Margin="746,9,40,428" />
-        <TextBlock x:Name="TxtHora" Text="00:00" Foreground="White" FontSize="10" Margin="766,9,11,428"/>
+        <TextBlock Text="📶" Foreground="White" FontSize="10" TextAlignment="Right" Margin="0, 5, 40 ,0" />
+        <TextBlock x:Name="TxtHora" Text="00:00" Foreground="White" FontSize="10" TextAlignment="Right" Margin="0, 5, 10, 0"/>
         <TextBlock Text="SUPERMARKET" FontSize="20" FontWeight="Bold"
             Foreground="#2151A1" Margin="62,66,595,358" />
         <TextBlock Text="🛒" FontSize="24" Foreground="#2151A1" Margin="28,63,738,355" RenderTransformOrigin="1.379,0.609"/>
