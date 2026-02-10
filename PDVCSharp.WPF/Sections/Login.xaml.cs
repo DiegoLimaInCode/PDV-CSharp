@@ -12,17 +12,27 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static System.Collections.Specialized.BitVector32;
 using System.Linq;
+using System.Windows.Threading;
 
 namespace PDVCSharp.WPF.Sections
 {
 
     public partial class Login : UserControl
     {
+        DispatcherTimer relogio = new DispatcherTimer();
         public Login()
         {
             InitializeComponent();
-        }
 
+                relogio.Interval = TimeSpan.FromSeconds(1);
+                relogio.Tick += Relogio_Tick;
+                relogio.Start();
+        }
+        private void Relogio_Tick(object sender, EventArgs e)
+        {
+            // Atualiza o texto do relógio a cada segundo segundo horario do brasil
+            TxtHora.Text = DateTime.Now.ToString("HH:mm");
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var mainWindow = Window.GetWindow(this) as MainWindow;
@@ -54,8 +64,10 @@ namespace PDVCSharp.WPF.Sections
                 PlaceholderPassword.Visibility = Visibility.Visible;
             }
         }
+        //Metodo para esconder o texto de placeholder do usuario 
 
-        private void TxtUsuario_TextChanged(object sender, TextChangedEventArgs e) {
+        private void TxtUsuario_TextChanged(object sender, TextChangedEventArgs e)
+        {
 
             if (TxtUsuario.Text.Length > 0)
             {
