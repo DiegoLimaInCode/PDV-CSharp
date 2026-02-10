@@ -12,7 +12,9 @@
         <Grid Margin="0 0 0 20" MaxWidth="500">
             <TextBox x:Name="TxtUsuario" 
              FontSize="40" 
-             Foreground="#333" />
+             Foreground="#333" 
+             TextChanged="TxtUsuario_TextChanged"/>
+
 
             <TextBlock x:Name="PlaceholderUsuario"
                Text="Usuário"
@@ -22,6 +24,7 @@
                VerticalAlignment="Center"
                Margin="10,0,0,0"
                Visibility="Visible"/>
+            
         </Grid>
         <Grid Margin="0 0 0 40" MaxWidth="500">
             <PasswordBox x:Name="TxtPassword" 
@@ -29,7 +32,7 @@
                  Foreground="#333" 
                  PasswordChanged="TxtPassword_PasswordChanged"/>
 
-            <TextBlock x:Name="PlaceholderText"
+            <TextBlock x:Name="PlaceholderPassword"
                Text="Senha" 
                FontSize="40" 
                Foreground="Gray" 

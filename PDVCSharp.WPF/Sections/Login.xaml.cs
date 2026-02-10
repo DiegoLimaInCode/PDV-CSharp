@@ -40,21 +40,31 @@ namespace PDVCSharp.WPF.Sections
                 }
             }
         }
+
+        //Metodo para esconder o texto de placeholder da senha 
         private void TxtPassword_PasswordChanged(object sender, RoutedEventArgs e)
         {
 
             if (TxtPassword.Password.Length > 0)
             {
-                PlaceholderText.Visibility = Visibility.Collapsed;
+                PlaceholderPassword.Visibility = Visibility.Collapsed;
             }
             else
             {
-                PlaceholderText.Visibility = Visibility.Visible;
+                PlaceholderPassword.Visibility = Visibility.Visible;
             }
         }
 
         private void TxtUsuario_TextChanged(object sender, TextChangedEventArgs e) {
 
+            if (TxtUsuario.Text.Length > 0)
+            {
+                PlaceholderUsuario.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                PlaceholderUsuario.Visibility = Visibility.Visible;
+            }
         }
     }
 }
