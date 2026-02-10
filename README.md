@@ -80,6 +80,9 @@ dotnet run --project PDVCSharp.WPF
 
 ## 📝 Histórico de Commits Recentes
 
+> 💡 **Atualização Automática**: Esta seção é atualizada automaticamente a cada novo commit!  
+> Para mais informações sobre como funciona, veja [docs/README-AUTOMATION.md](docs/README-AUTOMATION.md)
+
 <!-- COMMITS_START -->
 <!-- Este conteúdo é atualizado automaticamente -->
 
