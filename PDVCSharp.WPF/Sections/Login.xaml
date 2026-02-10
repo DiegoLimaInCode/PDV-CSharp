@@ -7,38 +7,93 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <StackPanel Margin="40" MaxWidth="500">
-        <TextBlock  Text="Login" FontSize="40" FontWeight="SemiBold" />
-        <Grid Margin="0 0 0 20" MaxWidth="500">
-            <TextBox x:Name="TxtUsuario" 
-             FontSize="40" 
-             Foreground="#333" />
+    <Grid Background="#888888">
+        <Border Background="#F8F4F4" ClipToBounds="True">
 
-            <TextBlock x:Name="PlaceholderUsuario"
-               Text="Usuário"
-               FontSize="40"
-               Foreground="Gray"
-               IsHitTestVisible="False"
-               VerticalAlignment="Center"
-               Margin="10,0,0,0"
-               Visibility="Visible"/>
-        </Grid>
-        <Grid Margin="0 0 0 40" MaxWidth="500">
-            <PasswordBox x:Name="TxtPassword" 
-                 FontSize="40" 
-                 Foreground="#333" 
-                 PasswordChanged="TxtPassword_PasswordChanged"/>
+            <DockPanel>
+                <Border DockPanel.Dock="Top" Background="#444444" Height="30">
+                    <Grid>
+                        <TextBlock Text="CAIXA - 01 " Foreground="White"
+                                   FontSize="12" VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"/>
 
-            <TextBlock x:Name="PlaceholderText"
-               Text="Senha" 
-               FontSize="40" 
-               Foreground="Gray" 
-               IsHitTestVisible="False" 
-               VerticalAlignment="Center" 
-               Margin="10,0,0,0"
-               Visibility="Visible"/>
-        </Grid>
-        <Button Content="Login" Width="100" Height="30" Click="Button_Click"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0">
+                            <TextBlock Text="📶" Foreground="White" FontSize="10" Margin="5,0" />
+                            <TextBlock x:Name="TxtHora" Text="00:00" Foreground="White" FontSize="10"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
 
-    </StackPanel>
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="30">
+                        <TextBlock Text="🛒" FontSize="24" Foreground="#2151A1"/>
+                        <TextBlock Text="SUPERMARKET" FontSize="20" FontWeight="Bold"
+                                   Foreground="#2151A1" VerticalAlignment="Center" Margin="10,0,0,0" />
+                    </StackPanel>
+
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
+                        <TextBlock Text="Login" FontSize="45" FontWeight="Bold" Margin="0,0,0,20" Foreground="#333"/>
+
+                        <Border BorderBrush="#CCC" BorderThickness="1" CornerRadius="10" Margin="0,0,0,15" Background="White">
+                            <Grid>
+                                <TextBox x:Name="TxtUsuario" Height="50" FontSize="20" 
+                                         VerticalContentAlignment="Center" BorderThickness="0" 
+                                         Background="Transparent" Padding="15,0" 
+                                         FocusVisualStyle="{x:Null}"
+                                         TextChanged="TxtUsuario_TextChanged"/>
+
+                                <TextBlock x:Name="PlaceholderUsuario" Text="Usuário" FontSize="20" 
+                                           Foreground="Gray" IsHitTestVisible="False" 
+                                           VerticalAlignment="Center" Margin="15,0,0,0"/>
+                            </Grid>
+                        </Border>
+
+                        <Border BorderBrush="#CCC" BorderThickness="1" CornerRadius="10" Margin="0,0,0,30" Background="White">
+                            <Grid>
+                                <PasswordBox x:Name="TxtPassword" Height="50" FontSize="20" 
+                                             VerticalContentAlignment="Center" BorderThickness="0" 
+                                             Background="Transparent" Padding="15,0" 
+                                             FocusVisualStyle="{x:Null}"
+                                             PasswordChanged="TxtPassword_PasswordChanged"/>
+
+                                <TextBlock x:Name="PlaceholderPassword" Text="Senha" FontSize="20" 
+                                           Foreground="Gray" IsHitTestVisible="False" 
+                                           VerticalAlignment="Center" Margin="15,0,0,0"/>
+                            </Grid>
+                        </Border>
+
+                        <Button Content="Entrar" Foreground="White" Cursor="Hand"
+                                Height="55" FontSize="18" FontWeight="Bold" 
+                                Click="Button_Click">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#2151A1"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="btnBorder" 
+                                                        Background="{TemplateBinding Background}" 
+                                                        CornerRadius="10">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="btnBorder" Property="Background" Value="#1A3E7A"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsPressed" Value="True">
+                                                        <Setter TargetName="btnBorder" Property="Background" Value="#0F2A56"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+                    </StackPanel>
+                </Grid>
+            </DockPanel>
+        </Border>
+    </Grid>
 </UserControl>
