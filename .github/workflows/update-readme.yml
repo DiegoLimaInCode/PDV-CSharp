@@ -1,0 +1,84 @@
+name: Update README with Recent Commits
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths-ignore:
+      - 'README.md'  # Avoid infinite loop
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
+          
+      - name: Update README with recent commits
+        run: |
+          python3 << 'PYTHON_SCRIPT'
+          import subprocess
+          
+          # Get the last 10 commits
+          commits = subprocess.run(
+              ['git', 'log', '--pretty=format:| %h | %ad | %s | %an |', '--date=format:%d/%m/%Y %H:%M', '-10'],
+              capture_output=True, text=True
+          ).stdout
+          
+          # Read README
+          with open('README.md', 'r', encoding='utf-8') as f:
+              content = f.read()
+          
+          # Find the markers
+          start_marker = '<!-- COMMITS_START -->'
+          end_marker = '<!-- COMMITS_END -->'
+          
+          start_idx = content.find(start_marker)
+          end_idx = content.find(end_marker)
+          
+          if start_idx != -1 and end_idx != -1:
+              # Build the new commits section
+              commits_section = f'''{start_marker}
+          <!-- Este conteúdo é atualizado automaticamente -->
+          
+          ### 📊 Últimos 10 Commits
+          
+          | Hash | Data | Mensagem | Autor |
+          |------|------|----------|-------|
+          {commits}
+          
+          {end_marker}'''
+              
+              # Replace the section
+              new_content = content[:start_idx] + commits_section + content[end_idx + len(end_marker):]
+              
+              # Write back
+              with open('README.md', 'w', encoding='utf-8') as f:
+                  f.write(new_content)
+              
+              print("README updated successfully!")
+          else:
+              print("ERROR: Markers not found in README.md")
+              exit(1)
+          PYTHON_SCRIPT
+          
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git diff --quiet README.md || echo "changed=true" >> $GITHUB_OUTPUT
+          
+      - name: Commit and push if changed
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          git commit -m "docs: atualizar README com commits recentes [skip ci]"
+          git push
