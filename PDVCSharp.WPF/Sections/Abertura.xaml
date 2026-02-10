@@ -7,17 +7,69 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        
+
         <StackPanel Background="#FFEAE5E5">
-           
-            <TextBlock FontSize="40" FontFamily="" 
-                       TextAlignment="Center" Margin="0,130,0,0" FontWeight="ExtraBold" Foreground="#FF404040">
+
+            <TextBlock FontSize="40" 
+                       TextAlignment="Center" Margin="0,130,0,0" FontWeight="ExtraBold" 
+                       Foreground="#FF404040">
                 <Run Text="Abertura De Caixa"
                 /></TextBlock>
 
-            <TextBlock FontSize ="28" FontWeight="">
-                
+            <TextBlock FontSize ="17" Margin="-200, -10, 0, 0" 
+                       TextAlignment="Center"
+                       FontFamily="Sans Serif Collection"
+                       FontWeight="Thin">
+                <Run Text="Operador: Bernardo"></Run>
             </TextBlock>
+
+            <TextBlock FontWeight="Bold" FontSize="13" TextAlignment="Center" 
+                       Margin="-110, 0, 0, 0">
+                <Run Text="Informe o valor de abertura deste caixa:"></Run>
+            </TextBlock>
+            <Grid>
+                <Border CornerRadius="10" 
+        BorderBrush="Gray" 
+        BorderThickness="1"
+        HorizontalAlignment="Left" 
+        VerticalAlignment="Top"
+        Width="275" 
+        Height="50" 
+        Margin="220,16,0,0">
+                    <Grid>
+                        <TextBox x:Name="PlaceHolder_ValueBox" 
+            BorderThickness="0" 
+            Background="Transparent"
+            VerticalContentAlignment="Center"
+            Padding="10,0"/>
+                        <TextBlock Margin="10,10,20,6" FontSize="18" FontWeight="Bold">
+                            <TextBlock.Foreground>
+                                <SolidColorBrush Color="Gray" Opacity="0.5"/>
+                            </TextBlock.Foreground>
+                           <Run Text="R$ 200,00"/>
+                        </TextBlock>
+                    </Grid>
+                </Border>
+            </Grid>
+            <Grid>
+                <Border CornerRadius="10" 
+        Background="#FF1A4D99" 
+        HorizontalAlignment="Center" 
+        Width="250" 
+        Height="50" 
+        Margin="220,20,300,-75">
+
+                    <Button x:Name="ButtonConfirm" 
+            Content="Confirmar valor" 
+            Background="Transparent" 
+            BorderThickness="0" 
+            Foreground="White"
+            FontSize="18"
+            Cursor="Hand"/>
+                </Border>
+                
+            </Grid> 
+
         </StackPanel>
     </Grid>
 </UserControl>

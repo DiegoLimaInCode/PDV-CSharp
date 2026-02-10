@@ -22,9 +22,5 @@ namespace PDVCSharp.WPF.Sections
         {
             InitializeComponent();
         }
-
-        private void PlaceHolder_ValueBox_TextChanged() {
-
-        }
     }
 }
