@@ -3,6 +3,7 @@
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![C#](https://img.shields.io/badge/C%23-12.0-239120?logo=csharp)](https://docs.microsoft.com/en-us/dotnet/csharp/)
 [![WPF](https://img.shields.io/badge/WPF-Windows-0078D4?logo=windows)](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/)
+[![Update README](https://github.com/DiegoLimaInCode/PDV-CSharp/actions/workflows/update-readme.yml/badge.svg)](https://github.com/DiegoLimaInCode/PDV-CSharp/actions/workflows/update-readme.yml)
 
 Um sistema de Ponto de Venda (PDV) moderno desenvolvido em C# com WPF para Windows.
 
