@@ -41,12 +41,12 @@ namespace PDVCSharp.WPF.Sections
             {
 
                 var telaLogin = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Login>().FirstOrDefault();
-                var telaVenda = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Venda>().FirstOrDefault();
+                var telaAbertura = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Abertura>().FirstOrDefault();
 
-                if (telaLogin != null && telaVenda != null)
+                if (telaLogin != null && telaAbertura != null)
                 {
                     telaLogin.Visibility = Visibility.Collapsed; // Esconde o login
-                    telaVenda.Visibility = Visibility.Visible;    // Mostra a venda
+                    telaAbertura.Visibility = Visibility.Visible;    // Mostra a venda
                 }
             }
         }

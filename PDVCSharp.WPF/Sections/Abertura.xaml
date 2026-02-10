@@ -67,8 +67,8 @@
             FontSize="18"
             Cursor="Hand"/>
                 </Border>
-                
-            </Grid> 
+
+            </Grid>
 
         </StackPanel>
     </Grid>
