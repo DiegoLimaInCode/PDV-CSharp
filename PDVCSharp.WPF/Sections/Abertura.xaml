@@ -20,7 +20,6 @@
                VerticalAlignment="Center"/>
                 </Border>
 
-
                 <TextBlock FontSize="40" 
                        TextAlignment="Center" Margin="0,130,0,0" FontWeight="ExtraBold" 
                        Foreground="#FF404040">
@@ -45,14 +44,15 @@
         HorizontalAlignment="Center" 
         Width="275" 
         Height="50"
-        Margin="-90, 15, 0, 0"                    >
+        Margin="-90, 15, 0, 0">
                         <Grid>
                             <TextBox x:Name="PlaceHolder_ValueBox" 
             BorderThickness="0" 
             Background="Transparent"
             VerticalContentAlignment="Center"
             Padding="10,0"/>
-                            <TextBlock Margin="10,10,20,6" FontSize="18" FontWeight="Bold">
+                            <TextBlock Margin="10,10,20,6" FontSize="18" FontWeight="Bold"
+                                       IsHitTestVisible="False">
                                 <TextBlock.Foreground>
                                     <SolidColorBrush Color="Gray" Opacity="0.5"/>
                                 </TextBlock.Foreground>
@@ -85,15 +85,11 @@
             </StackPanel>
             
         </DockPanel>
-        <TextBlock Text="📶" Foreground="White" FontSize="10" TextAlignment="Right" Margin="0, 5, 40 ,0" />
-        <TextBlock x:Name="TxtHora" Text="00:00" Foreground="White" FontSize="10" TextAlignment="Right" Margin="0, 5, 10, 0"/>
+        <TextBlock Text="📶" Foreground="White" FontSize="10" TextAlignment="Right" Margin="0, 5, 40 ,0" IsHitTestVisible="False"/>
+        <TextBlock x:Name="TxtHora" Text="00:00" Foreground="White" FontSize="10" TextAlignment="Right" Margin="0, 5, 10, 0" IsHitTestVisible="False"/>
         <TextBlock Text="SUPERMARKET" FontSize="20" FontWeight="Bold"
-            Foreground="#2151A1" Margin="62,66,595,358" />
-        <TextBlock Text="🛒" FontSize="24" Foreground="#2151A1" Margin="28,63,738,355" RenderTransformOrigin="1.379,0.609"/>
-
-
-
-
+            Foreground="#2151A1" Margin="62,66,595,358" IsHitTestVisible="False"/>
+        <TextBlock Text="🛒" FontSize="24" Foreground="#2151A1" Margin="28,63,738,355" RenderTransformOrigin="1.379,0.609" IsHitTestVisible="False"/>
 
     </Grid>
 </UserControl>
