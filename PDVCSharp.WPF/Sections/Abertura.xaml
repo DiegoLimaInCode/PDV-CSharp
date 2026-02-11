@@ -67,17 +67,22 @@
         Margin="-90, 15, 0, 0">
                         <Grid>
                             <TextBox x:Name="PlaceHolder_ValueBox" 
+                             TextChanged="PlaceHolder_ValueBox_TextChanged"         
             BorderThickness="0" 
             Background="Transparent"
+              Foreground="Transparent"
+               CaretBrush="Black"
             VerticalContentAlignment="Center"
             Padding="10,0"/>
-                            <TextBlock Margin="10,10,20,6" FontSize="18" FontWeight="Bold"
-                                       IsHitTestVisible="False">
+                            <TextBlock  
+                                   Margin="10,10,20,6" FontSize="18" FontWeight="Bold"
+                                    IsHitTestVisible="False">
                                 <TextBlock.Foreground>
                                     <SolidColorBrush Color="Gray" Opacity="0.5"/>
                                 </TextBlock.Foreground>
-                           <Run Text="R$ 200,00"/>
+                           <Run  Text="0,00" x:Name="TxtValorEntrada"/>
                             </TextBlock>
+                            
                         </Grid>
                     </Border>
                 </Grid>
@@ -89,8 +94,9 @@
         Height="50" 
         Margin="290,20,300,-75">
 
-                        <Button Margin="0 0 0 0" x:Name="ButtonConfirm" 
+             <Button Margin="0 0 0 0" x:Name="ButtonConfirm" 
             Content="Confirmar valor" 
+             Click="BtnConfirmar_Click"                         
             Background="Transparent" 
             BorderThickness="0" 
             Foreground="White"
@@ -109,7 +115,7 @@
         <TextBlock x:Name="TxtHora" 
                           Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm:ss}}" 
                           Foreground="White" 
-                          FontSize="10"/>
+                          FontSize="10" IsHitTestVisible="False"/>
         <TextBlock Text="SUPERMARKET" FontSize="20" FontWeight="Bold"
             Foreground="#2151A1" Margin="62,66,595,358" IsHitTestVisible="False"/>
         <TextBlock Text="🛒" FontSize="24" Foreground="#2151A1" Margin="28,63,738,355" RenderTransformOrigin="1.379,0.609" IsHitTestVisible="False"/>

@@ -38,5 +38,35 @@ namespace PDVCSharp.WPF.Sections
             if (string.IsNullOrWhiteSpace(PlaceHolder_ValueBox.Text))
                 PlaceHolder_ValueBox.Text = "R$ 200,00";
         }
+
+        private void BtnConfirmar_Click(Object sender, RoutedEventArgs e) {
+            var telaVenda = new Venda();
+
+            var containerPai = this.Parent as Panel;
+
+            if (containerPai != null) {
+                containerPai.Children.Clear();
+                containerPai.Children.Add(telaVenda);
+            }
+        }
+
+            private void PlaceHolder_ValueBox_TextChanged(Object sender, TextChangedEventArgs e) {
+            string textoDigitado = PlaceHolder_ValueBox.Text;
+
+            if(TxtValorEntrada != null) {
+                
+                TxtValorEntrada.Text = textoDigitado;
+                
+            }
+        }
+
+        private void ChangeValue_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
+
+        }
+
+        private void PlaceHolder_ValueBox_TextChanged_1(object sender, TextChangedEventArgs e) {
+
+        }
     }
-}
+    }
+
