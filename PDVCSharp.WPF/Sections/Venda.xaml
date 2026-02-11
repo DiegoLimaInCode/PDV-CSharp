@@ -6,8 +6,45 @@
              xmlns:local="clr-namespace:PDVCSharp.WPF.Sections"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
-    <StackPanel Margin="40" MaxWidth="500">
-        <TextBlock Text="Venda" FontSize="40" FontWeight="SemiBold" />
-    </StackPanel>
+
+    <Grid Background="#F8F4F4">
+        <DockPanel LastChildFill="False">
+        
+            <Border DockPanel.Dock="Top" Background="#FF4B4747" Height="30" CornerRadius="0">
+                <TextBlock Text="CAIXA - 01" 
+                 Foreground="White" 
+                 FontSize="12" 
+                       HorizontalAlignment="Center" 
+                     VerticalAlignment="Center"/>
+                
+            </Border>
+        </DockPanel>
+
+        <TextBlock Text="📶" Foreground="White" FontSize="10" TextAlignment="Right" 
+                   Margin="0, 5, 40 ,0" IsHitTestVisible="False"/>
+        <TextBlock x:Name="TxtHora" Text="00:00" Foreground="White" 
+                   FontSize="10" TextAlignment="Right" Margin="0, 5, 10, 0" IsHitTestVisible="False"/>
+        <TextBlock Text="SUPERMARKET" FontSize="20" FontWeight="Bold"
+    Foreground="#2151A1" Margin="62,66,595,358" IsHitTestVisible="False"/>
+       
+            <TextBlock Text="- Venda em andamento" FontSize="19" 
+             Foreground="#0F3266" Margin="210,67,-180,351" 
+             IsHitTestVisible="False" FontWeight="Medium"/>
+     
+        <TextBlock Text="🛒" FontSize="24" Foreground="#2151A1" 
+                   Margin="28,63,738,355" RenderTransformOrigin="1.379,0.609" 
+                   IsHitTestVisible="False"/>
+
+            <StackPanel>
+            <TextBlock TextAlignment="Left" Text="Leite Integral Piracanjuba 1L" Margin="90, 130, 0, 0"
+                        FontWeight="Black" FontSize="16"  />
+            <TextBlock TextAlignment="Left" Text="67239238579326| R$ 4,59 x2" Margin="90, 0, 0, 0" 
+                       FontSize="12.5" FontWeight="Medium"/>
+
+
+        </StackPanel>
+        
+      
+      
+    </Grid>
 </UserControl>
