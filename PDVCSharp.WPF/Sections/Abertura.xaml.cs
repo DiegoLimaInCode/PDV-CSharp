@@ -22,5 +22,21 @@ namespace PDVCSharp.WPF.Sections
         {
             InitializeComponent();
         }
+
+        private void PlaceHolder_ValueBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (PlaceHolder_ValueBox is null) return;
+
+            if (PlaceHolder_ValueBox.Text == "R$ 200,00")
+                PlaceHolder_ValueBox.Text = string.Empty;
+        }
+
+        private void PlaceHolder_ValueBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (PlaceHolder_ValueBox is null) return;
+
+            if (string.IsNullOrWhiteSpace(PlaceHolder_ValueBox.Text))
+                PlaceHolder_ValueBox.Text = "R$ 200,00";
+        }
     }
 }

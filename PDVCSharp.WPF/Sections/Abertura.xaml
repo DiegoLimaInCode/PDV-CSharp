@@ -46,19 +46,16 @@
         Width="275" 
         Height="50"
         Margin="-90, 15, 0, 0"                    >
-                        <Grid>
-                            <TextBox x:Name="PlaceHolder_ValueBox" 
+                        <TextBox x:Name="PlaceHolder_ValueBox" 
             BorderThickness="0" 
             Background="Transparent"
             VerticalContentAlignment="Center"
-            Padding="10,0"/>
-                            <TextBlock Margin="10,10,20,6" FontSize="18" FontWeight="Bold">
-                                <TextBlock.Foreground>
-                                    <SolidColorBrush Color="Gray" Opacity="0.5"/>
-                                </TextBlock.Foreground>
-                           <Run Text="R$ 200,00"/>
-                            </TextBlock>
-                        </Grid>
+            Padding="10,0"
+            FontSize="18"
+            FontWeight="Bold"
+            Text="R$ 200,00"
+            GotFocus="PlaceHolder_ValueBox_GotFocus"
+            LostFocus="PlaceHolder_ValueBox_LostFocus"/>
                     </Border>
                 </Grid>
                 <Grid>

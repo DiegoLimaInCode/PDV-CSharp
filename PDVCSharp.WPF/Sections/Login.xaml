@@ -50,15 +50,34 @@
 
                         <Border BorderBrush="#CCC" BorderThickness="1" CornerRadius="10" Margin="0,0,0,30" Background="White">
                             <Grid>
-                                <PasswordBox x:Name="TxtPassword" Height="50" FontSize="20" 
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="40"/>
+                                </Grid.ColumnDefinitions>
+
+                                <PasswordBox x:Name="TxtPassword" Grid.Column="0" Height="50" FontSize="20" 
                                              VerticalContentAlignment="Center" BorderThickness="0" 
                                              Background="Transparent" Padding="15,0" 
                                              FocusVisualStyle="{x:Null}"
                                              PasswordChanged="TxtPassword_PasswordChanged"/>
 
-                                <TextBlock x:Name="PlaceholderPassword" Text="Senha" FontSize="20" 
+                                <TextBox x:Name="TxtPasswordVisible" Grid.Column="0" Height="50" FontSize="20"
+                                         VerticalContentAlignment="Center" BorderThickness="0"
+                                         Background="Transparent" Padding="15,0"
+                                         FocusVisualStyle="{x:Null}"
+                                         Visibility="Collapsed"
+                                         TextChanged="TxtPasswordVisible_TextChanged"/>
+
+                                <TextBlock x:Name="PlaceholderPassword" Grid.Column="0" Text="Senha" FontSize="20" 
                                            Foreground="Gray" IsHitTestVisible="False" 
                                            VerticalAlignment="Center" Margin="15,0,0,0"/>
+
+                                <ToggleButton x:Name="TogglePassword" Grid.Column="1"
+                                              Background="Transparent" BorderThickness="0"
+                                              Checked="TogglePassword_Checked"
+                                              Unchecked="TogglePassword_Unchecked">
+                                    <TextBlock Text="👁" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </ToggleButton>
                             </Grid>
                         </Border>
 

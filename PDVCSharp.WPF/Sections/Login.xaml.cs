@@ -35,6 +35,21 @@ namespace PDVCSharp.WPF.Sections
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            var usuario = TxtUsuario.Text.Trim();
+            var senha = TxtPasswordVisible.Visibility == Visibility.Visible
+                ? TxtPasswordVisible.Text
+                : TxtPassword.Password;
+
+            if (!PDVCSharp.WPF.AppSession.Operators.TryGetValue(usuario, out var senhaEsperada)
+                || senha != senhaEsperada)
+            {
+                MessageBox.Show("Usuário ou senha inválidos.", "Erro",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            PDVCSharp.WPF.AppSession.State.OperatorName = usuario;
+
             var mainWindow = Window.GetWindow(this) as MainWindow;
 
             if (mainWindow != null)
@@ -54,18 +69,51 @@ namespace PDVCSharp.WPF.Sections
         //Metodo para esconder o texto de placeholder da senha 
         private void TxtPassword_PasswordChanged(object sender, RoutedEventArgs e)
         {
+            if (TxtPasswordVisible.Visibility != Visibility.Visible)
+                TxtPasswordVisible.Text = TxtPassword.Password;
 
-            if (TxtPassword.Password.Length > 0)
-            {
-                PlaceholderPassword.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                PlaceholderPassword.Visibility = Visibility.Visible;
-            }
+            UpdatePasswordPlaceholder();
         }
-        //Metodo para esconder o texto de placeholder do usuario 
 
+        private void TxtPasswordVisible_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (TxtPasswordVisible.Visibility == Visibility.Visible)
+                TxtPassword.Password = TxtPasswordVisible.Text;
+
+            UpdatePasswordPlaceholder();
+        }
+
+        private void TogglePassword_Checked(object sender, RoutedEventArgs e)
+        {
+            TxtPasswordVisible.Text = TxtPassword.Password;
+            TxtPasswordVisible.Visibility = Visibility.Visible;
+            TxtPassword.Visibility = Visibility.Collapsed;
+            TxtPasswordVisible.Focus();
+            TxtPasswordVisible.CaretIndex = TxtPasswordVisible.Text.Length;
+            UpdatePasswordPlaceholder();
+        }
+
+        private void TogglePassword_Unchecked(object sender, RoutedEventArgs e)
+        {
+            TxtPassword.Password = TxtPasswordVisible.Text;
+            TxtPassword.Visibility = Visibility.Visible;
+            TxtPasswordVisible.Visibility = Visibility.Collapsed;
+            TxtPassword.Focus();
+            UpdatePasswordPlaceholder();
+        }
+
+        private void UpdatePasswordPlaceholder()
+        {
+            var valor = TxtPasswordVisible.Visibility == Visibility.Visible
+                ? TxtPasswordVisible.Text
+                : TxtPassword.Password;
+
+            PlaceholderPassword.Visibility = string.IsNullOrEmpty(valor)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+        }
+
+        //Metodo para esconder o texto de placeholder do usuario 
         private void TxtUsuario_TextChanged(object sender, TextChangedEventArgs e)
         {
 
