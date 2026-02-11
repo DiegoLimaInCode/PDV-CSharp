@@ -4,8 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PDVCSharp.WPF.Sections"
+             xmlns:vm="clr-namespace:PDVCSharp.WPF.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <vm:FechamentoViewModel />
+    </UserControl.DataContext>
 
     <Grid>
         <DockPanel>
@@ -26,18 +30,34 @@
                 <Run Text="Abertura De Caixa"
                 /></TextBlock>
 
-                <TextBlock FontSize ="17" Margin="-200, -10, 0, 0" 
-                       TextAlignment="Center"
-                       FontFamily="Sans Serif Collection"
-                       FontWeight="Thin">
-                <Run Text="Operador: Bernardo"></Run>
-                </TextBlock>
+                <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Center" 
+                            Margin="0,-10,0,0">
+                    <TextBlock FontSize="17" 
+                               TextAlignment="Center"
+                               FontFamily="Sans Serif Collection"
+                               FontWeight="Thin"
+                               Foreground="#666">
+                        <Run Text="Operador: " />
+                        <Run Text="{Binding OperatorName, Mode=OneWay}" FontWeight="SemiBold" />
+                    </TextBlock>
+                    
+                    <TextBlock FontSize="17" 
+                               TextAlignment="Center"
+                               FontFamily="Sans Serif Collection"
+                               FontWeight="Thin"
+                               Foreground="#666"
+                               Margin="20,0,0,0">
+                        <Run Text="Data: " />
+                        <Run Text="{Binding Today, Mode=OneWay, StringFormat={}{0:dd/MM/yyyy}}" FontWeight="SemiBold" />
+                    </TextBlock>
+                </StackPanel>
 
                 <TextBlock FontWeight="Bold" FontSize="13" TextAlignment="Center" 
-                       Margin="-110, 0, 0, 0">
-                <Run Text="Informe o valor de abertura deste caixa:"></Run>
+                       Margin="-40, 0, 0, 0">
+                <Run  Text="Informe o valor de abertura deste caixa:"></Run>
                 </TextBlock>
-                <Grid>
+                <Grid Margin="80 0 0 0">
                     <Border CornerRadius="10" 
         BorderBrush="Gray" 
         BorderThickness="1"
@@ -62,14 +82,14 @@
                     </Border>
                 </Grid>
                 <Grid>
-                    <Border CornerRadius="10" 
+                    <Border  CornerRadius="10" 
         Background="#FF1A4D99" 
         HorizontalAlignment="Center" 
         Width="250" 
         Height="50" 
-        Margin="220,20,300,-75">
+        Margin="290,20,300,-75">
 
-                        <Button x:Name="ButtonConfirm" 
+                        <Button Margin="0 0 0 0" x:Name="ButtonConfirm" 
             Content="Confirmar valor" 
             Background="Transparent" 
             BorderThickness="0" 
@@ -83,7 +103,7 @@
 
 
             </StackPanel>
-
+            
         </DockPanel>
         <TextBlock Text="📶" Foreground="White" FontSize="10" TextAlignment="Right" Margin="0, 5, 40 ,0" IsHitTestVisible="False"/>
         <TextBlock x:Name="TxtHora" Text="00:00" Foreground="White" FontSize="10" TextAlignment="Right" Margin="0, 5, 10, 0" IsHitTestVisible="False"/>
