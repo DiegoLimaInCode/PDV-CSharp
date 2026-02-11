@@ -24,9 +24,9 @@ namespace PDVCSharp.WPF.Sections
         {
             InitializeComponent();
 
-                relogio.Interval = TimeSpan.FromSeconds(1);
-                relogio.Tick += Relogio_Tick;
-                relogio.Start();
+            relogio.Interval = TimeSpan.FromSeconds(1);
+            relogio.Tick += Relogio_Tick;
+            relogio.Start();
         }
         private void Relogio_Tick(object sender, EventArgs e)
         {
