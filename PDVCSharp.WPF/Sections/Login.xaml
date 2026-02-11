@@ -4,8 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PDVCSharp.WPF.Sections"
+             xmlns:vm="clr-namespace:PDVCSharp.WPF.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.DataContext>
+        <vm:LoginViewModel />
+    </UserControl.DataContext>
 
     <Grid Background="#888888">
         <Border Background="#F8F4F4" ClipToBounds="True">
@@ -19,7 +24,10 @@
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0">
                             <TextBlock Text="📶" Foreground="White" FontSize="10" Margin="5,0" />
-                            <TextBlock x:Name="TxtHora" Text="00:00" Foreground="White" FontSize="10"/>
+                            <TextBlock x:Name="TxtHora" 
+                                       Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm}}" 
+                                       Foreground="White" 
+                                       FontSize="10"/>
                         </StackPanel>
                     </Grid>
                 </Border>

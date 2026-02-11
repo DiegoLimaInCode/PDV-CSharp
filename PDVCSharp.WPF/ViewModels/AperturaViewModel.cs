@@ -1,12 +1,8 @@
-using System.ComponentModel;
-
 namespace PDVCSharp.WPF.ViewModels;
 
-public sealed class FechamentoViewModel : BaseViewModel
+public sealed class AperturaViewModel : BaseViewModel
 {
-    private decimal _totalCaixa;
-
-    public FechamentoViewModel()
+    public AperturaViewModel()
     {
         PDVCSharp.WPF.AppSession.State.PropertyChanged += (_, e) =>
         {

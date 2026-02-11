@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
-        <vm:FechamentoViewModel />
+        <vm:AperturaViewModel />
     </UserControl.DataContext>
 
     <Grid>
@@ -41,7 +41,7 @@
                         <Run Text="Operador: " />
                         <Run Text="{Binding OperatorName, Mode=OneWay}" FontWeight="SemiBold" />
                     </TextBlock>
-                    
+
                     <TextBlock FontSize="17" 
                                TextAlignment="Center"
                                FontFamily="Sans Serif Collection"
@@ -103,10 +103,13 @@
 
 
             </StackPanel>
-            
+
         </DockPanel>
         <TextBlock Text="📶" Foreground="White" FontSize="10" TextAlignment="Right" Margin="0, 5, 40 ,0" IsHitTestVisible="False"/>
-        <TextBlock x:Name="TxtHora" Text="00:00" Foreground="White" FontSize="10" TextAlignment="Right" Margin="0, 5, 10, 0" IsHitTestVisible="False"/>
+        <TextBlock x:Name="TxtHora" 
+                          Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm:ss}}" 
+                          Foreground="White" 
+                          FontSize="10"/>
         <TextBlock Text="SUPERMARKET" FontSize="20" FontWeight="Bold"
             Foreground="#2151A1" Margin="62,66,595,358" IsHitTestVisible="False"/>
         <TextBlock Text="🛒" FontSize="24" Foreground="#2151A1" Margin="28,63,738,355" RenderTransformOrigin="1.379,0.609" IsHitTestVisible="False"/>
