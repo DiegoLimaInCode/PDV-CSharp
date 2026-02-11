@@ -7,44 +7,350 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid Background="#F8F4F4">
-        <DockPanel LastChildFill="False">
-        
-            <Border DockPanel.Dock="Top" Background="#FF4B4747" Height="30" CornerRadius="0">
+    <Grid Background="#E8E8E8">
+        <!-- Cabeçalho -->
+        <Border Background="#3A3A3A" Height="35" VerticalAlignment="Top">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
                 <TextBlock Text="CAIXA - 01" 
-                 Foreground="White" 
-                 FontSize="12" 
-                       HorizontalAlignment="Center" 
-                     VerticalAlignment="Center"/>
-                
-            </Border>
-        </DockPanel>
+                          Foreground="White" 
+                          FontSize="12" 
+                          FontWeight="Normal"
+                          HorizontalAlignment="Center" 
+                          VerticalAlignment="Center"/>
 
-        <TextBlock Text="📶" Foreground="White" FontSize="10" TextAlignment="Right" 
-                   Margin="0, 5, 40 ,0" IsHitTestVisible="False"/>
-        <TextBlock x:Name="TxtHora" Text="00:00" Foreground="White" 
-                   FontSize="10" TextAlignment="Right" Margin="0, 5, 10, 0" IsHitTestVisible="False"/>
-        <TextBlock Text="SUPERMARKET" FontSize="20" FontWeight="Bold"
-    Foreground="#2151A1" Margin="62,66,595,358" IsHitTestVisible="False"/>
-       
-            <TextBlock Text="- Venda em andamento" FontSize="19" 
-             Foreground="#0F3266" Margin="210,67,-180,351" 
-             IsHitTestVisible="False" FontWeight="Medium"/>
-     
-        <TextBlock Text="🛒" FontSize="24" Foreground="#2151A1" 
-                   Margin="28,63,738,355" RenderTransformOrigin="1.379,0.609" 
-                   IsHitTestVisible="False"/>
+                <TextBlock Grid.Column="1" 
+                          Text="📶" 
+                          Foreground="White" 
+                          FontSize="10" 
+                          VerticalAlignment="Center"
+                          Margin="0,0,5,0"/>
 
-            <StackPanel>
-            <TextBlock TextAlignment="Left" Text="Leite Integral Piracanjuba 1L" Margin="90, 130, 0, 0"
-                        FontWeight="Black" FontSize="16"  />
-            <TextBlock TextAlignment="Left" Text="67239238579326| R$ 4,59 x2" Margin="90, 0, 0, 0" 
-                       FontSize="12.5" FontWeight="Medium"/>
+                <TextBlock x:Name="TxtHora" 
+                          Grid.Column="2"
+                          Text="14:02 PM" 
+                          Foreground="White" 
+                          FontSize="10" 
+                          VerticalAlignment="Center"
+                          Margin="0,0,10,0"/>
+            </Grid>
+        </Border>
 
+        <!-- Título da Seção -->
+        <StackPanel Orientation="Horizontal" 
+                   Margin="15,50,0,0" 
+                   VerticalAlignment="Top">
+            <TextBlock Text="🛒" 
+                      FontSize="20" 
+                      Foreground="#2151A1" 
+                      Margin="0,0,8,0"/>
 
+            <TextBlock Text="SUPERMARKET" 
+                      FontSize="16" 
+                      FontWeight="Bold"
+                      Foreground="#2151A1" 
+                      VerticalAlignment="Center"/>
+
+            <TextBlock Text=" - Venda em andamento" 
+                      FontSize="16" 
+                      Foreground="#0F3266" 
+                      FontWeight="Normal" 
+                      VerticalAlignment="Center"
+                      Margin="5,0,0,0"/>
         </StackPanel>
-        
-      
-      
+
+        <!-- Container Principal com Grid -->
+        <Grid Margin="15,90,15,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Lista de Produtos -->
+            <ScrollViewer Grid.Column="0"
+                         VerticalScrollBarVisibility="Auto"
+                         HorizontalScrollBarVisibility="Disabled"
+                         Margin="0,0,15,0">
+                <StackPanel>
+
+                    <!-- Produto 1: Leite -->
+                    <Border Background="White" 
+                           BorderBrush="#D0D0D0" 
+                           BorderThickness="1" 
+                           CornerRadius="5" 
+                           Padding="12"
+                           Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Imagem do Produto -->
+                            <Border Background="White" 
+                                   BorderBrush="#E0E0E0" 
+                                   BorderThickness="1" 
+                                   Width="50" 
+                                   Height="50"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center">
+                                <Image Source="/Components/13764-5268fa3a-removebg-preview.png"
+                                      Stretch="Uniform"
+                                      Margin="3"/>
+                            </Border>
+
+                            <!-- Informações do Produto -->
+                            <StackPanel Grid.Column="1" 
+                                       Margin="12,0,0,0" 
+                                       VerticalAlignment="Center">
+                                <TextBlock Text="Leite Integral Piracanjuba 1L" 
+                                          FontWeight="SemiBold" 
+                                          FontSize="13"/>
+                                <TextBlock Text="67239238579326| R$ 4,59 ×2" 
+                                          FontSize="11" 
+                                          Foreground="#666666"
+                                          Margin="0,2,0,0"/>
+                            </StackPanel>
+
+                            <!-- Controles de Quantidade -->
+                            <StackPanel Grid.Column="2" 
+                                       Orientation="Horizontal" 
+                                       VerticalAlignment="Center"
+                                       Margin="10,0,10,0">
+                                <Button Content="−" 
+                                       Width="25" 
+                                       Height="25" 
+                                       Background="White"
+                                       BorderBrush="#C0C0C0"
+                                       BorderThickness="1"
+                                       FontSize="14"
+                                       Padding="0"/>
+                                <TextBlock Text="2" 
+                                          Width="25" 
+                                          TextAlignment="Center" 
+                                          VerticalAlignment="Center"
+                                          FontSize="13"
+                                          Margin="8,0,8,0"/>
+                                <Button Content="+" 
+                                       Width="25" 
+                                       Height="25" 
+                                       Background="White"
+                                       BorderBrush="#C0C0C0"
+                                       BorderThickness="1"
+                                       FontSize="14"
+                                       Padding="0"/>
+                            </StackPanel>
+
+                            <!-- Preço -->
+                            <TextBlock Grid.Column="3" 
+                                      Text="R$ 9,18" 
+                                      FontWeight="Bold" 
+                                      FontSize="14"
+                                      VerticalAlignment="Center"
+                                      Margin="10,0,10,0"/>
+
+                            <!-- Botão Remover -->
+                            <Button Grid.Column="4"
+                                   Content="🗑️" 
+                                   Width="25" 
+                                   Height="25"
+                                   Background="Transparent"
+                                   BorderThickness="0"
+                                   FontSize="14"
+                                   VerticalAlignment="Center"
+                                   Padding="0"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Produto 2: Arroz -->
+                    <Border Background="White" 
+                           BorderBrush="#D0D0D0" 
+                           BorderThickness="1" 
+                           CornerRadius="5" 
+                           Padding="12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Imagem do Produto -->
+                            <Border Background="White" 
+                                   BorderBrush="#E0E0E0" 
+                                   BorderThickness="1" 
+                                   Width="50" 
+                                   Height="50"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center">
+                                <Image Source="/Components/D_NQ_NP_950764-MLU73211786581_122023-O-removebg-preview.png"
+                                      Stretch="Uniform"
+                                      Margin="3"/>
+                            </Border>
+
+                            <!-- Informações do Produto -->
+                            <StackPanel Grid.Column="1" 
+                                       Margin="12,0,0,0" 
+                                       VerticalAlignment="Center">
+                                <TextBlock Text="Arroz Tio Joao 5Kg" 
+                                          FontWeight="SemiBold" 
+                                          FontSize="13"/>
+                                <TextBlock Text="92385602760347| R$ 25,90 ×1" 
+                                          FontSize="11" 
+                                          Foreground="#666666"
+                                          Margin="0,2,0,0"/>
+                            </StackPanel>
+
+                            <!-- Controles de Quantidade -->
+                            <StackPanel Grid.Column="2" 
+                                       Orientation="Horizontal" 
+                                       VerticalAlignment="Center"
+                                       Margin="10,0,10,0">
+                                <Button Content="−" 
+                                       Width="25" 
+                                       Height="25" 
+                                       Background="White"
+                                       BorderBrush="#C0C0C0"
+                                       BorderThickness="1"
+                                       FontSize="14"
+                                       Padding="0"/>
+                                <TextBlock Text="1" 
+                                          Width="25" 
+                                          TextAlignment="Center" 
+                                          VerticalAlignment="Center"
+                                          FontSize="13"
+                                          Margin="8,0,8,0"/>
+                                <Button Content="+" 
+                                       Width="25" 
+                                       Height="25" 
+                                       Background="White"
+                                       BorderBrush="#C0C0C0"
+                                       BorderThickness="1"
+                                       FontSize="14"
+                                       Padding="0"/>
+                            </StackPanel>
+
+                            <!-- Preço -->
+                            <TextBlock Grid.Column="3" 
+                                      Text="R$ 25,90" 
+                                      FontWeight="Bold" 
+                                      FontSize="14"
+                                      VerticalAlignment="Center"
+                                      Margin="10,0,10,0"/>
+
+                            <!-- Botão Remover -->
+                            <Button Grid.Column="4"
+                                   Content="🗑️" 
+                                   Width="25" 
+                                   Height="25"
+                                   Background="Transparent"
+                                   BorderThickness="0"
+                                   FontSize="14"
+                                   VerticalAlignment="Center"
+                                   Padding="0"/>
+                        </Grid>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Painel Lateral Direito - Total e Botões -->
+            <Border Grid.Column="1" 
+                   Background="White" 
+                   BorderBrush="#D0D0D0" 
+                   BorderThickness="1"
+                   CornerRadius="5"
+                   Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Informações de Total -->
+                    <StackPanel Grid.Row="0">
+                        <TextBlock Text="TOTAL A PAGAR" 
+                                  FontSize="12" 
+                                  FontWeight="SemiBold"
+                                  Foreground="#333333"
+                                  HorizontalAlignment="Center"
+                                  Margin="0,0,0,8"/>
+
+                        <TextBlock Text="R$ 35,08" 
+                                  FontSize="36" 
+                                  FontWeight="Bold"
+                                  Foreground="#4169E1"
+                                  HorizontalAlignment="Center"
+                                  Margin="0,0,0,15"/>
+
+                        <Border BorderBrush="#E0E0E0" 
+                               BorderThickness="0,1,0,0"
+                               Padding="0,12,0,0">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,5">
+                                    <TextBlock Text="Subtotal:" 
+                                              FontSize="11" 
+                                              Foreground="#666666"
+                                              HorizontalAlignment="Left"/>
+                                    <TextBlock Text="R$ 35,08" 
+                                              FontSize="11" 
+                                              FontWeight="SemiBold"
+                                              HorizontalAlignment="Right"/>
+                                </Grid>
+
+                                <Grid>
+                                    <TextBlock Text="Desconto:" 
+                                              FontSize="11" 
+                                              Foreground="#666666"
+                                              HorizontalAlignment="Left"/>
+                                    <TextBlock Text="R$ 0,00" 
+                                              FontSize="11" 
+                                              FontWeight="SemiBold"
+                                              HorizontalAlignment="Right"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Espaço vazio no meio -->
+                    <Border Grid.Row="1"/>
+
+                    <!-- Botões de Ação -->
+                    <StackPanel Grid.Row="2" 
+                               VerticalAlignment="Bottom">
+                        <Button Content="✓ FINALIZAR VENDA" 
+                               Background="#4169E1" 
+                               Foreground="White" 
+                               BorderThickness="0"
+                               Height="38"
+                               FontWeight="SemiBold"
+                               FontSize="12"
+                               Cursor="Hand"/>
+
+                        <Button Content="✕ CANCELAR VENDA" 
+                               Background="#DC143C" 
+                               Foreground="White" 
+                               BorderThickness="0"
+                               Height="38"
+                               FontWeight="SemiBold"
+                               FontSize="12"
+                               Cursor="Hand"
+                               Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
     </Grid>
 </UserControl>

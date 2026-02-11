@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Components\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Sections\Venda.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
