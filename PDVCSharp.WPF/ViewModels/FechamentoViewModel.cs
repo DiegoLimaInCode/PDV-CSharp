@@ -6,6 +6,8 @@ namespace PDVCSharp.WPF.ViewModels;
 
 public sealed class FechamentoViewModel : INotifyPropertyChanged
 {
+    private decimal _totalCaixa;
+
     public FechamentoViewModel()
     {
         PDVCSharp.WPF.AppSession.State.PropertyChanged += (_, e) =>
