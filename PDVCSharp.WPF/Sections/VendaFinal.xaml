@@ -5,8 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PDVCSharp.WPF.Sections"
         mc:Ignorable="d"
-        Height="720"
-        Width="1280"
         Background="#E0E0E0">
     <DockPanel>
         <Border DockPanel.Dock="Top" Background="#444444" Height="30">
