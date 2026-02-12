@@ -345,6 +345,7 @@
                                Cursor="Hand"/>
 
                         <Button Content="✕ CANCELAR VENDA" 
+                                Click="Button_Click_2"
                                Background="#DC143C" 
                                Foreground="White" 
                                BorderThickness="0"

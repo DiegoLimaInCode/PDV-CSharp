@@ -43,6 +43,9 @@ namespace PDVCSharp.WPF.Sections
             try {
                 string textoDigitado = PlaceHolder_ValueBox.Text;
 
+                if(textoDigitado == "") {
+                    throw new FormatException("Você precisa digitar algo!");
+                }
               
                 if (!double.TryParse(textoDigitado, out _)) {
                     throw new FormatException("Digite apenas números no valor de abertura.");

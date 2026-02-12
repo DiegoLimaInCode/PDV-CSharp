@@ -81,16 +81,20 @@
                         BorderThickness="1"
                         CornerRadius="10">
                         <Grid>
+
                             <TextBox
                                 x:Name="PlaceHolder_ValueBox"
+                                FontSize="18"
+                                FontWeight="Bold"
                                 Padding="10,0"
                                 VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="Left"
                                 Background="Transparent"
                                 BorderThickness="0"
                                 CaretBrush="Black"
                                 Foreground="Transparent"
-                                TextChanged="PlaceHolder_ValueBox_TextChanged"
-                                 />
+                                TextChanged="PlaceHolder_ValueBox_TextChanged" />
+
                             <TextBlock
                                 Margin="10,10,20,6"
                                 FontSize="18"
@@ -101,6 +105,7 @@
                                 </TextBlock.Foreground>
                                 <Run x:Name="TxtValorEntrada" Text="0,00" />
                             </TextBlock>
+
 
                         </Grid>
                     </Border>
@@ -141,13 +146,13 @@
             Text="📶"
             TextAlignment="Right" />
         <TextBlock
-            TextAlignment="Right"
-            Margin="0,5,0,0"
             x:Name="TxtHora"
+            Margin="0,5,0,0"
             FontSize="10"
             Foreground="White"
             IsHitTestVisible="False"
-            Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm:ss}}" />
+            Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm:ss}}"
+            TextAlignment="Right" />
         <TextBlock
             Margin="62,66,595,358"
             FontSize="20"

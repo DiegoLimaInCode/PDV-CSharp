@@ -27,11 +27,22 @@ namespace PDVCSharp.WPF.Sections
             var telaVendaFinal = new VendaFinal();
             var containerPai = this.Parent as Panel;
 
-            if(containerPai != null) {
+            if (containerPai != null) {
                 containerPai.Children.Clear();
                 containerPai.Children.Add(telaVendaFinal);
             }
 
+        }
+
+     
+        private void Button_Click_2(object sender, RoutedEventArgs e) {
+            var telaAbertura = new Abertura();
+            var containerPai = this.Parent as Panel;
+
+            if(containerPai != null) {
+                containerPai.Children.Clear();
+                containerPai.Children.Add(telaAbertura);
+            }
         }
     }
 }
