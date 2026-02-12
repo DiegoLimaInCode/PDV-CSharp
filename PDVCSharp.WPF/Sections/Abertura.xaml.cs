@@ -40,13 +40,25 @@ namespace PDVCSharp.WPF.Sections
         }
 
         private void BtnConfirmar_Click(Object sender, RoutedEventArgs e) {
-            var telaVenda = new Venda();
+            try {
+                string textoDigitado = PlaceHolder_ValueBox.Text;
 
-            var containerPai = this.Parent as Panel;
+              
+                if (!double.TryParse(textoDigitado, out _)) {
+                    throw new FormatException("Digite apenas números no valor de abertura.");
+                }
 
-            if (containerPai != null) {
-                containerPai.Children.Clear();
-                containerPai.Children.Add(telaVenda);
+                var telaVenda = new Venda();
+                var containerPai = this.Parent as Panel;
+
+                if (containerPai != null) {
+                    containerPai.Children.Clear();
+                    containerPai.Children.Add(telaVenda);
+                }
+            }
+            catch (FormatException ex) {
+              
+                MessageBox.Show(ex.Message, "Erro de Formato", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -57,16 +69,14 @@ namespace PDVCSharp.WPF.Sections
                 
                 TxtValorEntrada.Text = textoDigitado;
                 
+               
             }
         }
 
-        private void ChangeValue_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
+        
+       
+        
 
-        }
-
-        private void PlaceHolder_ValueBox_TextChanged_1(object sender, TextChangedEventArgs e) {
-
-        }
     }
     }
 

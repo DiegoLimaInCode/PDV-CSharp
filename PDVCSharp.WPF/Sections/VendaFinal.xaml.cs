@@ -9,22 +9,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PDVCSharp.WPF.Sections
-{
+namespace PDVCSharp.WPF.Sections {
     /// <summary>
     /// Interaction logic for VendaFinal.xaml
     /// </summary>
-    public partial class VendaFinal : Window
-    {
-        public VendaFinal()
-        {
+    public partial class VendaFinal : UserControl {
+        public VendaFinal() {
             InitializeComponent();
         }
 
-        private void ValorTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
+        private void ValorTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e) {
             e.Handled = true;
 
             if (!char.IsDigit(e.Text, 0))
@@ -36,10 +33,8 @@ namespace PDVCSharp.WPF.Sections
             textBox.CaretIndex = textBox.Text.Length;
         }
 
-        private void ValorTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Back || e.Key == Key.Delete)
-            {
+        private void ValorTextBox_PreviewKeyDown(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Back || e.Key == Key.Delete) {
                 e.Handled = true;
 
                 var textBox = (TextBox)sender;
@@ -53,19 +48,16 @@ namespace PDVCSharp.WPF.Sections
             }
         }
 
-        private static string ExtrairDigitos(string texto)
-        {
+        private static string ExtrairDigitos(string texto) {
             var sb = new StringBuilder();
-            foreach (char c in texto)
-            {
+            foreach (char c in texto) {
                 if (char.IsDigit(c))
                     sb.Append(c);
             }
             return sb.ToString().TrimStart('0');
         }
 
-        private static string FormatarValor(string digits)
-        {
+        private static string FormatarValor(string digits) {
             if (string.IsNullOrEmpty(digits))
                 digits = "0";
 
@@ -73,5 +65,7 @@ namespace PDVCSharp.WPF.Sections
             decimal valorDecimal = valor / 100m;
             return valorDecimal.ToString("N2", new CultureInfo("pt-BR"));
         }
+
+      
     }
 }

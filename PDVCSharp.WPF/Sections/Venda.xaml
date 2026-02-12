@@ -335,6 +335,7 @@
                     <StackPanel Grid.Row="2" 
                                VerticalAlignment="Bottom">
                         <Button Content="✓ FINALIZAR VENDA" 
+                                 Click="Button_Click"          
                                Background="#4169E1" 
                                Foreground="White" 
                                BorderThickness="0"

@@ -1,12 +1,14 @@
-﻿<UserControl x:Class="PDVCSharp.WPF.Sections.Abertura"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PDVCSharp.WPF.Sections"
-             xmlns:vm="clr-namespace:PDVCSharp.WPF.ViewModels"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<UserControl
+    x:Class="PDVCSharp.WPF.Sections.Abertura"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:PDVCSharp.WPF.Sections"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:PDVCSharp.WPF.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
     <UserControl.DataContext>
         <vm:AperturaViewModel />
     </UserControl.DataContext>
@@ -16,92 +18,112 @@
 
             <StackPanel Background="#FFEAE5E5">
 
-                <Border Background="#FF4B4747" Height="30" CornerRadius="0">
-                    <TextBlock Text="CAIXA - 01" 
-               Foreground="White" 
-               FontSize="12" 
-               HorizontalAlignment="Center" 
-               VerticalAlignment="Center"/>
+                <Border
+                    Height="30"
+                    Background="#FF4B4747"
+                    CornerRadius="0">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        Foreground="White"
+                        Text="CAIXA - 01" />
                 </Border>
 
-                <TextBlock FontSize="40" 
-                       TextAlignment="Center" Margin="0,130,0,0" FontWeight="ExtraBold" 
-                       Foreground="#FF404040">
-                <Run Text="Abertura De Caixa"
-                /></TextBlock>
+                <TextBlock
+                    Margin="0,130,0,0"
+                    FontSize="40"
+                    FontWeight="ExtraBold"
+                    Foreground="#FF404040"
+                    TextAlignment="Center">
+                    <Run Text="Abertura De Caixa" /></TextBlock>
 
-                <StackPanel Orientation="Horizontal" 
-                            HorizontalAlignment="Center" 
-                            Margin="0,-10,0,0">
-                    <TextBlock FontSize="17" 
-                               TextAlignment="Center"
-                               FontFamily="Sans Serif Collection"
-                               FontWeight="Thin"
-                               Foreground="#666">
+                <StackPanel
+                    Margin="0,-10,0,0"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        FontFamily="Sans Serif Collection"
+                        FontSize="17"
+                        FontWeight="Thin"
+                        Foreground="#666"
+                        TextAlignment="Center">
                         <Run Text="Operador: " />
-                        <Run Text="{Binding OperatorName, Mode=OneWay}" FontWeight="SemiBold" />
+                        <Run FontWeight="SemiBold" Text="{Binding OperatorName, Mode=OneWay}" />
                     </TextBlock>
 
-                    <TextBlock FontSize="17" 
-                               TextAlignment="Center"
-                               FontFamily="Sans Serif Collection"
-                               FontWeight="Thin"
-                               Foreground="#666"
-                               Margin="20,0,0,0">
+                    <TextBlock
+                        Margin="20,0,0,0"
+                        FontFamily="Sans Serif Collection"
+                        FontSize="17"
+                        FontWeight="Thin"
+                        Foreground="#666"
+                        TextAlignment="Center">
                         <Run Text="Data: " />
-                        <Run Text="{Binding Today, Mode=OneWay, StringFormat={}{0:dd/MM/yyyy}}" FontWeight="SemiBold" />
+                        <Run FontWeight="SemiBold" Text="{Binding Today, Mode=OneWay, StringFormat={}{0:dd/MM/yyyy}}" />
                     </TextBlock>
                 </StackPanel>
 
-                <TextBlock FontWeight="Bold" FontSize="13" TextAlignment="Center" 
-                       Margin="-40, 0, 0, 0">
-                <Run  Text="Informe o valor de abertura deste caixa:"></Run>
+                <TextBlock
+                    Margin="-40,0,0,0"
+                    FontSize="13"
+                    FontWeight="Bold"
+                    TextAlignment="Center">
+                    <Run Text="Informe o valor de abertura deste caixa:" />
                 </TextBlock>
-                <Grid Margin="80 0 0 0">
-                    <Border CornerRadius="10" 
-        BorderBrush="Gray" 
-        BorderThickness="1"
-        HorizontalAlignment="Center" 
-        Width="275" 
-        Height="50"
-        Margin="-90, 15, 0, 0">
+                <Grid Margin="80,0,0,0">
+                    <Border
+                        Width="275"
+                        Height="50"
+                        Margin="-90,15,0,0"
+                        HorizontalAlignment="Center"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        CornerRadius="10">
                         <Grid>
-                            <TextBox x:Name="PlaceHolder_ValueBox" 
-                             TextChanged="PlaceHolder_ValueBox_TextChanged"         
-            BorderThickness="0" 
-            Background="Transparent"
-              Foreground="Transparent"
-               CaretBrush="Black"
-            VerticalContentAlignment="Center"
-            Padding="10,0"/>
-                            <TextBlock  
-                                   Margin="10,10,20,6" FontSize="18" FontWeight="Bold"
-                                    IsHitTestVisible="False">
+                            <TextBox
+                                x:Name="PlaceHolder_ValueBox"
+                                Padding="10,0"
+                                VerticalContentAlignment="Center"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                CaretBrush="Black"
+                                Foreground="Transparent"
+                                TextChanged="PlaceHolder_ValueBox_TextChanged"
+                                 />
+                            <TextBlock
+                                Margin="10,10,20,6"
+                                FontSize="18"
+                                FontWeight="Bold"
+                                IsHitTestVisible="False">
                                 <TextBlock.Foreground>
-                                    <SolidColorBrush Color="Gray" Opacity="0.5"/>
+                                    <SolidColorBrush Opacity="0.5" Color="Gray" />
                                 </TextBlock.Foreground>
-                           <Run  Text="0,00" x:Name="TxtValorEntrada"/>
+                                <Run x:Name="TxtValorEntrada" Text="0,00" />
                             </TextBlock>
-                            
+
                         </Grid>
                     </Border>
                 </Grid>
                 <Grid>
-                    <Border  CornerRadius="10" 
-        Background="#FF1A4D99" 
-        HorizontalAlignment="Center" 
-        Width="250" 
-        Height="50" 
-        Margin="290,20,300,-75">
+                    <Border
+                        Width="250"
+                        Height="50"
+                        Margin="290,20,300,-75"
+                        HorizontalAlignment="Center"
+                        Background="#FF1A4D99"
+                        CornerRadius="10">
 
-             <Button Margin="0 0 0 0" x:Name="ButtonConfirm" 
-            Content="Confirmar valor" 
-             Click="BtnConfirmar_Click"                         
-            Background="Transparent" 
-            BorderThickness="0" 
-            Foreground="White"
-            FontSize="18"
-            Cursor="Hand"/>
+                        <Button
+                            x:Name="ButtonConfirm"
+                            Margin="0,0,0,0"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Click="BtnConfirmar_Click"
+                            Content="Confirmar valor"
+                            Cursor="Hand"
+                            FontSize="18"
+                            Foreground="White" />
                     </Border>
 
                 </Grid>
@@ -111,14 +133,35 @@
             </StackPanel>
 
         </DockPanel>
-        <TextBlock Text="📶" Foreground="White" FontSize="10" TextAlignment="Right" Margin="0, 5, 40 ,0" IsHitTestVisible="False"/>
-        <TextBlock x:Name="TxtHora" 
-                          Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm:ss}}" 
-                          Foreground="White" 
-                          FontSize="10" IsHitTestVisible="False"/>
-        <TextBlock Text="SUPERMARKET" FontSize="20" FontWeight="Bold"
-            Foreground="#2151A1" Margin="62,66,595,358" IsHitTestVisible="False"/>
-        <TextBlock Text="🛒" FontSize="24" Foreground="#2151A1" Margin="28,63,738,355" RenderTransformOrigin="1.379,0.609" IsHitTestVisible="False"/>
+        <TextBlock
+            Margin="0,5,45,0"
+            FontSize="10"
+            Foreground="White"
+            IsHitTestVisible="False"
+            Text="📶"
+            TextAlignment="Right" />
+        <TextBlock
+            TextAlignment="Right"
+            Margin="0,5,0,0"
+            x:Name="TxtHora"
+            FontSize="10"
+            Foreground="White"
+            IsHitTestVisible="False"
+            Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm:ss}}" />
+        <TextBlock
+            Margin="62,66,595,358"
+            FontSize="20"
+            FontWeight="Bold"
+            Foreground="#2151A1"
+            IsHitTestVisible="False"
+            Text="SUPERMARKET" />
+        <TextBlock
+            Margin="28,63,738,355"
+            FontSize="24"
+            Foreground="#2151A1"
+            IsHitTestVisible="False"
+            RenderTransformOrigin="1.379,0.609"
+            Text="🛒" />
 
     </Grid>
 </UserControl>
