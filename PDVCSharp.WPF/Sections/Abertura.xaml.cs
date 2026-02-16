@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using PDVCSharp.WPF.Contexts;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PDVCSharp.WPF.Sections
 {
@@ -42,21 +33,27 @@ namespace PDVCSharp.WPF.Sections
         private void BtnConfirmar_Click(Object sender, RoutedEventArgs e) {
             try {
                 string textoDigitado = PlaceHolder_ValueBox.Text;
-
-                if(textoDigitado == "") {
-                    throw new FormatException("Você precisa digitar algo!");
-                }
               
-                if (!double.TryParse(textoDigitado, out _)) {
+                if (!string.IsNullOrEmpty(textoDigitado) && !double.TryParse(textoDigitado, out _)) {
                     throw new FormatException("Digite apenas números no valor de abertura.");
                 }
 
-                var telaVenda = new Venda();
-                var containerPai = this.Parent as Panel;
+                this.Visibility = Visibility.Collapsed;
+                var mainWindow = this.Parent as Grid;
 
-                if (containerPai != null) {
-                    containerPai.Children.Clear();
-                    containerPai.Children.Add(telaVenda);
+                var telaCaixaLivre = mainWindow.Children.OfType<PDVCSharp.WPF.Sections.Caixa.CaixaLivre>().FirstOrDefault();
+                var telaVenda = mainWindow.Children.OfType<PDVCSharp.WPF.Sections.Venda>().FirstOrDefault();
+
+                if (telaVenda != null && telaCaixaLivre != null)
+                {
+                    if (Master.Venda != null)
+                    {
+                        telaVenda.Visibility = Visibility.Visible; // Mostra a tela de venda
+                    }
+                    else
+                    {
+                        telaCaixaLivre.Visibility = Visibility.Visible; // Mostra a tela de caixa livre
+                    }
                 }
             }
             catch (FormatException ex) {
@@ -65,21 +62,15 @@ namespace PDVCSharp.WPF.Sections
             }
         }
 
-            private void PlaceHolder_ValueBox_TextChanged(Object sender, TextChangedEventArgs e) {
+        private void PlaceHolder_ValueBox_TextChanged(Object sender, TextChangedEventArgs e) {
             string textoDigitado = PlaceHolder_ValueBox.Text;
 
             if(TxtValorEntrada != null) {
                 
                 TxtValorEntrada.Text = textoDigitado;
-                
-               
             }
         }
 
-        
-       
-        
-
     }
-    }
+}
 

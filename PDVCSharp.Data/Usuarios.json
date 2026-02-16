@@ -3,5 +3,15 @@
     "login": "admin",
     "password": "admin",
     "isDeleted": true
+  },
+  {
+    "login": "diego",
+    "password": "diego",
+    "isDeleted": true
+  },
+  {
+    "login": "bernardo",
+    "password": "bernardo",
+    "isDeleted": true
   }
 ]
