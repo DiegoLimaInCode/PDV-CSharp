@@ -1,45 +1,65 @@
-﻿<UserControl x:Class="PDVCSharp.WPF.Sections.VendaFinal"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PDVCSharp.WPF.Sections"
-        mc:Ignorable="d"
-        Background="#E0E0E0">
+﻿<UserControl
+    x:Class="PDVCSharp.WPF.Sections.VendaFinal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:PDVCSharp.WPF.Sections"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="#E0E0E0"
+    mc:Ignorable="d">
     <DockPanel>
-        <Border DockPanel.Dock="Top" Background="#444444" Height="30">
+        <Border
+            Height="30"
+            Background="#444444"
+            DockPanel.Dock="Top">
             <Grid>
-                <TextBlock Text="CAIXA - 01"
-                           Foreground="White"
-                           FontSize="12"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center" />
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Margin="0,0,10,0">
-                    <TextBlock Text="📶" Foreground="White" FontSize="10" Margin="5,0" />
-                    <TextBlock x:Name="TxtHora"
-                               Text="14:03"
-                               Foreground="White"
-                               FontSize="10" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Foreground="White"
+                    Text="CAIXA - 01" />
+                <StackPanel
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Margin="5,0"
+                        FontSize="10"
+                        Foreground="White"
+                        Text="📶" />
+                    <TextBlock
+                        x:Name="TxtHora"
+                        FontSize="10"
+                        Foreground="White"
+                        Text="14:03" />
                 </StackPanel>
             </Grid>
         </Border>
 
-        <Border DockPanel.Dock="Top" Background="White" Padding="20,10">
+        <Border
+            Padding="20,10"
+            Background="White"
+            DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="🛒" FontSize="28" Foreground="#2151A1" VerticalAlignment="Center" />
-                <TextBlock Text="SUPERMARKET"
-                           FontSize="28"
-                           FontWeight="Bold"
-                           Foreground="#2151A1"
-                           VerticalAlignment="Center"
-                           Margin="10,0,0,0" />
-                <TextBlock Text=" –  Finalizar venda"
-                           FontSize="22"
-                           Foreground="#333333"
-                           VerticalAlignment="Center" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="28"
+                    Foreground="#2151A1"
+                    Text="🛒" />
+                <TextBlock
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    FontSize="28"
+                    FontWeight="Bold"
+                    Foreground="#2151A1"
+                    Text="SUPERMARKET" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="22"
+                    Foreground="#333333"
+                    Text=" –  Finalizar venda" />
             </StackPanel>
         </Border>
 
@@ -52,19 +72,42 @@
 
             <StackPanel Grid.Column="0">
 
-                <Border BorderBrush="#2151A1" BorderThickness="1" Margin="0,0,0,10">
+                <Border
+                    Margin="0,0,0,10"
+                    BorderBrush="#2151A1"
+                    BorderThickness="1">
                     <StackPanel>
-                        <Border Background="#2151A1" Padding="8,4">
-                            <TextBlock Text="CLIENTE" Foreground="White" FontWeight="Bold" FontSize="13" />
+                        <Border Padding="8,4" Background="#2151A1">
+                            <TextBlock
+                                FontSize="13"
+                                FontWeight="Bold"
+                                Foreground="White"
+                                Text="CLIENTE" />
                         </Border>
-                        <StackPanel Orientation="Horizontal" Margin="8">
-                            <TextBox x:Name="TxtClienteId" Text="1" Width="60" Height="28"
-                                     FontSize="14" VerticalContentAlignment="Center" Margin="0,0,5,0" />
-                            <Button Content="F2" Width="35" Height="28" FontSize="11" FontWeight="Bold"
-                                    Background="#E0E0E0" Margin="0,0,10,0" />
-                            <ComboBox x:Name="CmbCliente" Height="28" FontSize="13"
-                                      VerticalContentAlignment="Center" HorizontalAlignment="Stretch"
-                                      MinWidth="250">
+                        <StackPanel Margin="8" Orientation="Horizontal">
+                            <TextBox
+                                x:Name="TxtClienteId"
+                                Width="60"
+                                Height="28"
+                                Margin="0,0,5,0"
+                                VerticalContentAlignment="Center"
+                                FontSize="14"
+                                Text="1" />
+                            <Button
+                                Width="35"
+                                Height="28"
+                                Margin="0,0,10,0"
+                                Background="#E0E0E0"
+                                Content="F2"
+                                FontSize="11"
+                                FontWeight="Bold" />
+                            <ComboBox
+                                x:Name="CmbCliente"
+                                Height="28"
+                                MinWidth="250"
+                                HorizontalAlignment="Stretch"
+                                VerticalContentAlignment="Center"
+                                FontSize="13">
                                 <ComboBoxItem Content="CONSUMIDOR PADRÃO" IsSelected="True" />
                             </ComboBox>
                         </StackPanel>
@@ -78,30 +121,61 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Border Grid.Column="0" BorderBrush="#8B1A1A" BorderThickness="1">
+                    <Border
+                        Grid.Column="0"
+                        BorderBrush="#8B1A1A"
+                        BorderThickness="1">
                         <StackPanel>
-                            <Border Background="#8B1A1A" Padding="8,4">
-                                <TextBlock Text="DESCONTO" Foreground="White" FontWeight="Bold" FontSize="13" />
+                            <Border Padding="8,4" Background="#8B1A1A">
+                                <TextBlock
+                                    FontSize="13"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="DESCONTO" />
                             </Border>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Background="#E0E0E0">
-                                <TextBlock Text="R$" FontSize="16" FontWeight="Bold"
-                                           VerticalAlignment="Center" Margin="10,0,5,0" />
-                                <TextBox x:Name="TxtDesconto" Text="0,00" FontSize="16"
-                                         HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
-                                         Height="35" BorderThickness="0" Background="#E0E0E0"
-                                         PreviewTextInput="ValorTextBox_PreviewTextInput"
-                                         PreviewKeyDown="ValorTextBox_PreviewKeyDown" />
+                            <StackPanel
+                                VerticalAlignment="Center"
+                                Background="#E0E0E0"
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="10,0,5,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    Text="R$" />
+                                <TextBox
+                                    x:Name="TxtDesconto"
+                                    Height="35"
+                                    HorizontalContentAlignment="Right"
+                                    VerticalContentAlignment="Center"
+                                    Background="#E0E0E0"
+                                    BorderThickness="0"
+                                    FontSize="16"
+                                    PreviewKeyDown="ValorTextBox_PreviewKeyDown"
+                                    PreviewTextInput="ValorTextBox_PreviewTextInput"
+                                    Text="0,00" />
                             </StackPanel>
                         </StackPanel>
                     </Border>
 
-                    <Border Grid.Column="2" BorderBrush="#8B1A1A" BorderThickness="1">
+                    <Border
+                        Grid.Column="2"
+                        BorderBrush="#8B1A1A"
+                        BorderThickness="1">
                         <StackPanel>
-                            <Border Background="#8B1A1A" Padding="8,4">
-                                <TextBlock Text="FORMA DE PAGAMENTO" Foreground="White" FontWeight="Bold" FontSize="13" />
+                            <Border Padding="8,4" Background="#8B1A1A">
+                                <TextBlock
+                                    FontSize="13"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="FORMA DE PAGAMENTO" />
                             </Border>
-                            <ComboBox x:Name="CmbFormaPagamento" Height="35" FontSize="14"
-                                      VerticalContentAlignment="Center" Margin="5">
+                            <ComboBox
+                                x:Name="CmbFormaPagamento"
+                                Height="35"
+                                Margin="5"
+                                VerticalContentAlignment="Center"
+                                FontSize="14">
                                 <ComboBoxItem Content="CAIXA" IsSelected="True" />
                                 <ComboBoxItem Content="CARTÃO DE CRÉDITO" />
                                 <ComboBoxItem Content="CARTÃO DE DÉBITO" />
@@ -114,18 +188,33 @@
 
                 <Border Margin="0,0,0,10">
                     <StackPanel>
-                        <Border Background="#1B2A4A" Padding="8,4">
-                            <TextBlock Text="TOTAL" Foreground="White" FontWeight="Bold" FontSize="13" />
+                        <Border Padding="8,4" Background="#1B2A4A">
+                            <TextBlock
+                                FontSize="13"
+                                FontWeight="Bold"
+                                Foreground="White"
+                                Text="TOTAL" />
                         </Border>
-                        <Border Background="White" Padding="5">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Text="R$" FontSize="24" FontWeight="Bold"
-                                           VerticalAlignment="Center" Margin="5,0,5,0" />
-                                <TextBox x:Name="TxtTotal" Text="0,00" FontSize="24" FontWeight="Bold"
-                                         VerticalContentAlignment="Center" HorizontalContentAlignment="Right"
-                                         HorizontalAlignment="Stretch" Height="35" BorderThickness="0"
-                                         PreviewTextInput="ValorTextBox_PreviewTextInput"
-                                         PreviewKeyDown="ValorTextBox_PreviewKeyDown" />
+                        <Border Padding="5" Background="White">
+                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="24"
+                                    FontWeight="Bold"
+                                    Text="R$" />
+                                <TextBox
+                                    x:Name="TxtTotal"
+                                    Height="35"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Right"
+                                    VerticalContentAlignment="Center"
+                                    BorderThickness="0"
+                                    FontSize="24"
+                                    FontWeight="Bold"
+                                    PreviewKeyDown="ValorTextBox_PreviewKeyDown"
+                                    PreviewTextInput="ValorTextBox_PreviewTextInput"
+                                    Text="0,00" />
                             </StackPanel>
                         </Border>
                     </StackPanel>
@@ -140,18 +229,32 @@
 
                     <Border Grid.Column="0">
                         <StackPanel>
-                            <Border Background="#8B1A1A" Padding="8,4">
-                                <TextBlock Text="DINHEIRO" Foreground="White" FontWeight="Bold" FontSize="13" />
+                            <Border Padding="8,4" Background="#8B1A1A">
+                                <TextBlock
+                                    FontSize="13"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="DINHEIRO" />
                             </Border>
-                            <Border Background="White" Padding="5">
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="R$" FontSize="22" FontWeight="Bold"
-                                               VerticalAlignment="Center" Margin="5,0,5,0" />
-                                    <TextBox x:Name="TxtDinheiro" Text="0,00" FontSize="22" FontWeight="Bold"
-                                             HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
-                                             Height="35" BorderThickness="0"
-                                             PreviewTextInput="ValorTextBox_PreviewTextInput"
-                                             PreviewKeyDown="ValorTextBox_PreviewKeyDown" />
+                            <Border Padding="5" Background="White">
+                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Center"
+                                        FontSize="22"
+                                        FontWeight="Bold"
+                                        Text="R$" />
+                                    <TextBox
+                                        x:Name="TxtDinheiro"
+                                        Height="35"
+                                        HorizontalContentAlignment="Right"
+                                        VerticalContentAlignment="Center"
+                                        BorderThickness="0"
+                                        FontSize="22"
+                                        FontWeight="Bold"
+                                        PreviewKeyDown="ValorTextBox_PreviewKeyDown"
+                                        PreviewTextInput="ValorTextBox_PreviewTextInput"
+                                        Text="0,00" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -159,18 +262,32 @@
 
                     <Border Grid.Column="2">
                         <StackPanel>
-                            <Border Background="#8B1A1A" Padding="8,4">
-                                <TextBlock Text="CHEQUE" Foreground="White" FontWeight="Bold" FontSize="13" />
+                            <Border Padding="8,4" Background="#8B1A1A">
+                                <TextBlock
+                                    FontSize="13"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="CHEQUE" />
                             </Border>
-                            <Border Background="White" Padding="5">
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="R$" FontSize="22" FontWeight="Bold"
-                                               VerticalAlignment="Center" Margin="5,0,5,0" />
-                                    <TextBox x:Name="TxtCheque" Text="0,00" FontSize="22" FontWeight="Bold"
-                                             HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
-                                             Height="35" BorderThickness="0"
-                                             PreviewTextInput="ValorTextBox_PreviewTextInput"
-                                             PreviewKeyDown="ValorTextBox_PreviewKeyDown" />
+                            <Border Padding="5" Background="White">
+                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Center"
+                                        FontSize="22"
+                                        FontWeight="Bold"
+                                        Text="R$" />
+                                    <TextBox
+                                        x:Name="TxtCheque"
+                                        Height="35"
+                                        HorizontalContentAlignment="Right"
+                                        VerticalContentAlignment="Center"
+                                        BorderThickness="0"
+                                        FontSize="22"
+                                        FontWeight="Bold"
+                                        PreviewKeyDown="ValorTextBox_PreviewKeyDown"
+                                        PreviewTextInput="ValorTextBox_PreviewTextInput"
+                                        Text="0,00" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -186,18 +303,32 @@
 
                     <Border Grid.Column="0">
                         <StackPanel>
-                            <Border Background="#8B1A1A" Padding="8,4">
-                                <TextBlock Text="CARTÃO DE CRÉDITO" Foreground="White" FontWeight="Bold" FontSize="13" />
+                            <Border Padding="8,4" Background="#8B1A1A">
+                                <TextBlock
+                                    FontSize="13"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="CARTÃO DE CRÉDITO" />
                             </Border>
-                            <Border Background="White" Padding="5">
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="R$" FontSize="22" FontWeight="Bold"
-                                               VerticalAlignment="Center" Margin="5,0,5,0" />
-                                    <TextBox x:Name="TxtCartaoCredito" Text="0,00" FontSize="22" FontWeight="Bold"
-                                             HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
-                                             Height="35" BorderThickness="0"
-                                             PreviewTextInput="ValorTextBox_PreviewTextInput"
-                                             PreviewKeyDown="ValorTextBox_PreviewKeyDown" />
+                            <Border Padding="5" Background="White">
+                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Center"
+                                        FontSize="22"
+                                        FontWeight="Bold"
+                                        Text="R$" />
+                                    <TextBox
+                                        x:Name="TxtCartaoCredito"
+                                        Height="35"
+                                        HorizontalContentAlignment="Right"
+                                        VerticalContentAlignment="Center"
+                                        BorderThickness="0"
+                                        FontSize="22"
+                                        FontWeight="Bold"
+                                        PreviewKeyDown="ValorTextBox_PreviewKeyDown"
+                                        PreviewTextInput="ValorTextBox_PreviewTextInput"
+                                        Text="0,00" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -205,18 +336,32 @@
 
                     <Border Grid.Column="2">
                         <StackPanel>
-                            <Border Background="#8B1A1A" Padding="8,4">
-                                <TextBlock Text="CARTÃO DE DÉBITO" Foreground="White" FontWeight="Bold" FontSize="13" />
+                            <Border Padding="8,4" Background="#8B1A1A">
+                                <TextBlock
+                                    FontSize="13"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="CARTÃO DE DÉBITO" />
                             </Border>
-                            <Border Background="White" Padding="5">
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="R$" FontSize="22" FontWeight="Bold"
-                                               VerticalAlignment="Center" Margin="5,0,5,0" />
-                                    <TextBox x:Name="TxtCartaoDebito" Text="0,00" FontSize="22" FontWeight="Bold"
-                                             HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
-                                             Height="35" BorderThickness="0"
-                                             PreviewTextInput="ValorTextBox_PreviewTextInput"
-                                             PreviewKeyDown="ValorTextBox_PreviewKeyDown" />
+                            <Border Padding="5" Background="White">
+                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="5,0,5,0"
+                                        VerticalAlignment="Center"
+                                        FontSize="22"
+                                        FontWeight="Bold"
+                                        Text="R$" />
+                                    <TextBox
+                                        x:Name="TxtCartaoDebito"
+                                        Height="35"
+                                        HorizontalContentAlignment="Right"
+                                        VerticalContentAlignment="Center"
+                                        BorderThickness="0"
+                                        FontSize="22"
+                                        FontWeight="Bold"
+                                        PreviewKeyDown="ValorTextBox_PreviewKeyDown"
+                                        PreviewTextInput="ValorTextBox_PreviewTextInput"
+                                        Text="0,00" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -225,15 +370,27 @@
 
                 <Border>
                     <StackPanel>
-                        <Border Background="#1B2A4A" Padding="8,4">
-                            <TextBlock Text="SALDO" Foreground="White" FontWeight="Bold" FontSize="13" />
+                        <Border Padding="8,4" Background="#1B2A4A">
+                            <TextBlock
+                                FontSize="13"
+                                FontWeight="Bold"
+                                Foreground="White"
+                                Text="SALDO" />
                         </Border>
-                        <Border Background="White" Padding="5">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Text="R$" FontSize="24" FontWeight="Bold"
-                                           VerticalAlignment="Center" Margin="5,0,5,0" />
-                                <TextBlock x:Name="TxtSaldo" Text="0,00" FontSize="24"
-                                           FontWeight="Bold" VerticalAlignment="Center" />
+                        <Border Padding="5" Background="White">
+                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="24"
+                                    FontWeight="Bold"
+                                    Text="R$" />
+                                <TextBlock
+                                    x:Name="TxtSaldo"
+                                    VerticalAlignment="Center"
+                                    FontSize="24"
+                                    FontWeight="Bold"
+                                    Text="0,00" />
                             </StackPanel>
                         </Border>
                     </StackPanel>
@@ -242,35 +399,59 @@
 
             <StackPanel Grid.Column="2">
 
-                <DataGrid x:Name="DgCartoes"
-                          AutoGenerateColumns="False"
-                          Height="200"
-                          IsReadOnly="True"
-                          HeadersVisibility="Column"
-                          GridLinesVisibility="Horizontal"
-                          BorderBrush="#2151A1"
-                          BorderThickness="1"
-                          CanUserAddRows="False"
-                          Background="White"
-                          Margin="0,0,0,15">
+                <DataGrid
+                    x:Name="DgCartoes"
+                    Height="200"
+                    Margin="0,0,0,15"
+                    AutoGenerateColumns="False"
+                    Background="White"
+                    BorderBrush="#2151A1"
+                    BorderThickness="1"
+                    CanUserAddRows="False"
+                    GridLinesVisibility="Horizontal"
+                    HeadersVisibility="Column"
+                    IsReadOnly="True">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Cartão" Width="*" Binding="{Binding Cartao}" />
-                        <DataGridTextColumn Header="Parcela" Width="70" Binding="{Binding Parcela}" />
-                        <DataGridTextColumn Header="NSU" Width="80" Binding="{Binding NSU}" />
-                        <DataGridTextColumn Header="Autorização" Width="100" Binding="{Binding Autorizacao}" />
-                        <DataGridTextColumn Header="Valor" Width="80" Binding="{Binding Valor}" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Cartao}"
+                            Header="Cartão" />
+                        <DataGridTextColumn
+                            Width="70"
+                            Binding="{Binding Parcela}"
+                            Header="Parcela" />
+                        <DataGridTextColumn
+                            Width="80"
+                            Binding="{Binding NSU}"
+                            Header="NSU" />
+                        <DataGridTextColumn
+                            Width="100"
+                            Binding="{Binding Autorizacao}"
+                            Header="Autorização" />
+                        <DataGridTextColumn
+                            Width="80"
+                            Binding="{Binding Valor}"
+                            Header="Valor" />
                     </DataGrid.Columns>
                 </DataGrid>
 
                 <Border Margin="0,0,0,15">
                     <StackPanel>
-                        <Border Background="#1B2A4A" Padding="10,6">
-                            <TextBlock Text="SUBTOTAL" Foreground="White" FontWeight="Bold"
-                                       FontSize="18" FontStyle="Italic" />
+                        <Border Padding="10,6" Background="#1B2A4A">
+                            <TextBlock
+                                FontSize="18"
+                                FontStyle="Italic"
+                                FontWeight="Bold"
+                                Foreground="White"
+                                Text="SUBTOTAL" />
                         </Border>
-                        <Border Background="White" Padding="10">
-                            <TextBlock x:Name="TxtSubtotal" Text="0,00" FontSize="48"
-                                       FontWeight="Bold" HorizontalAlignment="Right" />
+                        <Border Padding="10" Background="White">
+                            <TextBlock
+                                x:Name="TxtSubtotal"
+                                HorizontalAlignment="Right"
+                                FontSize="48"
+                                FontWeight="Bold"
+                                Text="0,00" />
                         </Border>
                     </StackPanel>
                 </Border>
@@ -284,44 +465,61 @@
 
                     <Border Grid.Column="0">
                         <StackPanel>
-                            <Border Background="#1B2A4A" Padding="10,6">
-                                <TextBlock Text="TOTAL RECEBIDO" Foreground="White"
-                                           FontWeight="Bold" FontSize="14" FontStyle="Italic" />
+                            <Border Padding="10,6" Background="#1B2A4A">
+                                <TextBlock
+                                    FontSize="14"
+                                    FontStyle="Italic"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="TOTAL RECEBIDO" />
                             </Border>
-                            <Border Background="White" Padding="10">
-                                <TextBlock x:Name="TxtTotalRecebido" Text="0,00"
-                                           FontSize="28" FontWeight="Bold" HorizontalAlignment="Right" />
+                            <Border Padding="10" Background="White">
+                                <TextBlock
+                                    x:Name="TxtTotalRecebido"
+                                    HorizontalAlignment="Right"
+                                    FontSize="28"
+                                    FontWeight="Bold"
+                                    Text="0,00" />
                             </Border>
                         </StackPanel>
                     </Border>
 
                     <Border Grid.Column="2">
                         <StackPanel>
-                            <Border Background="#1B2A4A" Padding="10,6">
-                                <TextBlock Text=" " Foreground="White" FontSize="14" />
+                            <Border Padding="10,6" Background="#1B2A4A">
+                                <TextBlock
+                                    FontSize="14"
+                                    Foreground="White"
+                                    Text=" " />
                             </Border>
-                            <Border Background="White" Padding="10">
-                                <TextBlock x:Name="TxtTroco" Text="0,00"
-                                           FontSize="28" FontWeight="Bold" HorizontalAlignment="Right" />
+                            <Border Padding="10" Background="White">
+                                <TextBlock
+                                    x:Name="TxtTroco"
+                                    HorizontalAlignment="Right"
+                                    FontSize="28"
+                                    FontWeight="Bold"
+                                    Text="0,00" />
                             </Border>
                         </StackPanel>
                     </Border>
                 </Grid>
 
-                <Button x:Name="BtnFinalizar"
-                        Content="Finalizar"
-                        Height="60"
-                        FontSize="24"
-                        FontWeight="Bold"
-                        Foreground="White"
-                        Background="#1A7A7A"
-                        BorderThickness="0"
-                        Cursor="Hand">
+                <Button
+                    x:Name="BtnFinalizar"
+                    Height="60"
+                    Background="#1A7A7A"
+                    BorderThickness="0"
+                    Content="Finalizar"
+                    Cursor="Hand"
+                    FontSize="24"
+                    FontWeight="Bold"
+                    Foreground="White">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}"
-                                    CornerRadius="8"
-                                    Padding="{TemplateBinding Padding}">
+                            <Border
+                                Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="8">
                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </Border>
                         </ControlTemplate>
