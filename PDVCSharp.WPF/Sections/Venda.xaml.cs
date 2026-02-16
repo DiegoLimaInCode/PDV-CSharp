@@ -63,13 +63,14 @@ namespace PDVCSharp.WPF.Sections
 
                     if (produtosBase != null && produtosBase.Any())
                     {
-                        foreach (var produto in produtosBase.Take(3))
+                        foreach (var produto in produtosBase)
                         {
                             Produtos.Add(new ProdutoVenda
                             {
                                 Name = produto.Name,
                                 Price = produto.Price,
-                                Quantity = 1
+                                Quantity = 1,
+                                ImagePath = produto.ImagePath
                             });
                         }
                     }
@@ -204,7 +205,17 @@ namespace PDVCSharp.WPF.Sections
         private string _name = string.Empty;
         private decimal _price;
         private double _quantity;
-
+        private string _imagePath = string.Empty;
+         
+        public string ImagePath
+        {
+            get => _imagePath;
+            set
+            {
+                _imagePath = value;
+                OnPropertyChanged();
+            }
+        }
         public string Name
         {
             get => _name;
