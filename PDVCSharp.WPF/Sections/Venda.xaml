@@ -156,7 +156,7 @@
                                         CornerRadius="5">
                                         <Image
                                             Margin="3"
-                                            Source="/Components/13764-5268fa3a-removebg-preview.png"
+                                            Source="{Binding ImagePath}"
                                             Stretch="Uniform" />
                                     </Border>
 

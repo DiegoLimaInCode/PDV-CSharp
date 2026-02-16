@@ -12,5 +12,7 @@ namespace PDVCSharp.Domain.Entities
 
         [JsonPropertyName("quantity")]
         public double Quantity { get; set; }
+        [JsonPropertyName("imagePath")]
+        public string ImagePath { get; set; }
     }
 }
