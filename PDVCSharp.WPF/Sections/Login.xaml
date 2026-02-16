@@ -1,12 +1,14 @@
-﻿<UserControl x:Class="PDVCSharp.WPF.Sections.Login"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PDVCSharp.WPF.Sections"
-             xmlns:vm="clr-namespace:PDVCSharp.WPF.ViewModels"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<UserControl
+    x:Class="PDVCSharp.WPF.Sections.Login"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:PDVCSharp.WPF.Sections"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:PDVCSharp.WPF.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
     <UserControl.DataContext>
         <vm:LoginViewModel />
@@ -16,99 +18,185 @@
         <Border Background="#F8F4F4" ClipToBounds="True">
 
             <DockPanel>
-                <Border DockPanel.Dock="Top" Background="#444444" Height="30">
+                <Border
+                    Height="30"
+                    Background="#444444"
+                    DockPanel.Dock="Top">
                     <Grid>
-                        <TextBlock Text="CAIXA - 01 " Foreground="White"
-                                   FontSize="12" VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"/>
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            Foreground="White"
+                            Text="CAIXA - 01 " />
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0">
-                            <TextBlock Text="📶" Foreground="White" FontSize="10" Margin="5,0" />
-                            <TextBlock x:Name="TxtHora" 
-                                       Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm}}" 
-                                       Foreground="White" 
-                                       FontSize="10"/>
+                        <StackPanel
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                Margin="5,0"
+                                FontSize="10"
+                                Foreground="White"
+                                Text="📶" />
+                            <TextBlock
+                                x:Name="TxtHora"
+                                FontSize="10"
+                                Foreground="White"
+                                Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm}}" />
                         </StackPanel>
                     </Grid>
                 </Border>
 
                 <Grid>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="30">
-                        <TextBlock Text="🛒" FontSize="24" Foreground="#2151A1"/>
-                        <TextBlock Text="SUPERMARKET" FontSize="20" FontWeight="Bold"
-                                   Foreground="#2151A1" VerticalAlignment="Center" Margin="10,0,0,0" />
+                    <StackPanel
+                        Margin="30"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            FontSize="24"
+                            Foreground="#2151A1"
+                            Text="🛒" />
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Foreground="#2151A1"
+                            Text="SUPERMARKET" />
                     </StackPanel>
 
-                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
-                        <TextBlock Text="Login" FontSize="45" FontWeight="Bold" Margin="0,0,0,20" Foreground="#333"/>
+                    <StackPanel
+                        Width="400"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                        <TextBlock
+                            Margin="0,0,0,20"
+                            FontSize="45"
+                            FontWeight="Bold"
+                            Foreground="#333"
+                            Text="Login" />
 
-                        <Border BorderBrush="#CCC" BorderThickness="1" CornerRadius="10" Margin="0,0,0,15" Background="White">
+                        <Border
+                            Margin="0,0,0,15"
+                            Background="White"
+                            BorderBrush="#CCC"
+                            BorderThickness="1"
+                            CornerRadius="10">
                             <Grid>
-                                <TextBox x:Name="TxtUsuario" Height="50" FontSize="20" 
-                                         VerticalContentAlignment="Center" BorderThickness="0" 
-                                         Background="Transparent" Padding="15,0" 
-                                         FocusVisualStyle="{x:Null}"
-                                         TextChanged="TxtUsuario_TextChanged"/>
+                                <TextBox
+                                    x:Name="TxtUsuario"
+                                    Height="50"
+                                    Padding="15,0"
+                                    VerticalContentAlignment="Center"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    FocusVisualStyle="{x:Null}"
+                                    FontSize="20"
+                                    TextChanged="TxtUsuario_TextChanged" />
 
-                                <TextBlock x:Name="PlaceholderUsuario" Text="Usuário" FontSize="20" 
-                                           Foreground="Gray" IsHitTestVisible="False" 
-                                           VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                <TextBlock
+                                    x:Name="PlaceholderUsuario"
+                                    Margin="15,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="20"
+                                    Foreground="Gray"
+                                    IsHitTestVisible="False"
+                                    Text="Usuário" />
                             </Grid>
                         </Border>
 
-                        <Border BorderBrush="#CCC" BorderThickness="1" CornerRadius="10" Margin="0,0,0,30" Background="White">
+                        <Border
+                            Margin="0,0,0,30"
+                            Background="White"
+                            BorderBrush="#CCC"
+                            BorderThickness="1"
+                            CornerRadius="10">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="40" />
                                 </Grid.ColumnDefinitions>
 
-                                <PasswordBox x:Name="TxtPassword" Grid.Column="0" Height="50" FontSize="20" 
-                                             VerticalContentAlignment="Center" BorderThickness="0" 
-                                             Background="Transparent" Padding="15,0" 
-                                             FocusVisualStyle="{x:Null}"
-                                             PasswordChanged="TxtPassword_PasswordChanged"/>
+                                <PasswordBox
+                                    x:Name="TxtPassword"
+                                    Grid.Column="0"
+                                    Height="50"
+                                    Padding="15,0"
+                                    VerticalContentAlignment="Center"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    FocusVisualStyle="{x:Null}"
+                                    FontSize="20"
+                                    PasswordChanged="TxtPassword_PasswordChanged" />
 
-                                <TextBox x:Name="TxtPasswordVisible" Grid.Column="0" Height="50" FontSize="20"
-                                         VerticalContentAlignment="Center" BorderThickness="0"
-                                         Background="Transparent" Padding="15,0"
-                                         FocusVisualStyle="{x:Null}"
-                                         Visibility="Collapsed"
-                                         TextChanged="TxtPasswordVisible_TextChanged"/>
+                                <TextBox
+                                    x:Name="TxtPasswordVisible"
+                                    Grid.Column="0"
+                                    Height="50"
+                                    Padding="15,0"
+                                    VerticalContentAlignment="Center"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    FocusVisualStyle="{x:Null}"
+                                    FontSize="20"
+                                    TextChanged="TxtPasswordVisible_TextChanged"
+                                    Visibility="Collapsed" />
 
-                                <TextBlock x:Name="PlaceholderPassword" Grid.Column="0" Text="Senha" FontSize="20" 
-                                           Foreground="Gray" IsHitTestVisible="False" 
-                                           VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                <TextBlock
+                                    x:Name="PlaceholderPassword"
+                                    Grid.Column="0"
+                                    Margin="15,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="20"
+                                    Foreground="Gray"
+                                    IsHitTestVisible="False"
+                                    Text="Senha" />
 
-                                <ToggleButton x:Name="TogglePassword" Grid.Column="1"
-                                              Background="Transparent" BorderThickness="0"
-                                              Checked="TogglePassword_Checked"
-                                              Unchecked="TogglePassword_Unchecked">
-                                    <TextBlock Text="👁" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <ToggleButton
+                                    x:Name="TogglePassword"
+                                    Grid.Column="1"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Checked="TogglePassword_Checked"
+                                    Unchecked="TogglePassword_Unchecked">
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Text="👁" />
                                 </ToggleButton>
                             </Grid>
                         </Border>
 
-                        <Button Content="Entrar" Foreground="White" Cursor="Hand"
-                                Height="55" FontSize="18" FontWeight="Bold" 
-                                Click="Button_Click">
+                        <Button
+                            Height="55"
+                            Click="Button_Click"
+                            Content="Entrar"
+                            Cursor="Hand"
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Foreground="White">
                             <Button.Style>
                                 <Style TargetType="Button">
-                                    <Setter Property="Background" Value="#2151A1"/>
+                                    <Setter Property="Background" Value="#2151A1" />
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
-                                                <Border x:Name="btnBorder" 
-                                                        Background="{TemplateBinding Background}" 
-                                                        CornerRadius="10">
-                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <Border
+                                                    x:Name="btnBorder"
+                                                    Background="{TemplateBinding Background}"
+                                                    CornerRadius="10">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="btnBorder" Property="Background" Value="#1A3E7A"/>
+                                                        <Setter TargetName="btnBorder" Property="Background" Value="#1A3E7A" />
                                                     </Trigger>
                                                     <Trigger Property="IsPressed" Value="True">
-                                                        <Setter TargetName="btnBorder" Property="Background" Value="#0F2A56"/>
+                                                        <Setter TargetName="btnBorder" Property="Background" Value="#0F2A56" />
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>

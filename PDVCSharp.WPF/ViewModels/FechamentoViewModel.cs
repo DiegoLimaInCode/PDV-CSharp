@@ -1,3 +1,4 @@
+using PDVCSharp.WPF.Contexts;
 using System.ComponentModel;
 
 namespace PDVCSharp.WPF.ViewModels;
@@ -8,15 +9,15 @@ public sealed class FechamentoViewModel : BaseViewModel
 
     public FechamentoViewModel()
     {
-        PDVCSharp.WPF.AppSession.State.PropertyChanged += (_, e) =>
+        Master.Usuario.PropertyChanged += (_, e) =>
         {
-            if (e.PropertyName == nameof(PDVCSharp.WPF.AppSession.SessionState.OperatorName))
+            if (e.PropertyName == nameof(Master.Usuario.OperatorName))
                 OnPropertyChanged(nameof(OperatorName));
         };
     }
 
     public string OperatorName
-        => string.IsNullOrWhiteSpace(PDVCSharp.WPF.AppSession.State.OperatorName)
+        => string.IsNullOrWhiteSpace(Master.Usuario.OperatorName)
             ? "Operador"
-            : PDVCSharp.WPF.AppSession.State.OperatorName;
+            : Master.Usuario.OperatorName;
 }

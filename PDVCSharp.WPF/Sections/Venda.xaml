@@ -94,216 +94,261 @@
                 Margin="0,0,15,0"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto">
-                <StackPanel>
 
-                    <!--  Produto 1: Leite  -->
-                    <Border
-                        Margin="0,0,0,10"
-                        Padding="12"
-                        Background="White"
-                        BorderBrush="#D0D0D0"
-                        BorderThickness="1"
-                        CornerRadius="5">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                <ListBox 
+                    x:Name="LstProdutos"
+                    BorderThickness="0"
+                    Background="Transparent"
+                    ItemsSource="{Binding Produtos}"
+                    d:ItemsSource="{d:SampleData ItemCount=8}">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="Margin" Value="0,0,0,8" />
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
 
-                            <!--  Imagem do Produto  -->
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <!--  Produto  -->
                             <Border
-                                Width="50"
-                                Height="50"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
+                                Padding="12"
                                 Background="White"
-                                BorderBrush="#E0E0E0"
-                                BorderThickness="1">
-                                <Image
-                                    Margin="3"
-                                    Source="/Components/13764-5268fa3a-removebg-preview.png"
-                                    Stretch="Uniform" />
+                                BorderBrush="#D0D0D0"
+                                BorderThickness="1"
+                                CornerRadius="5">
+                                <Border.Effect>
+                                    <DropShadowEffect
+                                        BlurRadius="8"
+                                        Direction="270"
+                                        Opacity="0.15"
+                                        ShadowDepth="2"
+                                        Color="#000000" />
+                                </Border.Effect>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="60" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!--  Imagem do Produto  -->
+                                    <Border
+                                        Width="50"
+                                        Height="50"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Background="White"
+                                        BorderBrush="#E0E0E0"
+                                        BorderThickness="1"
+                                        CornerRadius="5">
+                                        <Image
+                                            Margin="3"
+                                            Source="/Components/13764-5268fa3a-removebg-preview.png"
+                                            Stretch="Uniform" />
+                                    </Border>
+
+                                    <!--  Informações do Produto  -->
+                                    <StackPanel
+                                        Grid.Column="1"
+                                        Margin="12,0,0,0"
+                                        VerticalAlignment="Center">
+                                        <TextBlock
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Foreground="#333333"
+                                            Text="{Binding Name}" />
+                                        <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                                            <TextBlock
+                                                FontSize="11"
+                                                Foreground="#999999"
+                                                Text="R$ " />
+                                            <TextBlock
+                                                FontSize="11"
+                                                Foreground="#999999"
+                                                Text="{Binding Price, StringFormat={}{0:F2}}" />
+                                            <TextBlock
+                                                Margin="8,0,0,0"
+                                                FontSize="11"
+                                                Foreground="#999999"
+                                                Text=" × " />
+                                            <TextBlock
+                                                FontSize="11"
+                                                Foreground="#999999"
+                                                Text="{Binding Quantity, StringFormat={}{0:F2}}" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <!--  Controles de Quantidade  -->
+                                    <StackPanel
+                                        Grid.Column="2"
+                                        Margin="10,0,10,0"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal">
+                                        <Button
+                                            x:Name="BtnDiminuir"
+                                            Width="28"
+                                            Height="28"
+                                            Padding="0"
+                                            Click="BtnDiminuir_Click"
+                                            Cursor="Hand"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Tag="{Binding}">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Background" Value="#F5F5F5" />
+                                                    <Setter Property="Foreground" Value="#666666" />
+                                                    <Setter Property="BorderBrush" Value="#D0D0D0" />
+                                                    <Setter Property="BorderThickness" Value="1" />
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border
+                                                                    Background="{TemplateBinding Background}"
+                                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                                    CornerRadius="4">
+                                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#E0E0E0" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed" Value="True">
+                                                            <Setter Property="Background" Value="#D0D0D0" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                            <TextBlock Text="−" />
+                                        </Button>
+
+                                        <TextBlock
+                                            Width="35"
+                                            Margin="8,0,8,0"
+                                            VerticalAlignment="Center"
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Text="{Binding Quantity, StringFormat={}{0:F2}}"
+                                            TextAlignment="Center" />
+
+                                        <Button
+                                            x:Name="BtnAumentar"
+                                            Width="28"
+                                            Height="28"
+                                            Padding="0"
+                                            Click="BtnAumentar_Click"
+                                            Cursor="Hand"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Tag="{Binding}">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Background" Value="#F5F5F5" />
+                                                    <Setter Property="Foreground" Value="#666666" />
+                                                    <Setter Property="BorderBrush" Value="#D0D0D0" />
+                                                    <Setter Property="BorderThickness" Value="1" />
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border
+                                                                    Background="{TemplateBinding Background}"
+                                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                                    CornerRadius="4">
+                                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#E0E0E0" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed" Value="True">
+                                                            <Setter Property="Background" Value="#D0D0D0" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                            <TextBlock Text="+" />
+                                        </Button>
+                                    </StackPanel>
+
+                                    <!--  Preço Total  -->
+                                    <StackPanel
+                                        Grid.Column="3"
+                                        Margin="15,0,10,0"
+                                        VerticalAlignment="Center">
+                                        <TextBlock
+                                            FontSize="15"
+                                            FontWeight="Bold"
+                                            Foreground="#1A4D99">
+                                            <Run Text="R$ " />
+                                            <Run Text="{Binding Total, Mode=OneWay, StringFormat={}{0:F2}}" />
+                                        </TextBlock>
+                                    </StackPanel>
+
+                                    <!--  Botão Remover  -->
+                                    <Button
+                                        Grid.Column="4"
+                                        Width="28"
+                                        Height="28"
+                                        Padding="0"
+                                        VerticalAlignment="Center"
+                                        Click="BtnRemover_Click"
+                                        Cursor="Hand"
+                                        FontSize="16"
+                                        Tag="{Binding}"
+                                        ToolTip="Remover produto">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Background" Value="Transparent" />
+                                                <Setter Property="BorderThickness" Value="0" />
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <Border
+                                                                Background="{TemplateBinding Background}"
+                                                                CornerRadius="4">
+                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#FFEBEE" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsPressed" Value="True">
+                                                        <Setter Property="Background" Value="#FFCDD2" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <TextBlock Text="🗑️" />
+                                    </Button>
+                                </Grid>
                             </Border>
-
-                            <!--  Informações do Produto  -->
-                            <StackPanel
-                                Grid.Column="1"
-                                Margin="12,0,0,0"
-                                VerticalAlignment="Center">
-                                <TextBlock
-                                    FontSize="13"
-                                    FontWeight="SemiBold"
-                                    Text="Leite Integral Piracanjuba 1L" />
-                                <TextBlock
-                                    Margin="0,2,0,0"
-                                    FontSize="11"
-                                    Foreground="#666666"
-                                    Text="67239238579326| R$ 4,59 ×2" />
-                            </StackPanel>
-
-                            <!--  Controles de Quantidade  -->
-                            <StackPanel
-                                Grid.Column="2"
-                                Margin="10,0,10,0"
-                                VerticalAlignment="Center"
-                                Orientation="Horizontal">
-                                <Button
-                                    Width="25"
-                                    Height="25"
-                                    Padding="0"
-                                    Background="White"
-                                    BorderBrush="#C0C0C0"
-                                    BorderThickness="1"
-                                    Content="−"
-                                    FontSize="14" />
-                                <TextBlock
-                                    Width="25"
-                                    Margin="8,0,8,0"
-                                    VerticalAlignment="Center"
-                                    FontSize="13"
-                                    Text="2"
-                                    TextAlignment="Center" />
-                                <Button
-                                    Width="25"
-                                    Height="25"
-                                    Padding="0"
-                                    Background="White"
-                                    BorderBrush="#C0C0C0"
-                                    BorderThickness="1"
-                                    Content="+"
-                                    FontSize="14" />
-                            </StackPanel>
-
-                            <!--  Preço  -->
-                            <TextBlock
-                                Grid.Column="3"
-                                Margin="10,0,10,0"
-                                VerticalAlignment="Center"
-                                FontSize="14"
-                                FontWeight="Bold"
-                                Text="R$ 9,18" />
-
-                            <!--  Botão Remover  -->
-                            <Button
-                                Grid.Column="4"
-                                Width="25"
-                                Height="25"
-                                Padding="0"
-                                VerticalAlignment="Center"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                Content="🗑️"
-                                FontSize="14" />
-                        </Grid>
-                    </Border>
-
-                    <!--  Produto 2: Arroz  -->
-                    <Border
-                        Padding="12"
-                        Background="White"
-                        BorderBrush="#D0D0D0"
-                        BorderThickness="1"
-                        CornerRadius="5">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <!--  Imagem do Produto  -->
-                            <Border
-                                Width="50"
-                                Height="50"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Background="White"
-                                BorderBrush="#E0E0E0"
-                                BorderThickness="1">
-                                <Image
-                                    Margin="3"
-                                    Source="/Components/D_NQ_NP_950764-MLU73211786581_122023-O-removebg-preview.png"
-                                    Stretch="Uniform" />
-                            </Border>
-
-                            <!--  Informações do Produto  -->
-                            <StackPanel
-                                Grid.Column="1"
-                                Margin="12,0,0,0"
-                                VerticalAlignment="Center">
-                                <TextBlock
-                                    FontSize="13"
-                                    FontWeight="SemiBold"
-                                    Text="Arroz Tio Joao 5Kg" />
-                                <TextBlock
-                                    Margin="0,2,0,0"
-                                    FontSize="11"
-                                    Foreground="#666666"
-                                    Text="92385602760347| R$ 25,90 ×1" />
-                            </StackPanel>
-
-                            <!--  Controles de Quantidade  -->
-                            <StackPanel
-                                Grid.Column="2"
-                                Margin="10,0,10,0"
-                                VerticalAlignment="Center"
-                                Orientation="Horizontal">
-                                <Button
-                                    Width="25"
-                                    Height="25"
-                                    Padding="0"
-                                    Background="White"
-                                    BorderBrush="#C0C0C0"
-                                    BorderThickness="1"
-                                    Content="−"
-                                    FontSize="14" />
-                                <TextBlock
-                                    Width="25"
-                                    Margin="8,0,8,0"
-                                    VerticalAlignment="Center"
-                                    FontSize="13"
-                                    Text="1"
-                                    TextAlignment="Center" />
-                                <Button
-                                    Width="25"
-                                    Height="25"
-                                    Padding="0"
-                                    Background="White"
-                                    BorderBrush="#C0C0C0"
-                                    BorderThickness="1"
-                                    Content="+"
-                                    FontSize="14" />
-                            </StackPanel>
-
-                            <!--  Preço  -->
-                            <TextBlock
-                                Grid.Column="3"
-                                Margin="10,0,10,0"
-                                VerticalAlignment="Center"
-                                FontSize="14"
-                                FontWeight="Bold"
-                                Text="R$ 25,90" />
-
-                            <!--  Botão Remover  -->
-                            <Button
-                                Grid.Column="4"
-                                Width="25"
-                                Height="25"
-                                Padding="0"
-                                VerticalAlignment="Center"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                Content="🗑️"
-                                FontSize="14" />
-                        </Grid>
-                    </Border>
-
-                </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </ScrollViewer>
 
             <!--  Painel Lateral Direito - Total e Botões  -->
@@ -332,12 +377,13 @@
                             Text="TOTAL A PAGAR" />
 
                         <TextBlock
+                            x:Name="TxtTotal"
                             Margin="0,0,0,15"
                             HorizontalAlignment="Center"
                             FontSize="36"
                             FontWeight="Bold"
-                            Foreground="#4169E1"
-                            Text="R$ 35,08" />
+                            Foreground="#1A4D99"
+                            Text="R$ 0,00" />
 
                         <Border
                             Padding="0,12,0,0"
@@ -351,10 +397,11 @@
                                         Foreground="#666666"
                                         Text="Subtotal:" />
                                     <TextBlock
+                                        x:Name="TxtSubtotal"
                                         HorizontalAlignment="Right"
                                         FontSize="11"
                                         FontWeight="SemiBold"
-                                        Text="R$ 35,08" />
+                                        Text="R$ 0,00" />
                                 </Grid>
 
                                 <Grid>
@@ -364,6 +411,7 @@
                                         Foreground="#666666"
                                         Text="Desconto:" />
                                     <TextBlock
+                                        x:Name="TxtDesconto"
                                         HorizontalAlignment="Right"
                                         FontSize="11"
                                         FontWeight="SemiBold"
@@ -380,26 +428,74 @@
                     <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
                         <Button
                             Height="38"
-                            Background="#4169E1"
                             BorderThickness="0"
                             Click="Button_Click"
                             Content="✓ FINALIZAR VENDA"
                             Cursor="Hand"
                             FontSize="12"
                             FontWeight="SemiBold"
-                            Foreground="White" />
+                            Foreground="White">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#1A4D99" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border
+                                                    Background="{TemplateBinding Background}"
+                                                    CornerRadius="5">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#153D7A" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="#0F2D5C" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
 
                         <Button
                             Height="38"
                             Margin="0,8,0,0"
-                            Background="#DC143C"
                             BorderThickness="0"
                             Click="Button_Click_2"
                             Content="✕ CANCELAR VENDA"
                             Cursor="Hand"
                             FontSize="12"
                             FontWeight="SemiBold"
-                            Foreground="White" />
+                            Foreground="White">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#C12E2E" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border
+                                                    Background="{TemplateBinding Background}"
+                                                    CornerRadius="5">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#A12424" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="#7D1B1B" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </StackPanel>
                 </Grid>
             </Border>

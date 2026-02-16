@@ -8,10 +8,14 @@
 
   <ItemGroup>
     <None Remove="Produtos.json" />
+    <None Remove="Usuarios.json" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Produtos.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Usuarios.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

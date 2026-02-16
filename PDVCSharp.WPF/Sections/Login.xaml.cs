@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using static System.Collections.Specialized.BitVector32;
 using System.Linq;
 using System.Windows.Threading;
+using PDVCSharp.WPF.Contexts;
 
 namespace PDVCSharp.WPF.Sections
 {
@@ -35,34 +36,54 @@ namespace PDVCSharp.WPF.Sections
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var usuario = TxtUsuario.Text.Trim();
-            var senha = TxtPasswordVisible.Visibility == Visibility.Visible
-                ? TxtPasswordVisible.Text
-                : TxtPassword.Password;
-
-            if (!PDVCSharp.WPF.AppSession.Operators.TryGetValue(usuario, out var senhaEsperada)
-                || senha != senhaEsperada)
+            try
             {
-                MessageBox.Show("Usuário ou senha inválidos.", "Erro",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+                var usuario = TxtUsuario.Text.Trim();
+                var senha = TxtPasswordVisible.Visibility == Visibility.Visible
+                    ? TxtPasswordVisible.Text
+                    : TxtPassword.Password;
 
-            PDVCSharp.WPF.AppSession.State.OperatorName = usuario;
+                var success = SessaoUsuario.Login(usuario, senha);
 
-            var mainWindow = Window.GetWindow(this) as MainWindow;
-
-            if (mainWindow != null)
-            {
-
-                var telaLogin = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Login>().FirstOrDefault();
-                var telaAbertura = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Abertura>().FirstOrDefault();
-
-                if (telaLogin != null && telaAbertura != null)
+                if (success)
                 {
-                    telaLogin.Visibility = Visibility.Collapsed; // Esconde o login
-                    telaAbertura.Visibility = Visibility.Visible;    // Mostra a venda
+                    Master.Usuario = new SessaoUsuario { OperatorName = usuario };
                 }
+
+                var mainWindow = Window.GetWindow(this) as MainWindow;
+
+                if (mainWindow != null)
+                {
+                    var telaLogin = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Login>().FirstOrDefault();
+                    var telaAbertura = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Abertura>().FirstOrDefault();
+                    var telaCaixaLivre = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Caixa.CaixaLivre>().FirstOrDefault();
+                    var telaVenda = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Venda>().FirstOrDefault();
+
+                    if (telaLogin != null && telaAbertura != null && telaCaixaLivre != null && telaVenda != null)
+                    {
+                        telaLogin.Visibility = Visibility.Collapsed; // Esconde o login
+
+                        if (Master.Caixa == null)
+                        {
+                            telaAbertura.Visibility = Visibility.Visible; // Mostra a tela de abertura
+                        }
+                        else
+                        {
+                            if (Master.Venda != null)
+                            {
+                                telaVenda.Visibility = Visibility.Visible; // Mostra a tela de venda
+                            }
+                            else
+                            {
+                                telaCaixaLivre.Visibility = Visibility.Visible; // Mostra a tela de caixa livre
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao realizar login: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

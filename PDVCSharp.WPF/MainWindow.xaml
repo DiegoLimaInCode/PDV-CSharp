@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:PDVCSharp.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sections="clr-namespace:PDVCSharp.WPF.Sections"
+    xmlns:sectionsCaixa="clr-namespace:PDVCSharp.WPF.Sections.Caixa"
     Title="MainWindow"
     Width="791"
     Height="457"
@@ -13,8 +14,9 @@
 
     <Grid x:Name="MainContainer">
         <sections:Login Visibility="Visible" />
-        <sections:Venda Visibility="Collapsed" />
         <sections:Abertura Visibility="Collapsed" />
+        <sectionsCaixa:CaixaLivre Visibility="Collapsed" />
+        <sections:Venda Visibility="Collapsed" />
     </Grid>
 
 </Window>
