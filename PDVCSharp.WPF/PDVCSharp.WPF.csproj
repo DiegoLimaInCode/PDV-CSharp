@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PDVCSharp.Data\PDVCSharp.Data.csproj" />
+    <ProjectReference Include="..\PDVCSharp.Domain\PDVCSharp.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Sections\Venda.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

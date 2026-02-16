@@ -1,21 +1,20 @@
-﻿<Window x:Class="PDVCSharp.WPF.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PDVCSharp.WPF"
-        xmlns:sections="clr-namespace:PDVCSharp.WPF.Sections"
-        mc:Ignorable="d"
-        
-        
-        Title="MainWindow"
-        Height="457"
-        Width="791">
+﻿<Window
+    x:Class="PDVCSharp.WPF.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:PDVCSharp.WPF"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sections="clr-namespace:PDVCSharp.WPF.Sections"
+    Title="MainWindow"
+    Width="791"
+    Height="457"
+    mc:Ignorable="d">
 
     <Grid x:Name="MainContainer">
         <sections:Login Visibility="Visible" />
         <sections:Venda Visibility="Collapsed" />
-        <sections:Abertura Visibility="Collapsed"/>
+        <sections:Abertura Visibility="Collapsed" />
     </Grid>
 
 </Window>

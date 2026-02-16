@@ -1,6 +1,9 @@
-﻿using System;
+﻿using PDVCSharp.Domain.Entities;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,9 +21,18 @@ namespace PDVCSharp.WPF.Sections
     /// </summary>
     public partial class Venda : UserControl
     {
-        public Venda()
-        {
+
+        public List<Produto>? Produtos { get; set; }
+
+        public Venda() {
             InitializeComponent();
+
+            var productsFile = File.ReadAllText("Produtos.json");
+            Produtos = JsonSerializer.Deserialize<List<Produto>>(productsFile);
+        }
+
+        public Produto? BuscarProduto(string codigo) {
+            return null;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
