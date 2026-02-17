@@ -220,152 +220,24 @@
                     </StackPanel>
                 </Border>
 
-                <Grid Margin="0,0,0,10">
+                <Grid Margin="0,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="10" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Border Grid.Column="0">
-                        <StackPanel>
-                            <Border Padding="8,4" Background="#8B1A1A">
-                                <TextBlock
-                                    FontSize="13"
-                                    FontWeight="Bold"
-                                    Foreground="White"
-                                    Text="DINHEIRO" />
-                            </Border>
-                            <Border Padding="5" Background="White">
-                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                    <TextBlock
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Center"
-                                        FontSize="22"
-                                        FontWeight="Bold"
-                                        Text="R$" />
-                                    <TextBox
-                                        x:Name="TxtDinheiro"
-                                        Height="35"
-                                        HorizontalContentAlignment="Right"
-                                        VerticalContentAlignment="Center"
-                                        BorderThickness="0"
-                                        FontSize="22"
-                                        FontWeight="Bold"
-                                        PreviewKeyDown="ValorTextBox_PreviewKeyDown"
-                                        PreviewTextInput="ValorTextBox_PreviewTextInput"
-                                        Text="0,00" />
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
-                    </Border>
 
-                    <Border Grid.Column="2">
-                        <StackPanel>
-                            <Border Padding="8,4" Background="#8B1A1A">
-                                <TextBlock
-                                    FontSize="13"
-                                    FontWeight="Bold"
-                                    Foreground="White"
-                                    Text="CHEQUE" />
-                            </Border>
-                            <Border Padding="5" Background="White">
-                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                    <TextBlock
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Center"
-                                        FontSize="22"
-                                        FontWeight="Bold"
-                                        Text="R$" />
-                                    <TextBox
-                                        x:Name="TxtCheque"
-                                        Height="35"
-                                        HorizontalContentAlignment="Right"
-                                        VerticalContentAlignment="Center"
-                                        BorderThickness="0"
-                                        FontSize="22"
-                                        FontWeight="Bold"
-                                        PreviewKeyDown="ValorTextBox_PreviewKeyDown"
-                                        PreviewTextInput="ValorTextBox_PreviewTextInput"
-                                        Text="0,00" />
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
-                    </Border>
                 </Grid>
 
-                <Grid Margin="0,0,0,10">
+                <Grid Margin="0,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="10" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Border Grid.Column="0">
-                        <StackPanel>
-                            <Border Padding="8,4" Background="#8B1A1A">
-                                <TextBlock
-                                    FontSize="13"
-                                    FontWeight="Bold"
-                                    Foreground="White"
-                                    Text="CARTÃO DE CRÉDITO" />
-                            </Border>
-                            <Border Padding="5" Background="White">
-                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                    <TextBlock
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Center"
-                                        FontSize="22"
-                                        FontWeight="Bold"
-                                        Text="R$" />
-                                    <TextBox
-                                        x:Name="TxtCartaoCredito"
-                                        Height="35"
-                                        HorizontalContentAlignment="Right"
-                                        VerticalContentAlignment="Center"
-                                        BorderThickness="0"
-                                        FontSize="22"
-                                        FontWeight="Bold"
-                                        PreviewKeyDown="ValorTextBox_PreviewKeyDown"
-                                        PreviewTextInput="ValorTextBox_PreviewTextInput"
-                                        Text="0,00" />
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
-                    </Border>
 
-                    <Border Grid.Column="2">
-                        <StackPanel>
-                            <Border Padding="8,4" Background="#8B1A1A">
-                                <TextBlock
-                                    FontSize="13"
-                                    FontWeight="Bold"
-                                    Foreground="White"
-                                    Text="CARTÃO DE DÉBITO" />
-                            </Border>
-                            <Border Padding="5" Background="White">
-                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                    <TextBlock
-                                        Margin="5,0,5,0"
-                                        VerticalAlignment="Center"
-                                        FontSize="22"
-                                        FontWeight="Bold"
-                                        Text="R$" />
-                                    <TextBox
-                                        x:Name="TxtCartaoDebito"
-                                        Height="35"
-                                        HorizontalContentAlignment="Right"
-                                        VerticalContentAlignment="Center"
-                                        BorderThickness="0"
-                                        FontSize="22"
-                                        FontWeight="Bold"
-                                        PreviewKeyDown="ValorTextBox_PreviewKeyDown"
-                                        PreviewTextInput="ValorTextBox_PreviewTextInput"
-                                        Text="0,00" />
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
-                    </Border>
                 </Grid>
 
                 <Border>
