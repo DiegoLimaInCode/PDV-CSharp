@@ -20,42 +20,58 @@ using static System.Collections.Specialized.BitVector32;
 
 namespace PDVCSharp.WPF.Sections
 {
-
+    // Tela de Login — é um UserControl (componente reutilizável dentro de uma janela)
+    // 💡 DICA: UserControl ≠ Window. UserControl é uma "parte" de uma janela,
+    //    enquanto Window é uma janela independente.
     public partial class Login : UserControl
     {
+        // Serviço de autenticação — usado para validar login/senha no banco
         private readonly AuthService _authService;
+
+        // Timer que atualiza o relógio na tela a cada segundo
+        // 💡 DICA: DispatcherTimer roda na UI thread, então pode atualizar controles visuais diretamente.
         DispatcherTimer relogio = new DispatcherTimer();
 
         public Login()
         {
-            InitializeComponent();
+            InitializeComponent(); // Carrega os componentes visuais do XAML
 
+            // Obtém o AuthService do contêiner de DI
+            // GetRequiredService = retorna o serviço ou lança exceção se não encontrar
             _authService = App.ServiceProvider.GetRequiredService<AuthService>();
 
+            // Configura o timer do relógio: dispara a cada 1 segundo
             relogio.Interval = TimeSpan.FromSeconds(1);
-            relogio.Tick += Relogio_Tick;
+            relogio.Tick += Relogio_Tick; // Associa o evento Tick ao método Relogio_Tick
             relogio.Start();
         }
 
+        // Evento chamado a cada segundo pelo timer — atualiza o horário na tela
         private void Relogio_Tick(object sender, EventArgs e)
         {
-            // Atualiza o texto do relógio a cada segundo segundo horario do brasil
-            TxtHora.Text = DateTime.Now.ToString("HH:mm");
+            TxtHora.Text = DateTime.Now.ToString("HH:mm"); // Formato 24h (ex: "14:30")
         }
 
+        // Lógica principal de login — chamada quando o botão é clicado
+        // "async Task" = método assíncrono (não trava a tela enquanto consulta o banco)
         private async Task LoginMethod(string usuario, string senha)
         {
+            // Chama o serviço de autenticação (que consulta o banco via repositório)
             var success = await _authService.Login(usuario, senha);
 
+            // Se login foi bem-sucedido, salva o nome do operador na sessão
             if (success)
             {
                 Master.Usuario = new SessaoUsuario { OperatorName = usuario };
             }
 
+            // Navega para a próxima tela conforme o estado do PDV
+            // 💡 DICA: Window.GetWindow(this) obtém a janela pai deste UserControl
             var mainWindow = Window.GetWindow(this) as MainWindow;
 
             if (mainWindow != null)
             {
+                // Busca todas as telas dentro do MainContainer (Grid da MainWindow)
                 var telaLogin = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Login>().FirstOrDefault();
                 var telaAbertura = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Abertura>().FirstOrDefault();
                 var telaCaixaLivre = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Caixa.CaixaLivre>().FirstOrDefault();
@@ -65,43 +81,56 @@ namespace PDVCSharp.WPF.Sections
                 {
                     telaLogin.Visibility = Visibility.Collapsed; // Esconde o login
 
+                    // Decide qual tela mostrar baseado no estado do PDV:
                     if (Master.Caixa == null)
                     {
-                        telaAbertura.Visibility = Visibility.Visible; // Mostra a tela de abertura
+                        // Caixa não foi aberto → vai para tela de Abertura
+                        telaAbertura.Visibility = Visibility.Visible;
                     }
                     else
                     {
                         if (Master.Venda != null)
                         {
-                            telaVenda.Visibility = Visibility.Visible; // Mostra a tela de venda
+                            // Existe uma venda em andamento → vai para tela de Venda
+                            telaVenda.Visibility = Visibility.Visible;
                         }
                         else
                         {
-                            telaCaixaLivre.Visibility = Visibility.Visible; // Mostra a tela de caixa livre
+                            // Caixa aberto mas sem venda → vai para Caixa Livre
+                            telaCaixaLivre.Visibility = Visibility.Visible;
                         }
                     }
                 }
             }
         }
 
+        // Evento do botão de login
+        // 💡 DICA: "async void" é o padrão correto APENAS para event handlers em WPF.
+        //    Em qualquer outro lugar, use "async Task".
+        //    NUNCA use .Wait() ou .Result em código async na UI thread — causa deadlock!
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var usuario = TxtUsuario.Text.Trim();
+                var usuario = TxtUsuario.Text.Trim(); // .Trim() remove espaços extras
+
+                // Pega a senha do campo visível ou do PasswordBox, conforme qual está ativo
                 var senha = TxtPasswordVisible.Visibility == Visibility.Visible
                     ? TxtPasswordVisible.Text
                     : TxtPassword.Password;
 
-                await LoginMethod(usuario, senha);
+                await LoginMethod(usuario, senha); // "await" = espera sem travar a tela
             }
             catch (Exception ex)
             {
+                // Mostra uma mensagem de erro para o usuário
                 MessageBox.Show($"Erro ao realizar login: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        //Metodo para esconder o texto de placeholder da senha 
+        // === Controle de placeholder e visibilidade da senha ===
+
+        // Sincroniza o PasswordBox com o TextBox visível
         private void TxtPassword_PasswordChanged(object sender, RoutedEventArgs e)
         {
             if (TxtPasswordVisible.Visibility != Visibility.Visible)
@@ -110,6 +139,7 @@ namespace PDVCSharp.WPF.Sections
             UpdatePasswordPlaceholder();
         }
 
+        // Sincroniza o TextBox visível com o PasswordBox
         private void TxtPasswordVisible_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (TxtPasswordVisible.Visibility == Visibility.Visible)
@@ -118,16 +148,20 @@ namespace PDVCSharp.WPF.Sections
             UpdatePasswordPlaceholder();
         }
 
+        // Quando o toggle "mostrar senha" é ativado → mostra TextBox, esconde PasswordBox
+        // 💡 DICA: WPF não tem como mostrar/esconder a senha diretamente no PasswordBox,
+        //    por isso usamos dois controles (PasswordBox + TextBox) que se sincronizam.
         private void TogglePassword_Checked(object sender, RoutedEventArgs e)
         {
             TxtPasswordVisible.Text = TxtPassword.Password;
             TxtPasswordVisible.Visibility = Visibility.Visible;
             TxtPassword.Visibility = Visibility.Collapsed;
             TxtPasswordVisible.Focus();
-            TxtPasswordVisible.CaretIndex = TxtPasswordVisible.Text.Length;
+            TxtPasswordVisible.CaretIndex = TxtPasswordVisible.Text.Length; // Cursor no final
             UpdatePasswordPlaceholder();
         }
 
+        // Quando o toggle "mostrar senha" é desativado → esconde TextBox, mostra PasswordBox
         private void TogglePassword_Unchecked(object sender, RoutedEventArgs e)
         {
             TxtPassword.Password = TxtPasswordVisible.Text;
@@ -137,6 +171,7 @@ namespace PDVCSharp.WPF.Sections
             UpdatePasswordPlaceholder();
         }
 
+        // Atualiza a visibilidade do placeholder "Senha" conforme o campo está vazio ou não
         private void UpdatePasswordPlaceholder()
         {
             var valor = TxtPasswordVisible.Visibility == Visibility.Visible
@@ -144,11 +179,11 @@ namespace PDVCSharp.WPF.Sections
                 : TxtPassword.Password;
 
             PlaceholderPassword.Visibility = string.IsNullOrEmpty(valor)
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+                ? Visibility.Visible   // Mostra o placeholder se o campo está vazio
+                : Visibility.Collapsed; // Esconde o placeholder se há texto
         }
 
-        //Metodo para esconder o texto de placeholder do usuario 
+        // Atualiza a visibilidade do placeholder "Usuário"
         private void TxtUsuario_TextChanged(object sender, TextChangedEventArgs e)
         {
 

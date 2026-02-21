@@ -6,7 +6,8 @@ using System.Windows.Controls;
 namespace PDVCSharp.WPF.Sections.Caixa
 {
     /// <summary>
-    /// Interaction logic for CaixaLivre.xaml
+    /// Tela "Caixa Livre" — estado padrão quando o caixa está aberto mas sem venda ativa.
+    /// O operador pode iniciar uma nova venda a partir daqui.
     /// </summary>
     public partial class CaixaLivre : UserControl
     {
@@ -14,6 +15,7 @@ namespace PDVCSharp.WPF.Sections.Caixa
         {
             InitializeComponent();
 
+            // Se já existe uma venda em andamento (ex: operador voltou), redireciona para a tela de Venda
             if (Master.Venda != null)
             {
                 var telaVenda = new Venda();
@@ -21,22 +23,27 @@ namespace PDVCSharp.WPF.Sections.Caixa
 
                 if (containerPai != null)
                 {
-                    containerPai.Children.Clear();
-                    containerPai.Children.Add(telaVenda);
+                    containerPai.Children.Clear();    // Remove todas as telas do container
+                    containerPai.Children.Add(telaVenda); // Adiciona a tela de venda
                 }
             }
         }
 
+        // Botão "Nova Venda" — inicia uma nova sessão de venda
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            // Cria uma nova sessão de venda (carrinho vazio)
             Master.Venda = new SessaoVenda();
 
+            // Esconde a tela de Caixa Livre
             this.Visibility = Visibility.Collapsed;
+
+            // Obtém o Grid pai e mostra a tela de Venda
             var mainWindow = this.Parent as Grid;
 
             var telaCaixaLivre = mainWindow.Children.OfType<PDVCSharp.WPF.Sections.Caixa.CaixaLivre>().FirstOrDefault();
             var telaVenda = mainWindow.Children.OfType<PDVCSharp.WPF.Sections.Venda>().FirstOrDefault();
-            telaVenda.Visibility = Visibility.Visible; // Mostra a tela de venda
+            telaVenda.Visibility = Visibility.Visible;
         }
     }
 }
