@@ -1,5 +1,10 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PDVCSharp.Application.Services;
+using PDVCSharp.Domain.Entities;
+using PDVCSharp.WPF.Contexts;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,31 +15,76 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static System.Collections.Specialized.BitVector32;
-using System.Linq;
 using System.Windows.Threading;
-using PDVCSharp.WPF.Contexts;
+using static System.Collections.Specialized.BitVector32;
 
 namespace PDVCSharp.WPF.Sections
 {
 
     public partial class Login : UserControl
     {
+        private readonly AuthService _authService;
         DispatcherTimer relogio = new DispatcherTimer();
+
         public Login()
         {
             InitializeComponent();
+
+            _authService = App.ServiceProvider.GetRequiredService<AuthService>();
 
             relogio.Interval = TimeSpan.FromSeconds(1);
             relogio.Tick += Relogio_Tick;
             relogio.Start();
         }
+
         private void Relogio_Tick(object sender, EventArgs e)
         {
             // Atualiza o texto do relógio a cada segundo segundo horario do brasil
             TxtHora.Text = DateTime.Now.ToString("HH:mm");
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+        private async Task LoginMethod(string usuario, string senha)
+        {
+            var success = await _authService.Login(usuario, senha);
+
+            if (success)
+            {
+                Master.Usuario = new SessaoUsuario { OperatorName = usuario };
+            }
+
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+
+            if (mainWindow != null)
+            {
+                var telaLogin = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Login>().FirstOrDefault();
+                var telaAbertura = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Abertura>().FirstOrDefault();
+                var telaCaixaLivre = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Caixa.CaixaLivre>().FirstOrDefault();
+                var telaVenda = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Venda>().FirstOrDefault();
+
+                if (telaLogin != null && telaAbertura != null && telaCaixaLivre != null && telaVenda != null)
+                {
+                    telaLogin.Visibility = Visibility.Collapsed; // Esconde o login
+
+                    if (Master.Caixa == null)
+                    {
+                        telaAbertura.Visibility = Visibility.Visible; // Mostra a tela de abertura
+                    }
+                    else
+                    {
+                        if (Master.Venda != null)
+                        {
+                            telaVenda.Visibility = Visibility.Visible; // Mostra a tela de venda
+                        }
+                        else
+                        {
+                            telaCaixaLivre.Visibility = Visibility.Visible; // Mostra a tela de caixa livre
+                        }
+                    }
+                }
+            }
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -43,43 +93,7 @@ namespace PDVCSharp.WPF.Sections
                     ? TxtPasswordVisible.Text
                     : TxtPassword.Password;
 
-                var success = SessaoUsuario.Login(usuario, senha);
-
-                if (success)
-                {
-                    Master.Usuario = new SessaoUsuario { OperatorName = usuario };
-                }
-
-                var mainWindow = Window.GetWindow(this) as MainWindow;
-
-                if (mainWindow != null)
-                {
-                    var telaLogin = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Login>().FirstOrDefault();
-                    var telaAbertura = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Abertura>().FirstOrDefault();
-                    var telaCaixaLivre = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Caixa.CaixaLivre>().FirstOrDefault();
-                    var telaVenda = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Venda>().FirstOrDefault();
-
-                    if (telaLogin != null && telaAbertura != null && telaCaixaLivre != null && telaVenda != null)
-                    {
-                        telaLogin.Visibility = Visibility.Collapsed; // Esconde o login
-
-                        if (Master.Caixa == null)
-                        {
-                            telaAbertura.Visibility = Visibility.Visible; // Mostra a tela de abertura
-                        }
-                        else
-                        {
-                            if (Master.Venda != null)
-                            {
-                                telaVenda.Visibility = Visibility.Visible; // Mostra a tela de venda
-                            }
-                            else
-                            {
-                                telaCaixaLivre.Visibility = Visibility.Visible; // Mostra a tela de caixa livre
-                            }
-                        }
-                    }
-                }
+                await LoginMethod(usuario, senha);
             }
             catch (Exception ex)
             {

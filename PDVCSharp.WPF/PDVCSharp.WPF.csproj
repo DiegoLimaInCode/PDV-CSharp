@@ -38,8 +38,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PDVCSharp.Data\PDVCSharp.Data.csproj" />
-    <ProjectReference Include="..\PDVCSharp.Domain\PDVCSharp.Domain.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PDVCSharp.Application\PDVCSharp.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
