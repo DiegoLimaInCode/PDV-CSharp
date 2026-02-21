@@ -21,11 +21,12 @@ using System.Windows.Shapes;
 
 namespace PDVCSharp.WPF.Sections
 {
-    /// <summary>
-    /// Interaction logic for Venda.xaml
-    /// </summary>
+    // Tela principal de Venda — operador adiciona/remove produtos e finaliza a venda.
+    // INotifyPropertyChanged = permite atualizar a tela via Data Binding.
     public partial class Venda : UserControl, INotifyPropertyChanged
     {
+        // ObservableCollection = lista que NOTIFICA a tela quando itens são adicionados/removidos
+        // 💡 DICA: Se usasse List<> normal, a tela não saberia que a lista mudou.
         private ObservableCollection<ProdutoVenda> _produtos;
 
         public ObservableCollection<ProdutoVenda> Produtos
@@ -34,8 +35,8 @@ namespace PDVCSharp.WPF.Sections
             set
             {
                 _produtos = value;
-                OnPropertyChanged();
-                AtualizarTotais();
+                OnPropertyChanged();     // Notifica a tela que a lista mudou
+                AtualizarTotais();       // Recalcula subtotal/total
             }
         }
 
@@ -45,20 +46,23 @@ namespace PDVCSharp.WPF.Sections
 
             Produtos = new ObservableCollection<ProdutoVenda>();
 
-            CarregarProdutosExemplo();
+            CarregarProdutosExemplo(); // Carrega produtos do arquivo JSON
 
-            LstProdutos.ItemsSource = Produtos;
+            LstProdutos.ItemsSource = Produtos; // Define a fonte de dados da lista na tela
 
+            // Quando a coleção mudar (add/remove), recalcula os totais
             Produtos.CollectionChanged += (s, e) => AtualizarTotais();
         }
 
+        // Carrega produtos do arquivo Produtos.json para a lista de venda
         private void CarregarProdutosExemplo()
         {
             try
             {
-                if (File.Exists("Produtos.json"))
+                if (File.Exists("Produtos.json")) // Verifica se o arquivo existe
                 {
-                    var productsFile = File.ReadAllText("Produtos.json");
+                    var productsFile = File.ReadAllText("Produtos.json"); // Lê todo o conteúdo
+                    // Deserialize = converte JSON (texto) para objetos C#
                     var produtosBase = JsonSerializer.Deserialize<List<Produto>>(productsFile);
 
                     if (produtosBase != null && produtosBase.Any())
@@ -88,6 +92,8 @@ namespace PDVCSharp.WPF.Sections
             return null;
         }
 
+        // Botão "−" — diminui a quantidade do produto
+        // 💡 DICA: button.Tag contém o produto associado (definido no XAML via Tag="{Binding}")
         private void BtnDiminuir_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.Tag is ProdutoVenda produto)
@@ -113,6 +119,7 @@ namespace PDVCSharp.WPF.Sections
             }
         }
 
+        // Botão "+" — aumenta a quantidade do produto
         private void BtnAumentar_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.Tag is ProdutoVenda produto)
@@ -122,6 +129,7 @@ namespace PDVCSharp.WPF.Sections
             }
         }
 
+        // Botão "Remover" — remove o produto da venda (com confirmação)
         private void BtnRemover_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.Tag is ProdutoVenda produto)
@@ -139,16 +147,20 @@ namespace PDVCSharp.WPF.Sections
             }
         }
 
+        // Recalcula e atualiza subtotal, desconto e total na tela
         private void AtualizarTotais()
         {
+            // .Sum() soma os totais de todos os produtos (preço × quantidade)
             decimal subtotal = Produtos.Sum(p => p.Total);
-            decimal desconto = 0;
+            decimal desconto = 0; // Desconto fixo em 0 por enquanto
 
+            // "F2" = formato com 2 casas decimais (ex: "15.50")
             TxtSubtotal.Text = $"R$ {subtotal:F2}";
             TxtDesconto.Text = $"R$ {desconto:F2}";
             TxtTotal.Text = $"R$ {(subtotal - desconto):F2}";
         }
 
+        // Botão "Finalizar Venda" — navega para a tela de finalização
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (!Produtos.Any())
@@ -168,6 +180,7 @@ namespace PDVCSharp.WPF.Sections
             }
         }
 
+        // Botão "Cancelar Venda" — volta para a tela de Caixa Livre
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             if (Produtos.Any())
@@ -200,8 +213,12 @@ namespace PDVCSharp.WPF.Sections
         }
     }
 
+    // ProdutoVenda = versão do Produto usada na tela de venda (com quantidade editável)
+    // Implementa INotifyPropertyChanged para que a tela atualize ao mudar preço/quantidade
+    // 💡 DICA: Separada de Produto (Domain) porque a tela precisa de funcionalidades extras.
     public class ProdutoVenda : INotifyPropertyChanged
     {
+        // Campos privados (backing fields) — armazenam o valor real
         private string _name = string.Empty;
         private decimal _price;
         private double _quantity;
@@ -248,6 +265,9 @@ namespace PDVCSharp.WPF.Sections
             }
         }
 
+        // Propriedade calculada: Total = Preço × Quantidade
+        // 💡 DICA: "=>" = propriedade somente-leitura calculada sob demanda.
+        //    (decimal)Quantity = converte double para decimal (tipos diferentes)
         public decimal Total => Price * (decimal)Quantity;
 
         public event PropertyChangedEventHandler? PropertyChanged;
