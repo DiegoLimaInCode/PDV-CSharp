@@ -54,6 +54,39 @@ namespace PDVCSharp.WPF.Sections
 
             var mainWindow = Window.GetWindow(this) as MainWindow;
 
+                if (mainWindow != null)
+                {
+                    var telaLogin = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Login>().FirstOrDefault();
+                    var telaAbertura = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Abertura>().FirstOrDefault();
+                    var telaCaixaLivre = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Caixa.CaixaLivre>().FirstOrDefault();
+                    var telaVenda = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Venda>().FirstOrDefault();
+                   
+
+                    if (telaLogin != null && telaAbertura != null && telaCaixaLivre != null && telaVenda != null)
+                    {
+                        telaLogin.Visibility = Visibility.Collapsed; // Esconde o login
+
+                        if (Master.Caixa == null)
+                        {
+                            telaAbertura.Visibility = Visibility.Visible; // Mostra a tela de abertura
+                        }
+                        else
+                        {
+                            if (Master.Venda != null)
+                            {
+                                telaVenda.Visibility = Visibility.Visible; // Mostra a tela de venda
+                            }
+                            else
+                            {
+                                telaCaixaLivre.Visibility = Visibility.Visible; // Mostra a tela de caixa livre
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao realizar login: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             if (mainWindow != null)
             {
                 var telaLogin = mainWindow.MainContainer.Children.OfType<PDVCSharp.WPF.Sections.Login>().FirstOrDefault();
