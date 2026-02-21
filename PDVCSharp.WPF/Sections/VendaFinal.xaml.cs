@@ -14,9 +14,7 @@ using System.Windows.Shapes;
 
 namespace PDVCSharp.WPF.Sections
 {
-    /// <summary>
-    /// Interaction logic for Login.xaml
-    /// </summary>
+    // Tela de finalização da venda — operador informa o valor recebido e confirma o pagamento
     public partial class VendaFinal : UserControl
     {
         public VendaFinal()
@@ -24,30 +22,34 @@ namespace PDVCSharp.WPF.Sections
             InitializeComponent();
         }
 
+        // Botão que reinicia a tela de finalização
         private void Button_Click(object sender, RoutedEventArgs e) {
             var telaVendaFinal = new VendaFinal();
             var containerPai = this.Parent as Panel;
 
             if(containerPai != null) {
-                containerPai.Children.Clear();
-                containerPai.Children.Add(telaVendaFinal);
+                containerPai.Children.Clear();              // Limpa o container
+                containerPai.Children.Add(telaVendaFinal);  // Recria a tela
             }
 
         }
 
+        // Validação: permite apenas números, vírgula e ponto (para valores decimais)
+        // 💡 DICA: PreviewTextInput é disparado ANTES do texto ser inserido.
+        //    Se e.Handled = true, o texto NÃO é inserido (bloqueia a entrada).
         private void ValorTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            // Allow only numbers, comma, and period for decimal input
+            // Regex = expressão regular — "[^0-9,.]" = qualquer caractere que NÃO seja número/vírgula/ponto
             Regex regex = new Regex("[^0-9,.]");
-            e.Handled = regex.IsMatch(e.Text);
+            e.Handled = regex.IsMatch(e.Text); // Bloqueia se o caractere não é permitido
         }
 
+        // Bloqueia a tecla espaço no campo de valor
         private void ValorTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            // Allow navigation keys
             if (e.Key == Key.Space)
             {
-                e.Handled = true;
+                e.Handled = true; // Impede que o espaço seja digitado
             }
         }
     }

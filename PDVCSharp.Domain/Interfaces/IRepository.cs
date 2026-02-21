@@ -5,48 +5,51 @@ using System.Text;
 
 namespace PDVCSharp.Domain.Interfaces
 {
+    // IRepository<T> é uma INTERFACE genérica — define um "contrato" que toda classe repositório deve seguir.
+    // 💡 DICA: Interface = lista de métodos que a classe DEVE implementar, sem dizer COMO.
+    //    Isso permite trocar a implementação (ex: de MySQL para PostgreSQL) sem mudar o resto do código.
+    //
+    // "where T : class" = T só pode ser uma classe (não pode ser int, bool, etc.)
+    // <T> = Genérico — funciona com qualquer tipo (Produto, Usuario, etc.)
     public interface IRepository<T> where T : class
     {
         /// <summary>
-        /// Returns all entities of type T (excluding soft-deleted).
+        /// Retorna todas as entidades do tipo T (excluindo as deletadas via soft delete).
         /// </summary>
         IQueryable<T> GetAll();
 
         /// <summary>
-        /// Returns an entity of type T by its ID.
+        /// Retorna uma entidade pelo seu ID (Guid).
         /// </summary>
-        /// <param name="id">Entity ID.</param>
-        /// <returns>The corresponding entity or null if not found.</returns>
+        // 💡 DICA: Task<T?> = método assíncrono que pode retornar null (o "?" indica nullable)
         Task<T?> GetById(Guid id);
 
         /// <summary>
-        /// Adds a new entity of type T.
+        /// Adiciona uma nova entidade no banco e retorna o ID gerado.
         /// </summary>
-        /// <param name="entity">The entity to be added.</param>
         Task<Guid> Add(T entity);
 
         /// <summary>
-        /// Updates an existing entity of type T.
+        /// Atualiza uma entidade existente no banco.
         /// </summary>
-        /// <param name="entity">The entity with updated information.</param>
         Task Update(T entity);
 
         /// <summary>
-        /// Deletes an entity of type T.
+        /// Deleta uma entidade (soft delete — não remove do banco).
         /// </summary>
-        /// <param name="id">ID of the entity to be deleted.</param>
         Task Delete(T entity);
 
         /// <summary>
-        /// Saves changes in the database context.
+        /// Salva todas as alterações pendentes no banco de dados.
         /// </summary>
+        // 💡 DICA: O EF Core acumula mudanças em memória até você chamar Commit/SaveChanges.
         Task Commit();
 
         /// <summary>
-        /// Returns a list of entities of type T that match a specific filter.
+        /// Filtra entidades usando uma expressão lambda (ex: x => x.Nome == "Banana").
         /// </summary>
-        /// <param name="predicate">Expression to filter the entities.</param>
-        /// <returns>List of filtered entities.</returns>
+        // 💡 DICA: IQueryable permite encadear filtros antes de ir ao banco.
+        //    A consulta SQL só é gerada quando você chama .ToList(), .FirstOrDefault(), etc.
         IQueryable<T> Where(Expression<Func<T, bool>> predicate);
     }
 }
