@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PDVCSharp.Data\PDVCSharp.Data.csproj" />
+    <ProjectReference Include="..\PDVCSharp.Domain\PDVCSharp.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

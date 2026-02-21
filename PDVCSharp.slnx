@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="PDVCSharp.Application/PDVCSharp.Application.csproj" Id="d7137e88-acd7-4372-9a81-419c8a077283" />
   <Project Path="PDVCSharp.Data/PDVCSharp.Data.csproj" />
   <Project Path="PDVCSharp.Domain/PDVCSharp.Domain.csproj" />
   <Project Path="PDVCSharp.WPF/PDVCSharp.WPF.csproj" />
