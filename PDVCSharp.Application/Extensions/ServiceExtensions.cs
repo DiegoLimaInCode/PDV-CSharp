@@ -36,7 +36,10 @@ namespace PDVCSharp.Application.Extensions
             //   o contêiner cria um UserRepository automaticamente
             // 💡 DICA: Scoped = uma nova instância por escopo de DI.
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             return services;
+
+
         }
 
         // Registra os serviços da camada de aplicação

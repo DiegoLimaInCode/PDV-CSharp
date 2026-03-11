@@ -12,7 +12,7 @@ using PDVCSharp.Data.Context;
 namespace PDVCSharp.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260220214405_Initial")]
+    [Migration("20260221014216_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
