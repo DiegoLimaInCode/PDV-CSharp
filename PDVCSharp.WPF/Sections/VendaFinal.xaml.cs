@@ -26,7 +26,7 @@ namespace PDVCSharp.WPF.Sections
         private void Button_Click(object sender, RoutedEventArgs e) {
             var telaVendaFinal = new VendaFinal();
             var containerPai = this.Parent as Panel;
-
+            
             if(containerPai != null) {
                 containerPai.Children.Clear();              // Limpa o container
                 containerPai.Children.Add(telaVendaFinal);  // Recria a tela

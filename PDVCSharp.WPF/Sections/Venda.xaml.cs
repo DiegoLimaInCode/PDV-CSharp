@@ -1,4 +1,7 @@
-﻿using PDVCSharp.Domain.Entities;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PDVCSharp.Data.Repositories;
+using PDVCSharp.Domain.Entities;
+using PDVCSharp.Domain.Interfaces;
 using PDVCSharp.WPF.Contexts;
 using System;
 using System.Collections.Generic;
@@ -25,6 +28,8 @@ namespace PDVCSharp.WPF.Sections
     // INotifyPropertyChanged = permite atualizar a tela via Data Binding.
     public partial class Venda : UserControl, INotifyPropertyChanged
     {
+        private readonly IProductRepository _productRepository;
+
         // ObservableCollection = lista que NOTIFICA a tela quando itens são adicionados/removidos
         // 💡 DICA: Se usasse List<> normal, a tela não saberia que a lista mudou.
         private ObservableCollection<ProdutoVenda> _produtos;
@@ -44,48 +49,29 @@ namespace PDVCSharp.WPF.Sections
         {
             InitializeComponent();
 
-            Produtos = new ObservableCollection<ProdutoVenda>();
-
-            CarregarProdutosExemplo(); // Carrega produtos do arquivo JSON
-
-            LstProdutos.ItemsSource = Produtos; // Define a fonte de dados da lista na tela
-
+            _productRepository = App.ServiceProvider.GetRequiredService<IProductRepository>();
+      
+            Produtos = new ObservableCollection<ProdutoVenda>(); // Define a fonte de dados da lista na tela
+            LstProdutos.ItemsSource = Produtos;
             // Quando a coleção mudar (add/remove), recalcula os totais
             Produtos.CollectionChanged += (s, e) => AtualizarTotais();
+
+            CarregarProdutosDaBase();
         }
 
-        // Carrega produtos do arquivo Produtos.json para a lista de venda
-        private void CarregarProdutosExemplo()
-        {
-            try
-            {
-                if (File.Exists("Produtos.json")) // Verifica se o arquivo existe
-                {
-                    var productsFile = File.ReadAllText("Produtos.json"); // Lê todo o conteúdo
-                    // Deserialize = converte JSON (texto) para objetos C#
-                    var produtosBase = JsonSerializer.Deserialize<List<Produto>>(productsFile);
+        private void CarregarProdutosDaBase() {
+            var produtosBanco = _productRepository.GetAll();
 
-                    if (produtosBase != null && produtosBase.Any())
-                    {
-                        foreach (var produto in produtosBase)
-                        {
-                            Produtos.Add(new ProdutoVenda
-                            {
-                                Name = produto.Name,
-                                Price = produto.Price,
-                                Quantity = 1,
-                                ImagePath = produto.ImagePath
-                            });
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erro ao carregar produtos: {ex.Message}", "Erro",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+            foreach (var produto in produtosBanco) {
+                Produtos.Add(new ProdutoVenda {
+                    Name = produto.Name,
+                    Price = produto.Price,
+                    Quantity = produto.Quantity,
+                    ImagePath = produto.ImagePath
+                });
             }
         }
+
 
         public Produto? BuscarProduto(string codigo)
         {

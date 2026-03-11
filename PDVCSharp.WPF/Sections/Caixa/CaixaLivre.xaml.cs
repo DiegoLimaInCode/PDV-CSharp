@@ -1,4 +1,5 @@
-﻿using PDVCSharp.Domain.Entities;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PDVCSharp.Domain.Entities;
 using PDVCSharp.WPF.Contexts;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,7 +17,7 @@ namespace PDVCSharp.WPF.Sections.Caixa
             // Se já existe uma venda em andamento, redireciona para a tela de Venda
             if (Master.Venda != null)
             {
-                var telaVenda = new Venda();
+                var telaVenda = App.ServiceProvider.GetRequiredService<Venda>();
                 var containerPai = this.Parent as Panel;
 
                 if (containerPai != null)

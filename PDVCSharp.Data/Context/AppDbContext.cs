@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using PDVCSharp.Data.Repositories;
 using PDVCSharp.Domain.Entities;
 
 namespace PDVCSharp.Data.Context
@@ -33,6 +34,12 @@ namespace PDVCSharp.Data.Context
             // Cria o banco de dados e as tabelas se ainda não existirem
             // ?? DICA: Em produção, prefira usar Migrations (dotnet ef migrations)
             context.Database.EnsureCreated();
+
+            if (!context.Produtos.Any()) {
+                var repo = new ProductRepository(context);
+                repo.CarregarProdutos();
+
+            }
 
             // Se não existir nenhum usuário, cria o usuário padrão "admin"
             if (!context.Usuarios.Any())
