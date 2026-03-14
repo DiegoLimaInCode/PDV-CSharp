@@ -18,21 +18,10 @@ namespace PDVCSharp.Data.Repositories
 
         }
 
-        public override IQueryable<Produto> GetAll()
-        {
-            //var productsFile = File.ReadAllText("Produtos.json");
-            //var produtos = JsonSerializer.Deserialize<List<Produto>>(productsFile);
 
-
-            //return produtos.AsQueryable();    
-            return _dbSet.Where(p => !p.IsDeleted); // Retorna apenas os produtos que não estão marcados como excluídos);
-
-        }
-
-        public void CarregarProdutos()
-        {
-            try
-            {
+      
+        public void CarregarProdutos() {
+            try {
                 if (File.Exists("Produtos.json")) // Verifica se o arquivo existe
                 {
                     var productsFile = File.ReadAllText("Produtos.json"); // Lê todo o conteúdo

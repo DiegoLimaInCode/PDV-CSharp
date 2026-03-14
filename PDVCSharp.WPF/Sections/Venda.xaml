@@ -85,15 +85,66 @@
         <Grid Margin="15,90,15,15">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="47" />
+                <ColumnDefinition Width="153" />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="4,19,0,0"
+                    FontSize="17"
+                    FontWeight="SemiBold"
+                    Foreground="Black"
+                    Text="Código do produto" />
+
+
+                <TextBox
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Margin="10,5,250,0"
+                    Padding="15"
+                    BorderBrush="#FF9E9E9E"
+                    BorderThickness="1.5"
+                    FontSize="14"
+                    GotFocus="TextBox_GotFocus"
+                    KeyDown="TextBox_KeyDown"
+                    LostFocus="TextBox_LostFocus">
+                    <TextBox.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="4" />
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+
+            </Grid>
+
+
 
             <!--  Lista de Produtos  -->
             <ScrollViewer
+                Grid.RowSpan="2"
                 Grid.Column="0"
-                Margin="0,0,15,0"
+                Margin="0,65,0,0"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto">
+
 
                 <ListBox
                     x:Name="LstProdutos"
@@ -104,7 +155,7 @@
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="Margin" Value="0,0,0,8" />
+                            <Setter Property="Margin" Value="0,8,0,0" />
                             <Setter Property="Padding" Value="0" />
                             <Setter Property="Background" Value="Transparent" />
                             <Setter Property="BorderThickness" Value="0" />
@@ -349,9 +400,13 @@
                 </ListBox>
             </ScrollViewer>
 
+
             <!--  Painel Lateral Direito - Total e Botões  -->
             <Border
+                Grid.Row="1"
                 Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Margin="0,20,0,0"
                 Padding="15"
                 Background="White"
                 BorderBrush="#D0D0D0"

@@ -48,6 +48,7 @@ namespace PDVCSharp.Application.Extensions
         {
             // Como AuthService depende de IUserRepository, o contêiner injeta automaticamente
             services.AddScoped<AuthService>();
+            services.AddScoped<VendaService>();
             return services;
         }
     }
