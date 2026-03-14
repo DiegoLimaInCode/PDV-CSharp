@@ -1,26 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using PDVCSharp.Data.Repositories;
 using PDVCSharp.Domain.Entities;
 using PDVCSharp.Domain.Interfaces;
 using PDVCSharp.WPF.Contexts;
-using System;
-using System.Collections.Generic;
+using PDVCSharp.WPF.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace PDVCSharp.WPF.Sections
 {
@@ -29,9 +18,9 @@ namespace PDVCSharp.WPF.Sections
     public partial class Venda : UserControl, INotifyPropertyChanged
     {
         private readonly IProductRepository _productRepository;
+        private readonly IEstoqueRepository _estoqueRepository;
 
         // ObservableCollection = lista que NOTIFICA a tela quando itens são adicionados/removidos
-        // 💡 DICA: Se usasse List<> normal, a tela não saberia que a lista mudou.
         private ObservableCollection<ProdutoVenda> _produtos;
 
         public ObservableCollection<ProdutoVenda> Produtos
@@ -50,7 +39,8 @@ namespace PDVCSharp.WPF.Sections
             InitializeComponent();
 
             _productRepository = App.ServiceProvider.GetRequiredService<IProductRepository>();
-      
+            _estoqueRepository = App.ServiceProvider.GetRequiredService<IEstoqueRepository>();
+
             Produtos = new ObservableCollection<ProdutoVenda>(); // Define a fonte de dados da lista na tela
             LstProdutos.ItemsSource = Produtos;
             // Quando a coleção mudar (add/remove), recalcula os totais
@@ -59,24 +49,26 @@ namespace PDVCSharp.WPF.Sections
             CarregarProdutosDaBase();
         }
 
-        private void CarregarProdutosDaBase() {
+        private void CarregarProdutosDaBase()
+        {
             var produtosBanco = _productRepository.GetAll();
 
-            foreach (var produto in produtosBanco) {
-                Produtos.Add(new ProdutoVenda {
+            foreach (var produto in produtosBanco)
+            {
+                Produtos.Add(new ProdutoVenda
+                {
+                    Id = produto.Id,
                     Name = produto.Name,
                     Price = produto.Price,
-                    Quantity = produto.Quantity,
-                    ImagePath = produto.ImagePath
+                    Quantity = 1,
+                    EstoqueDisponivel = produto.Quantity,
+                    ImagePath = produto.ImagePath ?? string.Empty
                 });
             }
         }
 
 
-        public Produto? BuscarProduto(string codigo)
-        {
-            return null;
-        }
+        public Produto? BuscarProduto(string codigo) => null;
 
         // Botão "−" — diminui a quantidade do produto
         // 💡 DICA: button.Tag contém o produto associado (definido no XAML via Tag="{Binding}")
@@ -110,8 +102,16 @@ namespace PDVCSharp.WPF.Sections
         {
             if (sender is Button button && button.Tag is ProdutoVenda produto)
             {
-                produto.Quantity += 1;
-                AtualizarTotais();
+                if (produto.Quantity < produto.EstoqueDisponivel)
+                {
+                    produto.Quantity += 1;
+                    AtualizarTotais();
+                }
+                else
+                {
+                    MessageBox.Show($"Estoque máximo de '{produto.Name}' é {produto.EstoqueDisponivel} unidades.",
+                        "Estoque insuficiente", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
 
@@ -146,13 +146,56 @@ namespace PDVCSharp.WPF.Sections
             TxtTotal.Text = $"R$ {(subtotal - desconto):F2}";
         }
 
-        // Botão "Finalizar Venda" — navega para a tela de finalização
-        private void Button_Click(object sender, RoutedEventArgs e)
+        // Botão "Finalizar Venda" — valida estoque, debita e navega para VendaFinal
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             if (!Produtos.Any())
             {
                 MessageBox.Show("Adicione produtos à venda antes de finalizar.",
                     "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var itensVendidos = Produtos
+                .Select(p => new IProductRepository.ProdutoVendido(p.Name, p.Quantity))
+                .ToList();
+
+            bool estoqueOk = await _productRepository.ValidarEstoque(itensVendidos);
+
+            if (!estoqueOk)
+            {
+                var produtosSemEstoque = Produtos
+                    .Where(p => p.Quantity > GetQuantidadeBanco(p.Name))
+                    .Select(p => p.Name)
+                    .ToList();
+
+                MessageBox.Show(
+                    $"Estoque insuficiente para: {string.Join(", ", produtosSemEstoque)}\n\n" +
+                    "Reduza a quantidade ou remova esses produtos da venda.",
+                    "Estoque insuficiente",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                foreach (var item in Produtos)
+                {
+                    await _estoqueRepository.RegistrarSaida(
+                        produtoId: item.Id,
+                        quantidade: item.Quantity,
+                        motivo: "Venda"
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Erro ao atualizar estoque: {ex.Message}",
+                    "Erro",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
                 return;
             }
 
@@ -164,6 +207,14 @@ namespace PDVCSharp.WPF.Sections
                 containerPai.Children.Clear();
                 containerPai.Children.Add(telaVendaFinal);
             }
+        }
+
+        private double GetQuantidadeBanco(string nomeProduto)
+        {
+            return _productRepository.GetAll()
+                .Where(p => p.Name == nomeProduto)
+                .Select(p => p.Quantity)
+                .FirstOrDefault();
         }
 
         // Botão "Cancelar Venda" — volta para a tela de Caixa Livre
@@ -190,71 +241,6 @@ namespace PDVCSharp.WPF.Sections
                 telaCaixaLivre.Visibility = Visibility.Visible;
             }
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
-
-    // ProdutoVenda = versão do Produto usada na tela de venda (com quantidade editável)
-    // Implementa INotifyPropertyChanged para que a tela atualize ao mudar preço/quantidade
-    // 💡 DICA: Separada de Produto (Domain) porque a tela precisa de funcionalidades extras.
-    public class ProdutoVenda : INotifyPropertyChanged
-    {
-        // Campos privados (backing fields) — armazenam o valor real
-        private string _name = string.Empty;
-        private decimal _price;
-        private double _quantity;
-        private string _imagePath = string.Empty;
-         
-        public string ImagePath
-        {
-            get => _imagePath;
-            set
-            {
-                _imagePath = value;
-                OnPropertyChanged();
-            }
-        }
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                _name = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public decimal Price
-        {
-            get => _price;
-            set
-            {
-                _price = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(Total));
-            }
-        }
-
-        public double Quantity
-        {
-            get => _quantity;
-            set
-            {
-                _quantity = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(Total));
-            }
-        }
-
-        // Propriedade calculada: Total = Preço × Quantidade
-        // 💡 DICA: "=>" = propriedade somente-leitura calculada sob demanda.
-        //    (decimal)Quantity = converte double para decimal (tipos diferentes)
-        public decimal Total => Price * (decimal)Quantity;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
