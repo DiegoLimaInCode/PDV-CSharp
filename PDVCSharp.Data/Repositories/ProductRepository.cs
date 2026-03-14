@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using PDVCSharp.Data.Context;
 using PDVCSharp.Domain.Entities;
 using PDVCSharp.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json;
 
 namespace PDVCSharp.Data.Repositories

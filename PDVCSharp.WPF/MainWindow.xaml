@@ -1,22 +1,24 @@
-﻿<Window
-    x:Class="PDVCSharp.WPF.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:PDVCSharp.WPF"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sections="clr-namespace:PDVCSharp.WPF.Sections"
-    xmlns:sectionsCaixa="clr-namespace:PDVCSharp.WPF.Sections.Caixa"
-    Title="MainWindow"
-    Width="791"
-    Height="457"
-    mc:Ignorable="d">
+﻿    <Window
+ 
+        Icon="Components\Ico\gemini-2.ico"
+        x:Class="PDVCSharp.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:PDVCSharp.WPF"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sections="clr-namespace:PDVCSharp.WPF.Sections"
+        xmlns:sectionsCaixa="clr-namespace:PDVCSharp.WPF.Sections.Caixa"
+        Title="MainWindow"
+        Width="791"
+        Height="457"
+        mc:Ignorable="d">
 
-    <Grid x:Name="MainContainer">
-        <sections:Login Visibility="Visible" />
-        <sections:Abertura Visibility="Collapsed" />
-        <sectionsCaixa:CaixaLivre Visibility="Collapsed" />
-        <sections:Venda Visibility="Collapsed" />
-    </Grid>
+        <Grid x:Name="MainContainer">
+            <sections:Login Visibility="Visible" />
+            <sections:Abertura Visibility="Collapsed" />
+            <sectionsCaixa:CaixaLivre Visibility="Collapsed" />
+            <sections:Venda Visibility="Collapsed" />
+        </Grid>
 
-</Window>
+    </Window>
