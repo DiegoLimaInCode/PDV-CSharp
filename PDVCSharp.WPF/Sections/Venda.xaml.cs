@@ -22,6 +22,7 @@ namespace PDVCSharp.WPF.Sections {
     // INotifyPropertyChanged = permite atualizar a tela via Data Binding.
     public partial class Venda : UserControl, INotifyPropertyChanged {
         private readonly IProductRepository _productRepository;
+        private readonly IEstoqueRepository _estoqueRepository;
         private readonly VendaService _vendaService;
 
         // ObservableCollection = lista que NOTIFICA a tela quando itens são adicionados/removidos
@@ -36,10 +37,10 @@ namespace PDVCSharp.WPF.Sections {
             }
         }
 
-       
+
 
         public Venda(VendaService vendaService) : this() {
-           
+
 
             _vendaService = vendaService;
         }
@@ -48,6 +49,7 @@ namespace PDVCSharp.WPF.Sections {
             InitializeComponent();
 
             _productRepository = App.ServiceProvider.GetRequiredService<IProductRepository>();
+            _estoqueRepository = App.ServiceProvider.GetRequiredService<IEstoqueRepository>();
             _vendaService = App.ServiceProvider.GetRequiredService<VendaService>();
 
             Produtos = new ObservableCollection<ProdutoVenda>(); // Define a fonte de dados da lista na tela
@@ -138,9 +140,6 @@ namespace PDVCSharp.WPF.Sections {
             TxtTotal.Text = $"R$ {(subtotal - desconto):F2}";
         }
 
-        // Botão "Finalizar Venda" — navega para a tela de finalização
-        private void Button_Click(object sender, RoutedEventArgs e) {
-            if (!Produtos.Any()) {
         // Botão "Finalizar Venda" — valida estoque, debita e navega para VendaFinal
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -297,9 +296,11 @@ namespace PDVCSharp.WPF.Sections {
             }
             else {
                 var novoProdutoVenda = new ProdutoVenda {
+                    Id = produto.Id,
                     Name = produto.Name,
                     Price = produto.Price,
                     Quantity = 1,
+                    EstoqueDisponivel = produto.Quantity,
                     ImagePath = produto.ImagePath
                 };
                 Produtos.Add(novoProdutoVenda);
@@ -319,6 +320,9 @@ namespace PDVCSharp.WPF.Sections {
         private decimal _price;
         private double _quantity;
         private string _imagePath = string.Empty;
+
+        public Guid Id { get; set; }
+        public double EstoqueDisponivel { get; set; }
 
         public string ImagePath {
             get => _imagePath;

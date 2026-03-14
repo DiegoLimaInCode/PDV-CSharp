@@ -151,7 +151,7 @@
             FontSize="10"
             Foreground="White"
             IsHitTestVisible="False"
-            Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm:ss}}"
+            Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm}}"
             TextAlignment="Right" />
         <TextBlock
             Margin="62,66,595,358"
