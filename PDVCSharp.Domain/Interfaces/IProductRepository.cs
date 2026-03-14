@@ -5,5 +5,6 @@ using System.Text;
 
 namespace PDVCSharp.Domain.Interfaces {
   public interface IProductRepository : IRepository<Produto> {
+
     }
 }
