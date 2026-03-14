@@ -20,7 +20,7 @@ public sealed class VendaViewModel : BaseViewModel
 
     // Nome do operador para exibição na tela de venda
     public string OperatorName
-        => string.IsNullOrWhiteSpace(Master.Usuario.OperatorName)
-            ? "Operador"
-            : Master.Usuario.OperatorName;
+        => Master.Usuario != null && !string.IsNullOrWhiteSpace(Master.Usuario.OperatorName)
+            ? Master.Usuario.OperatorName
+            : "Operador";
 }

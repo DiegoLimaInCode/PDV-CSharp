@@ -37,6 +37,7 @@ namespace PDVCSharp.Application.Extensions
             // 💡 DICA: Scoped = uma nova instância por escopo de DI.
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IEstoqueRepository, EstoqueRepository>();
             return services;
 
 

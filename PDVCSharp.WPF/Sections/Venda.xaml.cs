@@ -25,7 +25,6 @@ namespace PDVCSharp.WPF.Sections {
         private readonly VendaService _vendaService;
 
         // ObservableCollection = lista que NOTIFICA a tela quando itens são adicionados/removidos
-        // 💡 DICA: Se usasse List<> normal, a tela não saberia que a lista mudou.
         private ObservableCollection<ProdutoVenda> _produtos;
 
         public ObservableCollection<ProdutoVenda> Produtos {
@@ -59,15 +58,20 @@ namespace PDVCSharp.WPF.Sections {
             CarregarProdutosDaBase();
         }
 
-        private void CarregarProdutosDaBase() {
+        private void CarregarProdutosDaBase()
+        {
             var produtosBanco = _productRepository.GetAll();
 
-            foreach (var produto in produtosBanco) {
-                Produtos.Add(new ProdutoVenda {
+            foreach (var produto in produtosBanco)
+            {
+                Produtos.Add(new ProdutoVenda
+                {
+                    Id = produto.Id,
                     Name = produto.Name,
                     Price = produto.Price,
-                    Quantity = produto.Quantity,
-                    ImagePath = produto.ImagePath
+                    Quantity = 1,
+                    EstoqueDisponivel = produto.Quantity,
+                    ImagePath = produto.ImagePath ?? string.Empty
                 });
             }
         }
@@ -137,8 +141,56 @@ namespace PDVCSharp.WPF.Sections {
         // Botão "Finalizar Venda" — navega para a tela de finalização
         private void Button_Click(object sender, RoutedEventArgs e) {
             if (!Produtos.Any()) {
+        // Botão "Finalizar Venda" — valida estoque, debita e navega para VendaFinal
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (!Produtos.Any())
+            {
                 MessageBox.Show("Adicione produtos à venda antes de finalizar.",
                     "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var itensVendidos = Produtos
+                .Select(p => new IProductRepository.ProdutoVendido(p.Name, p.Quantity))
+                .ToList();
+
+            bool estoqueOk = await _productRepository.ValidarEstoque(itensVendidos);
+
+            if (!estoqueOk)
+            {
+                var produtosSemEstoque = Produtos
+                    .Where(p => p.Quantity > GetQuantidadeBanco(p.Name))
+                    .Select(p => p.Name)
+                    .ToList();
+
+                MessageBox.Show(
+                    $"Estoque insuficiente para: {string.Join(", ", produtosSemEstoque)}\n\n" +
+                    "Reduza a quantidade ou remova esses produtos da venda.",
+                    "Estoque insuficiente",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                foreach (var item in Produtos)
+                {
+                    await _estoqueRepository.RegistrarSaida(
+                        produtoId: item.Id,
+                        quantidade: item.Quantity,
+                        motivo: "Venda"
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Erro ao atualizar estoque: {ex.Message}",
+                    "Erro",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
                 return;
             }
 
@@ -149,6 +201,14 @@ namespace PDVCSharp.WPF.Sections {
                 containerPai.Children.Clear();
                 containerPai.Children.Add(telaVendaFinal);
             }
+        }
+
+        private double GetQuantidadeBanco(string nomeProduto)
+        {
+            return _productRepository.GetAll()
+                .Where(p => p.Name == nomeProduto)
+                .Select(p => p.Quantity)
+                .FirstOrDefault();
         }
 
         // Botão "Cancelar Venda" — volta para a tela de Caixa Livre
