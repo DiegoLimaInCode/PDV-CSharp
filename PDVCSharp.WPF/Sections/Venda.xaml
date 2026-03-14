@@ -95,12 +95,12 @@
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto">
 
-                <ListBox 
+                <ListBox
                     x:Name="LstProdutos"
-                    BorderThickness="0"
+                    d:ItemsSource="{d:SampleData ItemCount=8}"
                     Background="Transparent"
-                    ItemsSource="{Binding Produtos}"
-                    d:ItemsSource="{d:SampleData ItemCount=8}">
+                    BorderThickness="0"
+                    ItemsSource="{Binding Produtos}">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -324,9 +324,7 @@
                                                 <Setter Property="Template">
                                                     <Setter.Value>
                                                         <ControlTemplate TargetType="Button">
-                                                            <Border
-                                                                Background="{TemplateBinding Background}"
-                                                                CornerRadius="4">
+                                                            <Border Background="{TemplateBinding Background}" CornerRadius="4">
                                                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             </Border>
                                                         </ControlTemplate>
@@ -441,9 +439,7 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
-                                                <Border
-                                                    Background="{TemplateBinding Background}"
-                                                    CornerRadius="5">
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="5">
                                                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                 </Border>
                                             </ControlTemplate>
@@ -477,9 +473,7 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
-                                                <Border
-                                                    Background="{TemplateBinding Background}"
-                                                    CornerRadius="5">
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="5">
                                                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                 </Border>
                                             </ControlTemplate>

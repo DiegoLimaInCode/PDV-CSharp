@@ -13,6 +13,7 @@ namespace PDVCSharp.Data.Context
     {
         public DbSet<Produto> Produtos { get; set; }   // Tabela "Produtos" no MySQL
         public DbSet<Usuario> Usuarios { get; set; }   // Tabela "Usuarios" no MySQL
+        public DbSet<MovimentacaoEstoque> MovimentacoesEstoque { get; set; } // Tabela "MovimentacoesEstoque" no MySQL
 
         // Construtor que recebe as opções de configuração (connection string, provider, etc.)
         // O ": base(options)" repassa as opções para a classe pai (DbContext)
@@ -72,6 +73,13 @@ namespace PDVCSharp.Data.Context
                 entity.HasKey(u => u.Id);                                        // Chave primária
                 entity.Property(u => u.Login).IsRequired().HasMaxLength(100);    // Obrigatório
                 entity.Property(u => u.Password).IsRequired().HasMaxLength(200); // Obrigatório
+            });
+
+            modelBuilder.Entity<MovimentacaoEstoque>(entity =>
+            {
+                entity.HasKey(m => m.Id);
+                entity.Property(m => m.ProdutoNome).IsRequired().HasMaxLength(200);
+                entity.Property(m => m.Motivo).HasMaxLength(500);
             });
         }
     }

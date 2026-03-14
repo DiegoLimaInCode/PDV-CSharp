@@ -84,14 +84,14 @@
 
                             <TextBox
                                 x:Name="PlaceHolder_ValueBox"
-                                FontSize="18"
-                                FontWeight="Bold"
                                 Padding="10,0"
-                                VerticalContentAlignment="Center"
                                 HorizontalContentAlignment="Left"
+                                VerticalContentAlignment="Center"
                                 Background="Transparent"
                                 BorderThickness="0"
                                 CaretBrush="Black"
+                                FontSize="18"
+                                FontWeight="Bold"
                                 Foreground="Transparent"
                                 TextChanged="PlaceHolder_ValueBox_TextChanged" />
 
