@@ -14,6 +14,8 @@ namespace PDVCSharp.Data.Context
         public DbSet<Produto> Produtos { get; set; }   // Tabela "Produtos" no MySQL
         public DbSet<Usuario> Usuarios { get; set; }   // Tabela "Usuarios" no MySQL
         public DbSet<MovimentacaoEstoque> MovimentacoesEstoque { get; set; } // Tabela "MovimentacoesEstoque" no MySQL
+        public DbSet<CaixaSessao> CaixaSessoes { get; set; }
+        public DbSet<MovimentoCaixa> MovimentosCaixa { get; set; }
 
         // Construtor que recebe as opções de configuração (connection string, provider, etc.)
         // O ": base(options)" repassa as opções para a classe pai (DbContext)
@@ -80,6 +82,28 @@ namespace PDVCSharp.Data.Context
                 entity.HasKey(m => m.Id);
                 entity.Property(m => m.ProdutoNome).IsRequired().HasMaxLength(200);
                 entity.Property(m => m.Motivo).HasMaxLength(500);
+            });
+
+            modelBuilder.Entity<CaixaSessao>(entity =>
+            {
+                entity.HasKey(c => c.Id);
+                entity.Property(c => c.ValorAbertura).HasColumnType("decimal(18,2)");
+                entity.HasOne(c => c.Usuario)
+                      .WithMany()
+                      .HasForeignKey(c => c.UsuarioId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<MovimentoCaixa>(entity =>
+            {
+                entity.HasKey(m => m.Id);
+                entity.Property(m => m.Valor).HasColumnType("decimal(18,2)");
+                entity.Property(m => m.Observacao).HasMaxLength(500);
+
+                entity.HasOne(m => m.CaixaSessao)
+                      .WithMany(c => c.Movimentos)
+                      .HasForeignKey(m => m.CaixaSessaoId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }
