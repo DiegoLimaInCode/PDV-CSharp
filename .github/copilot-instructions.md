@@ -5,4 +5,5 @@
 - Em alterações futuras de banco, não editar arquivos de migration manualmente; deixar o Entity Framework gerar e manter migrations automaticamente.
 
 ## Learning Preferences
-- O usuário está aprendendo conceitos de OOP em C# (herança, interfaces, override). Prefere explicações guiadas e sem código pronto, especialmente em conceitos e implementação C#/.NET. Gosta de ser guiado para resolver sozinho.
+- O usuário está aprendendo conceitos de OOP em C# (herança, interfaces, override). Prefere explicações com analogias simples e sem código pronto — gosta de ser guiado para resolver sozinho.
+- O usuário não quer código pronto — prefere ser guiado para resolver sozinho. Quer respostas curtas, resumidas e fáceis de entender. Só fornecer código se ele pedir explicitamente.

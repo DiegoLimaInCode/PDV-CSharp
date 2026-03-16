@@ -107,8 +107,10 @@
                                 MinWidth="250"
                                 HorizontalAlignment="Stretch"
                                 VerticalContentAlignment="Center"
-                                FontSize="13">
+                                FontSize="13"
+                                SelectionChanged="CmbCliente_SelectionChanged">
                                 <ComboBoxItem Content="CONSUMIDOR PADRÃO" IsSelected="True" />
+                                <ComboBoxItem Content="VIP" />
                             </ComboBox>
                         </StackPanel>
                     </StackPanel>
@@ -203,17 +205,11 @@
                                     FontSize="24"
                                     FontWeight="Bold"
                                     Text="R$" />
-                                <TextBox
+                                <TextBlock
                                     x:Name="TxtTotal"
-                                    Height="35"
-                                    HorizontalAlignment="Stretch"
-                                    HorizontalContentAlignment="Right"
-                                    VerticalContentAlignment="Center"
-                                    BorderThickness="0"
+                                    VerticalAlignment="Center"
                                     FontSize="24"
                                     FontWeight="Bold"
-                                    PreviewKeyDown="ValorTextBox_PreviewKeyDown"
-                                    PreviewTextInput="ValorTextBox_PreviewTextInput"
                                     Text="0,00" />
                             </StackPanel>
                         </Border>
@@ -346,11 +342,17 @@
                                     Text="TOTAL RECEBIDO" />
                             </Border>
                             <Border Padding="10" Background="White">
-                                <TextBlock
+                                <TextBox
                                     x:Name="TxtTotalRecebido"
-                                    HorizontalAlignment="Right"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Right"
+                                    VerticalContentAlignment="Center"
+                                    BorderThickness="0"
                                     FontSize="28"
                                     FontWeight="Bold"
+                                    PreviewKeyDown="ValorTextBox_PreviewKeyDown"
+                                    PreviewTextInput="ValorTextBox_PreviewTextInput"
+                                    TextChanged="TxtTotalRecebido_TextChanged"
                                     Text="0,00" />
                             </Border>
                         </StackPanel>
@@ -385,7 +387,8 @@
                     Cursor="Hand"
                     FontSize="24"
                     FontWeight="Bold"
-                    Foreground="White">
+                    Foreground="White"
+                    Click="BtnFinalizar_Click">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border

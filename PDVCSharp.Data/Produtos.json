@@ -2,37 +2,37 @@
   {
     "name": "Maçã",
     "price": 6.90,
-    "quantity": 1.000,
+    "quantity": 50,
     "imagePath": "pack://application:,,,/Components/Photos/maca.jpg"
   },
   {
     "name": "Pera",
     "price": 8.50,
-    "quantity": 1.000,
+    "quantity": 50,
     "imagePath": "pack://application:,,,/Components/Photos/pera.jpg"
   },
   {
     "name": "Banana",
     "price": 4.90,
-    "quantity": 1.000,
+    "quantity": 50,
     "imagePath": "pack://application:,,,/Components/Photos/banana.jpg"
   },
   {
     "name": "Morango",
     "price": 13.90,
-    "quantity": 1.000,
+    "quantity": 50,
     "imagePath": "pack://application:,,,/Components/Photos/morango.jpg"
   },
   {
     "name": "Abacaxi",
     "price": 6.50,
-    "quantity": 1.000,
+    "quantity": 50,
     "imagePath": "pack://application:,,,/Components/Photos/abacaxi.jpg"
   },
   {
     "name": "Uva",
     "price": 12.90,
-    "quantity": 1.000,
+    "quantity": 50,
     "imagePath": "pack://application:,,,/Components/Photos/uva.jpg"
   }
 ]

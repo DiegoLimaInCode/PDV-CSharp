@@ -151,7 +151,7 @@ namespace PDVCSharp.WPF.Sections {
             }
 
             var itensVendidos = Produtos
-                .Select(p => new IProductRepository.ProdutoVendido(p.Name, p.Quantity))
+                .Select(p => new ProdutoVendido(p.Name, p.Quantity))
                 .ToList();
 
             bool estoqueOk = await _productRepository.ValidarEstoque(itensVendidos);
@@ -193,7 +193,7 @@ namespace PDVCSharp.WPF.Sections {
                 return;
             }
 
-            var telaVendaFinal = new VendaFinal();
+            var telaVendaFinal = new VendaFinal(Produtos);
             var containerPai = this.Parent as Panel;
 
             if (containerPai != null) {
@@ -316,10 +316,28 @@ namespace PDVCSharp.WPF.Sections {
     // 💡 DICA: Separada de Produto (Domain) porque a tela precisa de funcionalidades extras.
     public class ProdutoVenda : INotifyPropertyChanged {
         // Campos privados (backing fields) — armazenam o valor real
+        private Guid _id;
         private string _name = string.Empty;
         private decimal _price;
         private double _quantity;
         private string _imagePath = string.Empty;
+        private double _estoqueDisponivel;
+
+        public Guid Id {
+            get => _id;
+            set {
+                _id = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double EstoqueDisponivel {
+            get => _estoqueDisponivel;
+            set {
+                _estoqueDisponivel = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Guid Id { get; set; }
         public double EstoqueDisponivel { get; set; }

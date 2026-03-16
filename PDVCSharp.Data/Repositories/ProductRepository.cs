@@ -26,12 +26,12 @@ namespace PDVCSharp.Data.Repositories
                         foreach (var produto in produtosBase)
                         {
                             _context.Add(new Produto
-                            {
-                                Name = produto.Name,
-                                Price = produto.Price,
-                                Quantity = 1,
-                                ImagePath = produto.ImagePath
-                            });
+                                {
+                                    Name = produto.Name,
+                                    Price = produto.Price,
+                                    Quantity = produto.Quantity,
+                                    ImagePath = produto.ImagePath
+                                });
                             _context.SaveChanges();
                         }
                     }
@@ -43,7 +43,7 @@ namespace PDVCSharp.Data.Repositories
             }
         }
 
-        public async Task<bool> ValidarEstoque(IEnumerable<IProductRepository.ProdutoVendido> itensVendidos)
+        public async Task<bool> ValidarEstoque(IEnumerable<ProdutoVendido> itensVendidos)
         {
             foreach (var item in itensVendidos)
             {
@@ -56,7 +56,7 @@ namespace PDVCSharp.Data.Repositories
             }
             return true;
         }
-        public async Task BaixarEstoque(IEnumerable<IProductRepository.ProdutoVendido> itensVendidos)
+        public async Task BaixarEstoque(IEnumerable<ProdutoVendido> itensVendidos)
         {
             foreach (var item in itensVendidos)
             {

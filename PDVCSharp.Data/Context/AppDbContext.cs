@@ -7,12 +7,14 @@ namespace PDVCSharp.Data.Context
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Produto> Produtos { get; set; }
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<MovimentacaoEstoque> MovimentacoesEstoque { get; set; }
-        public DbSet<CaixaSessao> CaixaSessoes { get; set; }
-        public DbSet<MovimentoCaixa> MovimentosCaixa { get; set; }
+        public DbSet<Produto> Produtos { get; set; }   // Tabela "Produtos" no MySQL
+        public DbSet<Usuario> Usuarios { get; set; }   // Tabela "Usuarios" no MySQL
+        public DbSet<MovimentacaoEstoque> MovimentacoesEstoque { get; set; } // Tabela "MovimentacoesEstoque" no MySQL
+        public DbSet<Venda> Vendas { get; set; }
 
+        public DbSet<ItemVenda> ItemVendas { get; set; } 
+        // Construtor que recebe as op��es de configura��o (connection string, provider, etc.)
+        // O ": base(options)" repassa as op��es para a classe pai (DbContext)
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
