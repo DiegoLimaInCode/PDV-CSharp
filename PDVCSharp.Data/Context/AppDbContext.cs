@@ -14,7 +14,9 @@ namespace PDVCSharp.Data.Context
         public DbSet<Produto> Produtos { get; set; }   // Tabela "Produtos" no MySQL
         public DbSet<Usuario> Usuarios { get; set; }   // Tabela "Usuarios" no MySQL
         public DbSet<MovimentacaoEstoque> MovimentacoesEstoque { get; set; } // Tabela "MovimentacoesEstoque" no MySQL
+        public DbSet<Venda> Vendas { get; set; }
 
+        public DbSet<ItemVenda> ItemVendas { get; set; } 
         // Construtor que recebe as opções de configuração (connection string, provider, etc.)
         // O ": base(options)" repassa as opções para a classe pai (DbContext)
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)

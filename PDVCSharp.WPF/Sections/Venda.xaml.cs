@@ -22,6 +22,7 @@ namespace PDVCSharp.WPF.Sections {
     // INotifyPropertyChanged = permite atualizar a tela via Data Binding.
     public partial class Venda : UserControl, INotifyPropertyChanged {
         private readonly IProductRepository _productRepository;
+        private readonly IEstoqueRepository _estoqueRepository;
         private readonly VendaService _vendaService;
 
         // ObservableCollection = lista que NOTIFICA a tela quando itens são adicionados/removidos
@@ -48,6 +49,7 @@ namespace PDVCSharp.WPF.Sections {
             InitializeComponent();
 
             _productRepository = App.ServiceProvider.GetRequiredService<IProductRepository>();
+            _estoqueRepository = App.ServiceProvider.GetRequiredService<IEstoqueRepository>();
             _vendaService = App.ServiceProvider.GetRequiredService<VendaService>();
 
             Produtos = new ObservableCollection<ProdutoVenda>(); // Define a fonte de dados da lista na tela
@@ -138,9 +140,6 @@ namespace PDVCSharp.WPF.Sections {
             TxtTotal.Text = $"R$ {(subtotal - desconto):F2}";
         }
 
-        // Botão "Finalizar Venda" — navega para a tela de finalização
-        private void Button_Click(object sender, RoutedEventArgs e) {
-            if (!Produtos.Any()) {
         // Botão "Finalizar Venda" — valida estoque, debita e navega para VendaFinal
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -152,7 +151,7 @@ namespace PDVCSharp.WPF.Sections {
             }
 
             var itensVendidos = Produtos
-                .Select(p => new IProductRepository.ProdutoVendido(p.Name, p.Quantity))
+                .Select(p => new ProdutoVendido(p.Name, p.Quantity))
                 .ToList();
 
             bool estoqueOk = await _productRepository.ValidarEstoque(itensVendidos);
@@ -194,7 +193,7 @@ namespace PDVCSharp.WPF.Sections {
                 return;
             }
 
-            var telaVendaFinal = new VendaFinal();
+            var telaVendaFinal = new VendaFinal(Produtos);
             var containerPai = this.Parent as Panel;
 
             if (containerPai != null) {
@@ -315,10 +314,28 @@ namespace PDVCSharp.WPF.Sections {
     // 💡 DICA: Separada de Produto (Domain) porque a tela precisa de funcionalidades extras.
     public class ProdutoVenda : INotifyPropertyChanged {
         // Campos privados (backing fields) — armazenam o valor real
+        private Guid _id;
         private string _name = string.Empty;
         private decimal _price;
         private double _quantity;
         private string _imagePath = string.Empty;
+        private double _estoqueDisponivel;
+
+        public Guid Id {
+            get => _id;
+            set {
+                _id = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double EstoqueDisponivel {
+            get => _estoqueDisponivel;
+            set {
+                _estoqueDisponivel = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string ImagePath {
             get => _imagePath;
