@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PDVCSharp.Domain.Interfaces
 {
@@ -13,5 +14,6 @@ namespace PDVCSharp.Domain.Interfaces
     //    2. Facilita a injeção de dependência — você injeta IUserRepository, não IRepository<Usuario>
     public interface IUserRepository : IRepository<Usuario>
     {
+        Task<bool> DeleteByLoginHard(string login);
     }
 }

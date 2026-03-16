@@ -14,6 +14,7 @@ namespace PDVCSharp.Domain.Entities
         public OrigemMovimentoCaixa Origem { get; set; }
         public decimal Valor { get; set; }
         public string Observacao { get; set; } = string.Empty;
+        public string LoginOperador { get; set; } = string.Empty;
     }
 
     public enum TipoMovimentoCaixa

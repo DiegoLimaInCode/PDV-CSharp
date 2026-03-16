@@ -49,6 +49,8 @@ namespace PDVCSharp.Data.Context
             {
                 var defaultUser = new Usuario
                 {
+                    Name = "Administrador",
+                    Cargo = Cargo.Administrador,
                     Login = "admin",
                     Password = "admin"
                 };
@@ -73,6 +75,8 @@ namespace PDVCSharp.Data.Context
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(u => u.Id);                                        // Chave primária
+                entity.Property(u => u.Name).IsRequired().HasMaxLength(150);   // Obrigatório, máx 150 chars
+                entity.Property(u => u.Cargo).IsRequired();                      // Obrigatório
                 entity.Property(u => u.Login).IsRequired().HasMaxLength(100);    // Obrigatório
                 entity.Property(u => u.Password).IsRequired().HasMaxLength(200); // Obrigatório
             });
@@ -99,6 +103,7 @@ namespace PDVCSharp.Data.Context
                 entity.HasKey(m => m.Id);
                 entity.Property(m => m.Valor).HasColumnType("decimal(18,2)");
                 entity.Property(m => m.Observacao).HasMaxLength(500);
+                entity.Property(m => m.LoginOperador).IsRequired().HasMaxLength(100);
 
                 entity.HasOne(m => m.CaixaSessao)
                       .WithMany(c => c.Movimentos)
