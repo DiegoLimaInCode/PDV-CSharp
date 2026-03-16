@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PDVCSharp.Data.Context;
 
@@ -11,9 +12,11 @@ using PDVCSharp.Data.Context;
 namespace PDVCSharp.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260315231106_AddLoginOperadorToMovimentoCaixa")]
+    partial class AddLoginOperadorToMovimentoCaixa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace PDVCSharp.Data.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("PDVCSharp.Domain.Entities.ItemVenda", b =>
+            modelBuilder.Entity("PDVCSharp.Domain.Entities.CaixaSessao", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,31 +34,29 @@ namespace PDVCSharp.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<DateTime>("DataHoraAbertura")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<decimal>("PrecoUnitario")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<Guid>("ProdutoId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("Quantidade")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsOpen")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("VendaId")
+                    b.Property<Guid>("UsuarioId")
                         .HasColumnType("char(36)");
+
+                    b.Property<decimal>("ValorAbertura")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProdutoId");
+                    b.HasIndex("UsuarioId");
 
-                    b.HasIndex("VendaId");
-
-                    b.ToTable("ItemVendas");
+                    b.ToTable("CaixaSessoes");
                 });
 
             modelBuilder.Entity("PDVCSharp.Domain.Entities.MovimentacaoEstoque", b =>
@@ -226,69 +227,31 @@ namespace PDVCSharp.Data.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("PDVCSharp.Domain.Entities.Venda", b =>
+            modelBuilder.Entity("PDVCSharp.Domain.Entities.CaixaSessao", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("Data")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<decimal>("DescontoAplicado")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<int>("FormaPagamento")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<decimal>("SubTotal")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<int>("TipoCliente")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<decimal>("TotalRecebido")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Vendas");
-                });
-
-            modelBuilder.Entity("PDVCSharp.Domain.Entities.ItemVenda", b =>
-                {
-                    b.HasOne("PDVCSharp.Domain.Entities.Produto", "Produto")
+                    b.HasOne("PDVCSharp.Domain.Entities.Usuario", "Usuario")
                         .WithMany()
-                        .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("PDVCSharp.Domain.Entities.Venda", "Venda")
-                        .WithMany("Itens")
-                        .HasForeignKey("VendaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Produto");
-
-                    b.Navigation("Venda");
+                    b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("PDVCSharp.Domain.Entities.Venda", b =>
+            modelBuilder.Entity("PDVCSharp.Domain.Entities.MovimentoCaixa", b =>
                 {
-                    b.Navigation("Itens");
+                    b.HasOne("PDVCSharp.Domain.Entities.CaixaSessao", "CaixaSessao")
+                        .WithMany("Movimentos")
+                        .HasForeignKey("CaixaSessaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CaixaSessao");
+                });
+
+            modelBuilder.Entity("PDVCSharp.Domain.Entities.CaixaSessao", b =>
+                {
+                    b.Navigation("Movimentos");
                 });
 #pragma warning restore 612, 618
         }

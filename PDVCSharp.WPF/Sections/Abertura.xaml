@@ -29,6 +29,7 @@
                         Foreground="White"
                         Text="CAIXA - 01" />
                 </Border>
+                
 
                 <TextBlock
                     Margin="0,130,0,0"
@@ -138,6 +139,178 @@
             </StackPanel>
 
         </DockPanel>
+
+        <StackPanel
+            x:Name="AdminOperatorArea"
+            Panel.ZIndex="10"
+            Margin="0,55,30,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Visibility="Collapsed">
+            <Border
+                Width="170"
+                Height="42"
+                Background="#FF1A4D99"
+                CornerRadius="10">
+                <Button
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="BtnToggleOperatorPanel_Click"
+                    Content="Novo operador"
+                    Cursor="Hand"
+                    FontSize="15"
+                    FontWeight="SemiBold"
+                    Foreground="White" />
+            </Border>
+
+            <Border
+                x:Name="AdminOperatorPanel"
+                Width="330"
+                Margin="0,12,0,0"
+                Padding="18,16"
+                Background="White"
+                BorderBrush="#FFD7D7D7"
+                BorderThickness="1"
+                CornerRadius="12"
+                Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="#FF404040"
+                        Text="Cadastrar operador" />
+
+                    <TextBlock
+                        Margin="0,14,0,6"
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        Foreground="#FF666666"
+                        Text="Nome" />
+                    <TextBox
+                        x:Name="TxtOperatorName"
+                        Height="36"
+                        Padding="10,0"
+                        VerticalContentAlignment="Center"
+                        BorderBrush="#FFC8C8C8"
+                        BorderThickness="1"
+                        Text="" />
+
+                    <TextBlock
+                        Margin="0,12,0,6"
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        Foreground="#FF666666"
+                        Text="Login" />
+                    <TextBox
+                        x:Name="TxtOperatorLogin"
+                        Height="36"
+                        Padding="10,0"
+                        VerticalContentAlignment="Center"
+                        BorderBrush="#FFC8C8C8"
+                        BorderThickness="1"
+                        Text="" />
+
+                    <TextBlock
+                        Margin="0,12,0,6"
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        Foreground="#FF666666"
+                        Text="Cargo" />
+                    <ComboBox
+                        x:Name="CmbOperatorCargo"
+                        Height="36"
+                        Padding="8,0"
+                        SelectedIndex="0">
+                        <ComboBoxItem Tag="Caixa" Content="Caixa" />
+                        <ComboBoxItem Tag="Administrador" Content="Administrador" />
+                    </ComboBox>
+
+                    <TextBlock
+                        Margin="0,12,0,6"
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        Foreground="#FF666666"
+                        Text="Senha" />
+                    <PasswordBox
+                        x:Name="PwdOperator"
+                        Height="36"
+                        Padding="10,0"
+                        VerticalContentAlignment="Center" />
+
+                    <StackPanel
+                        Margin="0,16,0,0"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                        <Button
+                            Width="84"
+                            Height="34"
+                            Margin="0,0,8,0"
+                            Background="#FFF3F3F3"
+                            BorderBrush="#FFD0D0D0"
+                            BorderThickness="1"
+                            Click="BtnCloseOperatorPanel_Click"
+                            Content="Fechar"
+                            Cursor="Hand"
+                            Foreground="#FF404040" />
+                        <Button
+                            x:Name="BtnSaveOperator"
+                            Width="84"
+                            Height="34"
+                            Margin="0,0,8,0"
+                            Background="#FF1A4D99"
+                            BorderThickness="0"
+                            Click="BtnSaveOperator_Click"
+                            Content="Salvar"
+                            Foreground="White" />
+                        <Button
+                            Width="106"
+                            Height="34"
+                            Background="#FFB71C1C"
+                            BorderThickness="0"
+                            Click="BtnToggleDeleteOperatorPanel_Click"
+                            Content="Excluir usuário"
+                            Cursor="Hand"
+                            Foreground="White" />
+                    </StackPanel>
+
+                    <Border
+                        x:Name="DeleteOperatorPanel"
+                        Margin="0,14,0,0"
+                        Padding="10"
+                        Background="#FFF7F7F7"
+                        BorderBrush="#FFE0E0E0"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Visibility="Collapsed">
+                        <StackPanel>
+                            <TextBlock
+                                FontSize="13"
+                                FontWeight="SemiBold"
+                                Foreground="#FF555555"
+                                Text="Selecione o usuário para excluir" />
+
+                            <ComboBox
+                                x:Name="CmbUsersToDelete"
+                                Height="36"
+                                Margin="0,10,0,0"
+                                Padding="8,0" />
+
+                            <Button
+                                Width="120"
+                                Height="34"
+                                Margin="0,12,0,0"
+                                HorizontalAlignment="Right"
+                                Background="#FFB71C1C"
+                                BorderThickness="0"
+                                Click="BtnDeleteOperator_Click"
+                                Content="Deletar"
+                                Cursor="Hand"
+                                Foreground="White" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </StackPanel>
         <TextBlock
             Margin="0,5,45,0"
             FontSize="10"
@@ -151,7 +324,7 @@
             FontSize="10"
             Foreground="White"
             IsHitTestVisible="False"
-            Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm:ss}}"
+            Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm}}"
             TextAlignment="Right" />
         <TextBlock
             Margin="62,66,595,358"

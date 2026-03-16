@@ -37,10 +37,10 @@ namespace PDVCSharp.WPF.Sections {
             }
         }
 
-       
+
 
         public Venda(VendaService vendaService) : this() {
-           
+
 
             _vendaService = vendaService;
         }
@@ -296,9 +296,11 @@ namespace PDVCSharp.WPF.Sections {
             }
             else {
                 var novoProdutoVenda = new ProdutoVenda {
+                    Id = produto.Id,
                     Name = produto.Name,
                     Price = produto.Price,
                     Quantity = 1,
+                    EstoqueDisponivel = produto.Quantity,
                     ImagePath = produto.ImagePath
                 };
                 Produtos.Add(novoProdutoVenda);
@@ -336,6 +338,9 @@ namespace PDVCSharp.WPF.Sections {
                 OnPropertyChanged();
             }
         }
+
+        public Guid Id { get; set; }
+        public double EstoqueDisponivel { get; set; }
 
         public string ImagePath {
             get => _imagePath;

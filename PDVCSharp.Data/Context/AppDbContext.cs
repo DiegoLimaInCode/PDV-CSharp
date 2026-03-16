@@ -5,10 +5,6 @@ using PDVCSharp.Domain.Entities;
 
 namespace PDVCSharp.Data.Context
 {
-    // AppDbContext é o "coração" do Entity Framework — representa o banco de dados na aplicação.
-    // Herda de DbContext, que é a classe base do EF Core para acesso ao banco.
-    // ?? DICA: Cada DbSet<T> representa uma TABELA no banco de dados.
-    //    O EF Core traduz suas consultas C# (LINQ) em SQL automaticamente.
     public class AppDbContext : DbContext
     {
         public DbSet<Produto> Produtos { get; set; }   // Tabela "Produtos" no MySQL
@@ -17,64 +13,57 @@ namespace PDVCSharp.Data.Context
         public DbSet<Venda> Vendas { get; set; }
 
         public DbSet<ItemVenda> ItemVendas { get; set; } 
-        // Construtor que recebe as opções de configuração (connection string, provider, etc.)
-        // O ": base(options)" repassa as opções para a classe pai (DbContext)
+        // Construtor que recebe as opï¿½ï¿½es de configuraï¿½ï¿½o (connection string, provider, etc.)
+        // O ": base(options)" repassa as opï¿½ï¿½es para a classe pai (DbContext)
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
-        // Método estático que inicializa o banco com dados padrão (seed data)
-        // É chamado uma vez quando o app inicia (em App.xaml.cs)
-        // ?? DICA: "static" significa que não precisa criar uma instância para chamar.
-        //    Você chama assim: AppDbContext.Initialize(serviceProvider)
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            // Cria um "escopo" de injeção de dependência para obter o DbContext
-            // ?? DICA: O "using" garante que o escopo será descartado após o uso (libera memória)
             using var scope = serviceProvider.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-            // Cria o banco de dados e as tabelas se ainda não existirem
-            // ?? DICA: Em produção, prefira usar Migrations (dotnet ef migrations)
             context.Database.EnsureCreated();
 
-            if (!context.Produtos.Any()) {
+            if (!context.Produtos.Any())
+            {
                 var repo = new ProductRepository(context);
                 repo.CarregarProdutos();
-
             }
 
-            // Se não existir nenhum usuário, cria o usuário padrão "admin"
             if (!context.Usuarios.Any())
             {
                 var defaultUser = new Usuario
                 {
+                    Name = "Administrador",
+                    Cargo = Cargo.Administrador,
                     Login = "admin",
                     Password = "admin"
                 };
-                context.Usuarios.Add(defaultUser);   // Adiciona ao contexto (ainda em memória)
-                context.SaveChanges();                // Salva no banco (executa o INSERT)
+                context.Usuarios.Add(defaultUser);
+                context.SaveChanges();
             }
         }
 
-        // OnModelCreating configura como as entidades são mapeadas para as tabelas
-        // ?? DICA: Isso se chama "Fluent API" — uma alternativa aos Data Annotations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Produto>(entity =>
             {
-                entity.HasKey(p => p.Id);                                    // Chave primária
-                entity.Property(p => p.Name).IsRequired().HasMaxLength(200); // Obrigatório, máx 200 chars
-                entity.Property(p => p.Price).HasColumnType("decimal(18,2)");// 18 dígitos, 2 decimais
+                entity.HasKey(p => p.Id);
+                entity.Property(p => p.Name).IsRequired().HasMaxLength(200);
+                entity.Property(p => p.Price).HasColumnType("decimal(18,2)");
             });
 
             modelBuilder.Entity<Usuario>(entity =>
             {
-                entity.HasKey(u => u.Id);                                        // Chave primária
-                entity.Property(u => u.Login).IsRequired().HasMaxLength(100);    // Obrigatório
-                entity.Property(u => u.Password).IsRequired().HasMaxLength(200); // Obrigatório
+                entity.HasKey(u => u.Id);
+                entity.Property(u => u.Name).IsRequired().HasMaxLength(150);
+                entity.Property(u => u.Cargo).IsRequired();
+                entity.Property(u => u.Login).IsRequired().HasMaxLength(100);
+                entity.Property(u => u.Password).IsRequired().HasMaxLength(200);
             });
 
             modelBuilder.Entity<MovimentacaoEstoque>(entity =>
@@ -82,6 +71,29 @@ namespace PDVCSharp.Data.Context
                 entity.HasKey(m => m.Id);
                 entity.Property(m => m.ProdutoNome).IsRequired().HasMaxLength(200);
                 entity.Property(m => m.Motivo).HasMaxLength(500);
+            });
+
+            modelBuilder.Entity<CaixaSessao>(entity =>
+            {
+                entity.HasKey(c => c.Id);
+                entity.Property(c => c.ValorAbertura).HasColumnType("decimal(18,2)");
+                entity.HasOne(c => c.Usuario)
+                      .WithMany()
+                      .HasForeignKey(c => c.UsuarioId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<MovimentoCaixa>(entity =>
+            {
+                entity.HasKey(m => m.Id);
+                entity.Property(m => m.Valor).HasColumnType("decimal(18,2)");
+                entity.Property(m => m.Observacao).HasMaxLength(500);
+                entity.Property(m => m.LoginOperador).IsRequired().HasMaxLength(100);
+
+                entity.HasOne(m => m.CaixaSessao)
+                      .WithMany(c => c.Movimentos)
+                      .HasForeignKey(m => m.CaixaSessaoId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }
