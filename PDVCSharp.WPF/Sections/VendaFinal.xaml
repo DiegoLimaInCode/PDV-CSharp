@@ -266,9 +266,22 @@
             </StackPanel>
 
             <StackPanel Grid.Column="2">
+                <Button
+                    x:Name="BtnAdicionarPagamento"
+                    Height="40"
+                    Margin="0,0,0,10"
+                    Background="#2151A1"
+                    BorderThickness="0"
+                    Click="BtnAdicionarPagamento_Click"
+                    Content="Adicionar pagamento"
+                    Cursor="Hand"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Foreground="White" />
 
                 <DataGrid
                     x:Name="DgCartoes"
+                    x:FieldModifier="public"
                     Height="200"
                     Margin="0,0,0,15"
                     AutoGenerateColumns="False"
@@ -278,7 +291,8 @@
                     CanUserAddRows="False"
                     GridLinesVisibility="Horizontal"
                     HeadersVisibility="Column"
-                    IsReadOnly="True">
+                    IsReadOnly="True"
+                    >
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Width="*"
@@ -288,14 +302,6 @@
                             Width="70"
                             Binding="{Binding Parcela}"
                             Header="Parcela" />
-                        <DataGridTextColumn
-                            Width="80"
-                            Binding="{Binding NSU}"
-                            Header="NSU" />
-                        <DataGridTextColumn
-                            Width="100"
-                            Binding="{Binding Autorizacao}"
-                            Header="Autorização" />
                         <DataGridTextColumn
                             Width="80"
                             Binding="{Binding Valor}"

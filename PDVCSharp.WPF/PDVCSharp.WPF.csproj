@@ -57,6 +57,21 @@
 		<Compile Update="Sections\Venda.xaml.cs">
 			<SubType>Code</SubType>
 		</Compile>
+		<Compile Update="Sections\PagamentoCartaoWindow.xaml.cs">
+			<DependentUpon>PagamentoCartaoWindow.xaml</DependentUpon>
+			<SubType>Code</SubType>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Update="Sections\PagamentoCartaoWindow.xaml">
+			<Generator>MSBuild:Compile</Generator>
+			<SubType>Designer</SubType>
+		</Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Dialogs\" />
 	</ItemGroup>
 
 </Project>

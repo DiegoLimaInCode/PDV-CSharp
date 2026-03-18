@@ -1,0 +1,119 @@
+<Window
+    x:Class="PDVCSharp.WPF.Sections.PagamentoCartaoWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Pagamento com Cartão"
+    Width="420"
+    Height="320"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            FontSize="18"
+            FontWeight="Bold"
+            Text="Dados do Cartão" />
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="140" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Tipo do cartão:" />
+            <ComboBox x:Name="TipoCartao"
+                Grid.Column="1"
+                Height="30"
+                SelectedIndex="0">
+                <ComboBoxItem Content="Crédito" />
+                <ComboBoxItem Content="Débito" />
+            </ComboBox>
+        </Grid>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="140" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Parcela:" />
+
+            <ComboBox x:Name="TipoParcela"
+                Grid.Column="1"
+                Height="30"
+                SelectedIndex="0">
+                <ComboBoxItem Content="1x" />
+                <ComboBoxItem Content="2x" />
+                <ComboBoxItem Content="3x" />
+                <ComboBoxItem Content="4x" />
+                <ComboBoxItem Content="5x" />
+                <ComboBoxItem Content="6x" />
+                <ComboBoxItem Content="7x" />
+                <ComboBoxItem Content="8x" />
+                <ComboBoxItem Content="9x" />
+                <ComboBoxItem Content="10x" />
+                <ComboBoxItem Content="11x" />
+                <ComboBoxItem Content="12x" />
+            </ComboBox>
+
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Valor:" />
+            <TextBox x:Name="ValueBox"
+                   Text="{Binding Valor, UpdateSourceTrigger=PropertyChanged}"
+                     IsReadOnly="True"
+                Grid.Row="2"
+                Grid.Column="1"
+                Height="30"
+                VerticalContentAlignment="Center" 
+                  
+                 />
+        </Grid>
+
+        <StackPanel
+            Grid.Row="7"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Orientation="Horizontal">
+            <Button
+                Width="110"
+                Height="34"
+                Margin="0,0,8,0"
+                Click="BtnConfirmar_Click"
+                Content="Confirmar" />
+            <Button
+                Width="110"
+                Height="34"
+                Click="BtnCancelar_Click"
+                Content="Cancelar" />
+        </StackPanel>
+    </Grid>
+</Window>

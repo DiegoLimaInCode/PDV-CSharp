@@ -19,22 +19,29 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace PDVCSharp.WPF.Sections {
     
     public partial class VendaFinal : UserControl {
 
         private ObservableCollection<ProdutoVenda> _produtos;
         private readonly VendaFinalService _finalService;
-
+       
         private decimal _subtotal = 0;
         private decimal _desconto = 0;
         private decimal _totalVenda = 0;
+
+        public ObservableCollection<PagamentoCartao> PagamentosCartao { get; set; }
+        = new ObservableCollection<PagamentoCartao>();
+
 
         public ObservableCollection<ProdutoVenda> Produtos {
             get => _produtos;
             set {
                 _produtos = value;
             }
+
+            
         }
 
         public VendaFinal(VendaFinalService finalService) : this() {
@@ -49,19 +56,26 @@ namespace PDVCSharp.WPF.Sections {
 
         public VendaFinal() {
             InitializeComponent();
+
+            DgCartoes.ItemsSource = PagamentosCartao;
         }
 
         private void CarregarDadosTela() {
-            _subtotal = 0;
-            foreach (var produto in _produtos) {
-                _subtotal += produto.Price * (decimal)produto.Quantity;
-            }
-            TxtSubtotal.Text = _subtotal.ToString("F2");
+            
             RecalcularTotais();
         }
 
+        
+
         public void RecalcularTotais() {
             var clienteVip = CmbCliente.SelectedIndex == 1;
+
+            
+            _subtotal = 0;
+
+            foreach (var produto in Produtos) {
+                _subtotal += produto.Price * (decimal)produto.Quantity;
+            }
 
             if (clienteVip) {
                 _desconto = _subtotal / 2;
@@ -71,12 +85,30 @@ namespace PDVCSharp.WPF.Sections {
 
             TxtDesconto.Text = _desconto.ToString("F2");
 
-            _totalVenda = _subtotal - _desconto;
+            _totalVenda = 0;
+        
+            if (clienteVip) {
+                _totalVenda = _subtotal - _desconto;
+            }
+            else {
+                foreach (var produto in Produtos) {
+                    _totalVenda += produto.Price * (decimal)produto.Quantity;
+                }
+            }
+
+
+            TxtSubtotal.Text = _subtotal.ToString("F2");
+
             TxtTotal.Text = _totalVenda.ToString("F2");
 
             string textoRecebido = TxtTotalRecebido.Text.Replace(".", ",");
             decimal totalRecebido = 0;
-            decimal.TryParse(textoRecebido, out totalRecebido);
+            decimal.TryParse(
+            textoRecebido,
+            NumberStyles.Any,
+            new CultureInfo("pt-BR"),
+            out totalRecebido);
+                                           
 
             decimal troco = totalRecebido - _totalVenda;
             if (troco < 0) {
@@ -84,7 +116,7 @@ namespace PDVCSharp.WPF.Sections {
             }
             TxtTroco.Text = troco.ToString("F2");
 
-            decimal saldo = _totalVenda - totalRecebido;
+            var saldo = _totalVenda - totalRecebido;
             if (saldo < 0) {
                 saldo = 0;
             }
@@ -123,6 +155,16 @@ namespace PDVCSharp.WPF.Sections {
                 e.Handled = true;
             }
         }
+
+        public void BtnAdicionarPagamento_Click(object sender, RoutedEventArgs e) {
+           
+            var janela = new PagamentoCartaoWindow(_totalVenda);
+
+            if (janela.ShowDialog() == true) {
+                PagamentosCartao.Add(janela.pagamentoCartao);
+            }
+        }
+        
 
         public async void BtnFinalizar_Click(object sender, RoutedEventArgs e) {
             string textoRecebido = TxtTotalRecebido.Text;
