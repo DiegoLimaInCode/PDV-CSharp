@@ -26,6 +26,9 @@ namespace PDVCSharp.Domain.Entities {
         public List<ItemVenda> Itens { get; set; } = new();
 
         [NotMapped]
+        public List<PagamentoCartao> PagamentosCartaos { get; set; } = new();
+
+        [NotMapped]
         public decimal Saldo => Total - TotalRecebido;
 
         public decimal CalcularDesconto() {

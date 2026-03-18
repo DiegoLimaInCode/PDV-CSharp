@@ -339,9 +339,6 @@ namespace PDVCSharp.WPF.Sections {
             }
         }
 
-        public Guid Id { get; set; }
-        public double EstoqueDisponivel { get; set; }
-
         public string ImagePath {
             get => _imagePath;
             set {
