@@ -3,6 +3,7 @@ using PDVCSharp.Application.Services;
 using PDVCSharp.Data.Repositories;
 using PDVCSharp.Domain.Entities;
 using PDVCSharp.Domain.Interfaces;
+using PDVCSharp.WPF.Contexts;
 using PDVCSharp.WPF.Models;
 
 using System.Collections.ObjectModel;
@@ -194,13 +195,18 @@ namespace PDVCSharp.WPF.Sections {
                 return;
             }
 
-            var telaVendaFinal = new VendaFinal();
-            telaVendaFinal.DefinirProdutos(Produtos);
-            var containerPai = this.Parent as Panel;
+            var mainWindow = this.Parent as Grid;
+            if (mainWindow == null)
+            {
+                return;
+            }
 
-            if (containerPai != null) {
-                containerPai.Children.Clear();
-                containerPai.Children.Add(telaVendaFinal);
+            var telaVendaFinal = mainWindow.Children.OfType<VendaFinal>().FirstOrDefault();
+            if (telaVendaFinal != null)
+            {
+                telaVendaFinal.DefinirProdutos(Produtos);
+                this.Visibility = Visibility.Collapsed;
+                telaVendaFinal.Visibility = Visibility.Visible;
             }
         }
 
@@ -225,6 +231,7 @@ namespace PDVCSharp.WPF.Sections {
                     return;
             }
 
+            Master.Venda = null;
             this.Visibility = Visibility.Collapsed;
             var mainWindow = this.Parent as Grid;
 
