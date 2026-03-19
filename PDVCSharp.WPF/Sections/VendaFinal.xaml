@@ -281,9 +281,9 @@
 
                 <DataGrid
                     x:Name="DgCartoes"
-                    x:FieldModifier="public"
                     Height="200"
                     Margin="0,0,0,15"
+                    x:FieldModifier="public"
                     AutoGenerateColumns="False"
                     Background="White"
                     BorderBrush="#2151A1"
@@ -291,8 +291,7 @@
                     CanUserAddRows="False"
                     GridLinesVisibility="Horizontal"
                     HeadersVisibility="Column"
-                    IsReadOnly="True"
-                    >
+                    IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Width="*"
@@ -358,8 +357,8 @@
                                     FontWeight="Bold"
                                     PreviewKeyDown="ValorTextBox_PreviewKeyDown"
                                     PreviewTextInput="ValorTextBox_PreviewTextInput"
-                                    TextChanged="TxtTotalRecebido_TextChanged"
-                                    Text="0,00" />
+                                    Text="0,00"
+                                    TextChanged="TxtTotalRecebido_TextChanged" />
                             </Border>
                         </StackPanel>
                     </Border>
@@ -389,12 +388,12 @@
                     Height="60"
                     Background="#1A7A7A"
                     BorderThickness="0"
+                    Click="BtnFinalizar_Click"
                     Content="Finalizar"
                     Cursor="Hand"
                     FontSize="24"
                     FontWeight="Bold"
-                    Foreground="White"
-                    Click="BtnFinalizar_Click">
+                    Foreground="White">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border

@@ -5,20 +5,12 @@ using PDVCSharp.WPF.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Globalization;
-using System.Text;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 
 namespace PDVCSharp.WPF.Sections {
     
@@ -40,37 +32,37 @@ namespace PDVCSharp.WPF.Sections {
             set {
                 _produtos = value;
             }
-
-            
-        }
-
-        public VendaFinal(VendaFinalService finalService) : this() {
-            _finalService = finalService;
-        }
-
-        public VendaFinal(ObservableCollection<ProdutoVenda> produtos) : this() {
-            _produtos = produtos;
-            _finalService = App.ServiceProvider.GetRequiredService<VendaFinalService>();
-            CarregarDadosTela();
         }
 
         public VendaFinal() {
             InitializeComponent();
-
+            _finalService = App.ServiceProvider.GetRequiredService<VendaFinalService>();
+            _produtos = new ObservableCollection<ProdutoVenda>();
             DgCartoes.ItemsSource = PagamentosCartao;
         }
 
-        private void CarregarDadosTela() {
-            
+        public void DefinirProdutos(ObservableCollection<ProdutoVenda> produtos)
+        {
+            _produtos = produtos;
+            PagamentosCartao.Clear();
+            CmbCliente.SelectedIndex = 0;
+            CmbFormaPagamento.SelectedIndex = 0;
+            TxtTotalRecebido.Text = "0,00";
             RecalcularTotais();
         }
 
-        
+        private void CarregarDadosTela() {
+            RecalcularTotais();
+        }
 
         public void RecalcularTotais() {
+            if (Produtos is null)
+            {
+                return;
+            }
+
             var clienteVip = CmbCliente.SelectedIndex == 1;
 
-            
             _subtotal = 0;
 
             foreach (var produto in Produtos) {
@@ -96,7 +88,6 @@ namespace PDVCSharp.WPF.Sections {
                 }
             }
 
-
             TxtSubtotal.Text = _subtotal.ToString("F2");
 
             TxtTotal.Text = _totalVenda.ToString("F2");
@@ -108,7 +99,6 @@ namespace PDVCSharp.WPF.Sections {
             NumberStyles.Any,
             new CultureInfo("pt-BR"),
             out totalRecebido);
-                                           
 
             decimal troco = totalRecebido - _totalVenda;
             if (troco < 0) {
@@ -136,13 +126,7 @@ namespace PDVCSharp.WPF.Sections {
         }
 
         public void Button_Click(object sender, RoutedEventArgs e) {
-            var telaVendaFinal = new VendaFinal();
-            var containerPai = this.Parent as Panel;
-
-            if (containerPai != null) {
-                containerPai.Children.Clear();
-                containerPai.Children.Add(telaVendaFinal);
-            }
+            RecalcularTotais();
         }
 
         public void ValorTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e) {
@@ -157,16 +141,20 @@ namespace PDVCSharp.WPF.Sections {
         }
 
         public void BtnAdicionarPagamento_Click(object sender, RoutedEventArgs e) {
-           
             var janela = new PagamentoCartaoWindow(_totalVenda);
 
             if (janela.ShowDialog() == true) {
                 PagamentosCartao.Add(janela.pagamentoCartao);
             }
         }
-        
 
         public async void BtnFinalizar_Click(object sender, RoutedEventArgs e) {
+            if (_produtos is null || !_produtos.Any())
+            {
+                MessageBox.Show("Nenhum produto para finalizar.", "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             string textoRecebido = TxtTotalRecebido.Text;
             textoRecebido = textoRecebido.Replace(".", ",");
 
@@ -209,8 +197,16 @@ namespace PDVCSharp.WPF.Sections {
             }
 
             try {
-                var venda = await _finalService.FinalizarVenda(itensVenda, formaPagamento, tipoCliente, totalRecebido);
+                await _finalService.FinalizarVenda(itensVenda, formaPagamento, tipoCliente, totalRecebido);
                 MessageBox.Show("Venda finalizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                this.Visibility = Visibility.Collapsed;
+                var mainWindow = this.Parent as Grid;
+                var telaFechamento = mainWindow?.Children.OfType<Fechamento>().FirstOrDefault();
+                if (telaFechamento != null)
+                {
+                    telaFechamento.Visibility = Visibility.Visible;
+                }
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);

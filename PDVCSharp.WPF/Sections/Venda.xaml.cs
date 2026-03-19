@@ -3,6 +3,7 @@ using PDVCSharp.Application.Services;
 using PDVCSharp.Data.Repositories;
 using PDVCSharp.Domain.Entities;
 using PDVCSharp.Domain.Interfaces;
+using PDVCSharp.WPF.Models;
 
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -193,7 +194,8 @@ namespace PDVCSharp.WPF.Sections {
                 return;
             }
 
-            var telaVendaFinal = new VendaFinal(Produtos);
+            var telaVendaFinal = new VendaFinal();
+            telaVendaFinal.DefinirProdutos(Produtos);
             var containerPai = this.Parent as Panel;
 
             if (containerPai != null) {
@@ -308,79 +310,6 @@ namespace PDVCSharp.WPF.Sections {
 
             textBox.Text = "";
             textBox.Focus();
-        }
-    }
-
-    // ProdutoVenda = versão do Produto usada na tela de venda (com quantidade editável)
-    // Implementa INotifyPropertyChanged para que a tela atualize ao mudar preço/quantidade
-    // 💡 DICA: Separada de Produto (Domain) porque a tela precisa de funcionalidades extras.
-    public class ProdutoVenda : INotifyPropertyChanged {
-        // Campos privados (backing fields) — armazenam o valor real
-        private Guid _id;
-        private string _name = string.Empty;
-        private decimal _price;
-        private double _quantity;
-        private string _imagePath = string.Empty;
-        private double _estoqueDisponivel;
-
-        public Guid Id {
-            get => _id;
-            set {
-                _id = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public double EstoqueDisponivel {
-            get => _estoqueDisponivel;
-            set {
-                _estoqueDisponivel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string ImagePath {
-            get => _imagePath;
-            set {
-                _imagePath = value;
-                OnPropertyChanged();
-            }
-        }
-        public string Name {
-            get => _name;
-            set {
-                _name = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public decimal Price {
-            get => _price;
-            set {
-                _price = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(Total));
-            }
-        }
-
-        public double Quantity {
-            get => _quantity;
-            set {
-                _quantity = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(Total));
-            }
-        }
-
-        // Propriedade calculada: Total = Preço × Quantidade
-        // 💡 DICA: "=>" = propriedade somente-leitura calculada sob demanda.
-        //    (decimal)Quantity = converte double para decimal (tipos diferentes)
-        public decimal Total => Price * (decimal)Quantity;
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

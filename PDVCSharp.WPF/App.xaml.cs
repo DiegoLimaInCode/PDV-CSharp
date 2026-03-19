@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using PDVCSharp.Application.Extensions;
 using PDVCSharp.Application.Services;
 using PDVCSharp.Data.Context;
+using PDVCSharp.WPF.extensions;
+
 // 💡 DICA: "using X = Y" cria um apelido para evitar conflitos de nome.
 using WpfApplication = System.Windows.Application;
 
@@ -27,7 +29,8 @@ namespace PDVCSharp.WPF
             // Registra os serviços em cada camada:
             services.DatabaseConnection(); // Configura o banco MySQL (AppDbContext)
             services.AddRepositories();    // Registra os repositórios (UserRepository)
-            services.AddServices();        // Registra os serviços de negócio (AuthService)
+            services.AddServices();
+            services.AddviewModel();  // Registra os serviços de negócio (AuthService)
 
             // Constrói o contêiner de DI — a partir daqui, podemos "pedir" serviços
             ServiceProvider = services.BuildServiceProvider();
