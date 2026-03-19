@@ -1,4 +1,4 @@
-﻿<Window
+﻿<UserControl
     x:Class="PDVCSharp.WPF.Sections.Fechamento"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,13 +6,11 @@
     xmlns:local="clr-namespace:PDVCSharp.WPF.Sections"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:PDVCSharp.WPF.ViewModels"
-    Title="Fechamento"
-    Width="800"
-    Height="450"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
     mc:Ignorable="d">
-    <Window.DataContext>
-        <vm:FechamentoViewModel />
-    </Window.DataContext>
+
+
     <Grid Background="#888888">
         <Border Background="#F8F4F4" ClipToBounds="True" />
 
@@ -66,17 +64,18 @@
                         Text="SUPERMARKET" />
                 </StackPanel>
                 <StackPanel
-                    Width="400"
+                    Width="460"
+                    Margin="20"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
                     <TextBlock
-                        Margin="0,0,0,30"
-                        FontSize="40"
+                        Margin="0,0,0,26"
+                        FontSize="42"
                         FontWeight="Bold"
                         Foreground="#333"
                         Text="Fechamento do Caixa"
                         TextAlignment="Center" />
-                    <Grid Margin="0,0,0,15">
+                    <Grid Margin="0,0,0,18">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
@@ -85,7 +84,7 @@
                         <TextBlock
                             Grid.Column="0"
                             HorizontalAlignment="Center"
-                            FontSize="14"
+                            FontSize="15"
                             Foreground="#666">
                             <Run Text="Operador: " />
                             <Run FontWeight="SemiBold" Text="{Binding OperatorName, Mode=OneWay}" />
@@ -94,26 +93,107 @@
                         <TextBlock
                             Grid.Column="1"
                             HorizontalAlignment="Center"
-                            FontSize="14"
+                            FontSize="15"
                             Foreground="#666">
                             <Run Text="Data: " />
                             <Run FontWeight="SemiBold" Text="{Binding Today, Mode=OneWay, StringFormat={}{0:dd/MM/yyyy}}" />
                         </TextBlock>
 
                     </Grid>
-                    <Border Background="White" CornerRadius="20">
+                    <Border Background="White" CornerRadius="20" Padding="12">
                         <Border.Effect>
                             <DropShadowEffect
-                                BlurRadius="15"
-                                Opacity="0.4"
-                                ShadowDepth="5"
+                                BlurRadius="14"
+                                Direction="270"
+                                Opacity="0.18"
+                                ShadowDepth="2"
                                 Color="#000000" />
                         </Border.Effect>
-                        <Grid Margin="10,10,10,10">
+                        <Grid Margin="6">
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="14" />
+                                    <Setter Property="FontWeight" Value="Medium" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Height" Value="26" />
+                                    <Setter Property="FontSize" Value="14" />
+                                    <Setter Property="FontWeight" Value="Medium" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="TextAlignment" Value="Right" />
+                                </Style>
+
+                                <Style x:Key="RoundedBlueButton" TargetType="Button">
+                                    <Setter Property="Height" Value="44" />
+                                    <Setter Property="Background" Value="#2151A1" />
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="FontSize" Value="15" />
+                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Cursor" Value="Hand" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border
+                                                    x:Name="ButtonBorder"
+                                                    Background="{TemplateBinding Background}"
+                                                    CornerRadius="20">
+                                                    <ContentPresenter
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="ButtonBorder" Property="Background" Value="#4E7CC6" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsPressed" Value="True">
+                                                        <Setter TargetName="ButtonBorder" Property="Background" Value="#1A3F7D" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.6" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+
+                                <Style x:Key="RoundedRedButton" TargetType="Button" BasedOn="{StaticResource RoundedBlueButton}">
+                                    <Setter Property="Background" Value="#D32F2F" />
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border
+                                                    x:Name="ButtonBorder"
+                                                    Background="{TemplateBinding Background}"
+                                                    CornerRadius="20">
+                                                    <ContentPresenter
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="ButtonBorder" Property="Background" Value="#E06666" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsPressed" Value="True">
+                                                        <Setter TargetName="ButtonBorder" Property="Background" Value="#A92626" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.6" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Grid.Resources>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="80" />
+                                <ColumnDefinition Width="100" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -146,13 +226,13 @@
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 Margin="5,0,0,0"
-                                Text="R$"
+                                Text=""
                                 TextAlignment="Right" />
                             <TextBox
                                 Grid.Row="0"
                                 Grid.Column="2"
                                 BorderThickness="0"
-                                Text="1.250,00"
+                                Text="{Binding TotalVendas, Mode=OneWay, StringFormat=R$ {0:N2}}"
                                 TextAlignment="Right" />
 
                             <!--  Linha divisória  -->
@@ -167,7 +247,7 @@
                             <TextBlock
                                 Grid.Row="2"
                                 Grid.Column="0"
-                                FontSize="12"
+                                FontSize="13"
                                 FontWeight="Bold"
                                 Text="Vendas por Forma de Pagamento" />
 
@@ -180,13 +260,13 @@
                                 Grid.Row="3"
                                 Grid.Column="1"
                                 Margin="5,0,0,0"
-                                Text="R$"
+                                Text=""
                                 TextAlignment="Right" />
                             <TextBox
                                 Grid.Row="3"
                                 Grid.Column="2"
                                 BorderThickness="0"
-                                Text="450,00"
+                                Text="{Binding TotalDinheiro, Mode=OneWay, StringFormat=R$ {0:N2}}"
                                 TextAlignment="Right" />
 
                             <!--  Cartão de Crédito  -->
@@ -198,13 +278,13 @@
                                 Grid.Row="4"
                                 Grid.Column="1"
                                 Margin="5,0,0,0"
-                                Text="R$"
+                                Text=""
                                 TextAlignment="Right" />
                             <TextBox
                                 Grid.Row="4"
                                 Grid.Column="2"
                                 BorderThickness="0"
-                                Text="600,00"
+                                Text="{Binding TotalCartaoCredito, Mode=OneWay, StringFormat=R$ {0:N2}}"
                                 TextAlignment="Right" />
 
                             <!--  Cartão de Débito  -->
@@ -216,13 +296,13 @@
                                 Grid.Row="5"
                                 Grid.Column="1"
                                 Margin="5,0,0,0"
-                                Text="R$"
+                                Text=""
                                 TextAlignment="Right" />
                             <TextBox
                                 Grid.Row="5"
                                 Grid.Column="2"
                                 BorderThickness="0"
-                                Text="200,00"
+                                Text="{Binding TotalCartaoDebito, Mode=OneWay, StringFormat=R$ {0:N2}}"
                                 TextAlignment="Right" />
 
                             <!--  Pix  -->
@@ -234,13 +314,13 @@
                                 Grid.Row="6"
                                 Grid.Column="1"
                                 Margin="5,0,0,0"
-                                Text="R$"
+                                Text=""
                                 TextAlignment="Right" />
                             <TextBox
                                 Grid.Row="6"
                                 Grid.Column="2"
                                 BorderThickness="0"
-                                Text="100,00"
+                                Text="{Binding TotalCheque, Mode=OneWay, StringFormat=R$ {0:N2}}"
                                 TextAlignment="Right" />
 
                             <!--  Voucher  -->
@@ -252,13 +332,13 @@
                                 Grid.Row="7"
                                 Grid.Column="1"
                                 Margin="5,0,0,0"
-                                Text="R$"
+                                Text=""
                                 TextAlignment="Right" />
                             <TextBox
                                 Grid.Row="7"
                                 Grid.Column="2"
                                 BorderThickness="0"
-                                Text="50,00"
+                                Text="{Binding ValorAbertura, Mode=OneWay, StringFormat=R$ {0:N2}}"
                                 TextAlignment="Right" />
 
                             <!--  Linha divisória  -->
@@ -273,7 +353,7 @@
                             <TextBlock
                                 Grid.Row="9"
                                 Grid.Column="0"
-                                FontSize="12"
+                                FontSize="13"
                                 FontWeight="Bold"
                                 Text="Resumo Financeiro" />
 
@@ -286,13 +366,13 @@
                                 Grid.Row="10"
                                 Grid.Column="1"
                                 Margin="5,0,0,0"
-                                Text="R$"
+                                Text=""
                                 TextAlignment="Right" />
                             <TextBox
                                 Grid.Row="10"
                                 Grid.Column="2"
                                 BorderThickness="0"
-                                Text="0,00"
+                                Text="{Binding ValorAbertura, Mode=OneWay, StringFormat=R$ {0:N2}}"
                                 TextAlignment="Right" />
 
                             <!--  Sangrias  -->
@@ -304,13 +384,13 @@
                                 Grid.Row="11"
                                 Grid.Column="1"
                                 Margin="5,0,0,0"
-                                Text="R$"
+                                Text=""
                                 TextAlignment="Right" />
                             <TextBox
                                 Grid.Row="11"
                                 Grid.Column="2"
                                 BorderThickness="0"
-                                Text="-300,00"
+                                Text="{Binding TotalCheque, Mode=OneWay, StringFormat=R$ {0:N2}}"
                                 TextAlignment="Right" />
 
                             <!--  Total em Caixa  -->
@@ -324,33 +404,35 @@
                                 Grid.Column="1"
                                 Margin="5,0,0,0"
                                 FontWeight="Bold"
-                                Text="R$"
+                                Text=""
                                 TextAlignment="Right" />
                             <TextBox
                                 Grid.Row="12"
                                 Grid.Column="2"
                                 BorderThickness="0"
                                 FontWeight="Bold"
-                                Text="150,00"
+                                Text="{Binding TotalCaixal, Mode=OneWay, StringFormat=R$ {0:N2}}"
                                 TextAlignment="Right" />
 
                             <!--  Botão Fechar Caixa  -->
-                            <Border
+                            <Button
+                                x:Name="BtnFecharCaixa"
                                 Grid.Row="13"
                                 Grid.ColumnSpan="3"
-                                Margin="0,15,0,0"
-                                Background="#D32F2F"
-                                ClipToBounds="True"
-                                CornerRadius="20">
-                                <Button
-                                    Height="40"
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    Content="🔒 FECHAR CAIXA"
-                                    FontSize="14"
-                                    FontWeight="Bold"
-                                    Foreground="White" />
-                            </Border>
+                                Margin="0,18,0,0"
+                                Click="BtnFecharCaixa_Click"
+                                Content="🔒 FECHAR CAIXA"
+                                Style="{StaticResource RoundedRedButton}" />
+
+                            <!--  Botão Finalizar Compra  -->
+                            <Button
+                                x:Name="BtnFinalizarCompra"
+                                Grid.Row="14"
+                                Grid.ColumnSpan="3"
+                                Margin="0,12,0,0"
+                                Click="BtnFinalizarCompra_Click"
+                                Content="FINALIZAR COMPRA"
+                                Style="{StaticResource RoundedBlueButton}" />
 
                         </Grid>
                     </Border>
@@ -359,4 +441,4 @@
             </Grid>
         </DockPanel>
     </Grid>
-</Window>
+</UserControl>

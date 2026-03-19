@@ -26,6 +26,7 @@ namespace PDVCSharp.Application.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IEstoqueRepository, EstoqueRepository>();
             services.AddScoped<IVendaRepository, VendaRepository>();
+            
             return services;
         }
 
@@ -34,6 +35,7 @@ namespace PDVCSharp.Application.Extensions
             services.AddScoped<AuthService>();
             services.AddScoped<VendaService>();
             services.AddScoped<VendaFinalService>();
+            services.AddTransient<FechamentoService>();
             return services;
         }
     }

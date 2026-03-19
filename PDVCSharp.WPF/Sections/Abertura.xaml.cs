@@ -277,6 +277,16 @@ namespace PDVCSharp.WPF.Sections
                 using var scope = App.ServiceProvider.CreateScope();
                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
+                var sessoesAbertas = context.CaixaSessoes.Where(c => c.IsOpen).ToList();
+                foreach (var sessaoAberta in sessoesAbertas)
+                {
+                    sessaoAberta.IsOpen = false;
+                }
+                if (sessoesAbertas.Count > 0)
+                {
+                    context.SaveChanges();
+                }
+
                 var loginOperador = Master.Usuario?.OperatorName;
                 var usuario = !string.IsNullOrWhiteSpace(loginOperador)
                     ? context.Usuarios.FirstOrDefault(u => u.Login == loginOperador)
@@ -314,6 +324,7 @@ namespace PDVCSharp.WPF.Sections
 
                 Master.Caixa = new SessaoCaixa
                 {
+                    CaixaSessaoId = novaSessaoCaixa.Id,
                     ValorAbertura = valorAbertura
                 };
 

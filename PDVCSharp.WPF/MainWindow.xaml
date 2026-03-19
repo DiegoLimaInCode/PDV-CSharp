@@ -1,4 +1,4 @@
-﻿    <Window
+﻿<Window
  
         Icon="Components\Ico\gemini-2.ico"
         x:Class="PDVCSharp.WPF.MainWindow"
@@ -14,11 +14,14 @@
         Height="457"
         mc:Ignorable="d">
 
-        <Grid x:Name="MainContainer">
-            <sections:Login Visibility="Visible" />
-            <sections:Abertura Visibility="Collapsed" />
-            <sectionsCaixa:CaixaLivre Visibility="Collapsed" />
-            <sections:Venda Visibility="Collapsed" />
-        </Grid>
+    <Grid x:Name="MainContainer">
+        <sections:Login Visibility="Visible" />
+        <sections:Abertura Visibility="Collapsed" />
+        <sectionsCaixa:CaixaLivre Visibility="Collapsed" />
+        <sections:Venda Visibility="Collapsed" />
+        <sections:VendaFinal Visibility="Collapsed" />
+        <sections:Fechamento Visibility="Collapsed"/>
 
-    </Window>
+    </Grid>
+
+</Window>

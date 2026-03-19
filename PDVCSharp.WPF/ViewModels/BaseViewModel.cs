@@ -8,7 +8,7 @@ namespace PDVCSharp.WPF.ViewModels;
 public abstract class BaseViewModel : INotifyPropertyChanged
 {
     private DateTime _now;
-    private DispatcherTimer _timer;
+    private DispatcherTimer? _timer;
 
     protected BaseViewModel()
     {

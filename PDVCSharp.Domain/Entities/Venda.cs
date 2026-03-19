@@ -8,7 +8,7 @@ namespace PDVCSharp.Domain.Entities {
 
     public enum TipoCliente {
         Comum, 
-        Premium
+        Premium,
     }
 
     public enum FormaPagamento {

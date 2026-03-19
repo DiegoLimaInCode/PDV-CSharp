@@ -3,6 +3,7 @@
 ## Project Guidelines
 - O usuário prefere respostas em português (pt-BR). Responda sempre em português a menos que haja uma instrução diferente.
 - Em alterações futuras de banco, não editar arquivos de migration manualmente; deixar o Entity Framework gerar e manter migrations automaticamente.
+- Seguir o mesmo padrão já existente nas telas de navegação do projeto, evitando implementar fluxo diferente do que o usuário já vinha usando.
 
 ## Learning Preferences
 - O usuário está aprendendo conceitos de OOP em C# (herança, interfaces, override). Prefere explicações com analogias simples e sem código pronto — gosta de ser guiado para resolver sozinho.

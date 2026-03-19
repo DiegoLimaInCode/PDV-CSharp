@@ -2,9 +2,9 @@ using PDVCSharp.WPF.Contexts;
 
 namespace PDVCSharp.WPF.ViewModels;
 
-public sealed class AperturaViewModel : BaseViewModel
+public sealed class AberturaViewModel : BaseViewModel
 {
-    public AperturaViewModel()
+    public AberturaViewModel()
     {
         if (Master.Usuario != null)
         {
