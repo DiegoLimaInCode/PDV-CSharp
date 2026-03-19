@@ -3,6 +3,7 @@ using PDVCSharp.Application.Services;
 using PDVCSharp.Data.Repositories;
 using PDVCSharp.Domain.Entities;
 using PDVCSharp.Domain.Interfaces;
+using PDVCSharp.WPF.Models;
 
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -338,6 +339,9 @@ namespace PDVCSharp.WPF.Sections {
                 OnPropertyChanged();
             }
         }
+
+        public Guid Id { get; set; }
+        public double EstoqueDisponivel { get; set; }
 
         public string ImagePath {
             get => _imagePath;
