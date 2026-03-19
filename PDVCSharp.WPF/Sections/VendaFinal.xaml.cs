@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PDVCSharp.Application.Services;
 using PDVCSharp.Domain.Entities;
+using PDVCSharp.WPF.Contexts;
 using PDVCSharp.WPF.Models;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace PDVCSharp.WPF.Sections {
-    
-    public partial class VendaFinal : UserControl {
+namespace PDVCSharp.WPF.Sections
+{
+
+    public partial class VendaFinal : UserControl
+    {
 
         private ObservableCollection<ProdutoVenda> _produtos;
         private readonly VendaFinalService _finalService;
-       
+
         private decimal _subtotal = 0;
         private decimal _desconto = 0;
         private decimal _totalVenda = 0;
@@ -27,14 +30,17 @@ namespace PDVCSharp.WPF.Sections {
         = new ObservableCollection<PagamentoCartao>();
 
 
-        public ObservableCollection<ProdutoVenda> Produtos {
+        public ObservableCollection<ProdutoVenda> Produtos
+        {
             get => _produtos;
-            set {
+            set
+            {
                 _produtos = value;
             }
         }
 
-        public VendaFinal() {
+        public VendaFinal()
+        {
             InitializeComponent();
             _finalService = App.ServiceProvider.GetRequiredService<VendaFinalService>();
             _produtos = new ObservableCollection<ProdutoVenda>();
@@ -51,11 +57,13 @@ namespace PDVCSharp.WPF.Sections {
             RecalcularTotais();
         }
 
-        private void CarregarDadosTela() {
+        private void CarregarDadosTela()
+        {
             RecalcularTotais();
         }
 
-        public void RecalcularTotais() {
+        public void RecalcularTotais()
+        {
             if (Produtos is null)
             {
                 return;
@@ -65,25 +73,32 @@ namespace PDVCSharp.WPF.Sections {
 
             _subtotal = 0;
 
-            foreach (var produto in Produtos) {
+            foreach (var produto in Produtos)
+            {
                 _subtotal += produto.Price * (decimal)produto.Quantity;
             }
 
-            if (clienteVip) {
+            if (clienteVip)
+            {
                 _desconto = _subtotal / 2;
-            } else {
+            }
+            else
+            {
                 _desconto = 0;
             }
 
             TxtDesconto.Text = _desconto.ToString("F2");
 
             _totalVenda = 0;
-        
-            if (clienteVip) {
+
+            if (clienteVip)
+            {
                 _totalVenda = _subtotal - _desconto;
             }
-            else {
-                foreach (var produto in Produtos) {
+            else
+            {
+                foreach (var produto in Produtos)
+                {
                     _totalVenda += produto.Price * (decimal)produto.Quantity;
                 }
             }
@@ -101,54 +116,68 @@ namespace PDVCSharp.WPF.Sections {
             out totalRecebido);
 
             decimal troco = totalRecebido - _totalVenda;
-            if (troco < 0) {
+            if (troco < 0)
+            {
                 troco = 0;
             }
             TxtTroco.Text = troco.ToString("F2");
 
-            var saldo = _totalVenda - totalRecebido;
-            if (saldo < 0) {
+            decimal saldo = _totalVenda - totalRecebido;
+            if (saldo < 0)
+            {
                 saldo = 0;
             }
             TxtSaldo.Text = saldo.ToString("F2");
         }
 
-        public void TxtTotalRecebido_TextChanged(object sender, TextChangedEventArgs e) {
-            if (_produtos != null) {
+        public void TxtTotalRecebido_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_produtos != null)
+            {
                 RecalcularTotais();
             }
         }
 
-        public void CmbCliente_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (_produtos != null) {
+        public void CmbCliente_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_produtos != null)
+            {
                 RecalcularTotais();
             }
         }
 
-        public void Button_Click(object sender, RoutedEventArgs e) {
+        public void Button_Click(object sender, RoutedEventArgs e)
+        {
             RecalcularTotais();
         }
 
-        public void ValorTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e) {
+        public void ValorTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
             Regex regex = new Regex("[^0-9,.]");
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        public void ValorTextBox_PreviewKeyDown(object sender, KeyEventArgs e) {
-            if (e.Key == Key.Space) {
+        public void ValorTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space)
+            {
                 e.Handled = true;
             }
         }
 
-        public void BtnAdicionarPagamento_Click(object sender, RoutedEventArgs e) {
+        public void BtnAdicionarPagamento_Click(object sender, RoutedEventArgs e)
+        {
             var janela = new PagamentoCartaoWindow(_totalVenda);
 
-            if (janela.ShowDialog() == true) {
+            if (janela.ShowDialog() == true)
+            {
                 PagamentosCartao.Add(janela.pagamentoCartao);
             }
         }
 
-        public async void BtnFinalizar_Click(object sender, RoutedEventArgs e) {
+        public async void BtnFinalizar_Click(object sender, RoutedEventArgs e)
+        {
+
             if (_produtos is null || !_produtos.Any())
             {
                 MessageBox.Show("Nenhum produto para finalizar.", "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -159,9 +188,14 @@ namespace PDVCSharp.WPF.Sections {
             textoRecebido = textoRecebido.Replace(".", ",");
 
             decimal totalRecebido = 0;
-            bool converteu = decimal.TryParse(textoRecebido, out totalRecebido);    
+            bool converteu = decimal.TryParse(
+                textoRecebido,
+                NumberStyles.Any,
+                new CultureInfo("pt-BR"),
+                out totalRecebido);
 
-            if (!converteu || totalRecebido <= 0) {
+            if (!converteu || totalRecebido <= 0)
+            {
                 MessageBox.Show("Informe um valor válido no campo Total Recebido.", "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
@@ -181,13 +215,15 @@ namespace PDVCSharp.WPF.Sections {
                 formaPagamento = FormaPagamento.Cheque;
 
             TipoCliente tipoCliente = TipoCliente.Comum;
-            if (CmbCliente.SelectedIndex == 1) {
+            if (CmbCliente.SelectedIndex == 1)
+            {
                 tipoCliente = TipoCliente.Premium;
             }
 
             List<ItemVenda> itensVenda = new List<ItemVenda>();
 
-            foreach (var produto in _produtos) {
+            foreach (var produto in _produtos)
+            {
                 var item = new ItemVenda();
                 item.ProdutoId = produto.Id;
                 item.Quantidade = (int)produto.Quantity;
@@ -196,10 +232,12 @@ namespace PDVCSharp.WPF.Sections {
                 itensVenda.Add(item);
             }
 
-            try {
+            try
+            {
                 await _finalService.FinalizarVenda(itensVenda, formaPagamento, tipoCliente, totalRecebido);
                 MessageBox.Show("Venda finalizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
 
+                Master.Venda = null;
                 this.Visibility = Visibility.Collapsed;
                 var mainWindow = this.Parent as Grid;
                 var telaFechamento = mainWindow?.Children.OfType<Fechamento>().FirstOrDefault();
@@ -208,7 +246,8 @@ namespace PDVCSharp.WPF.Sections {
                     telaFechamento.Visibility = Visibility.Visible;
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 MessageBox.Show(ex.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

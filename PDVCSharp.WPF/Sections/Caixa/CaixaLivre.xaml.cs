@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PDVCSharp.Domain.Entities;
 using PDVCSharp.WPF.Contexts;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -13,19 +14,6 @@ namespace PDVCSharp.WPF.Sections.Caixa
         public CaixaLivre()
         {
             InitializeComponent();
-
-            // Se já existe uma venda em andamento, redireciona para a tela de Venda
-            if (Master.Venda != null)
-            {
-                var telaVenda = App.ServiceProvider.GetRequiredService<Venda>();
-                var containerPai = this.Parent as Panel;
-
-                if (containerPai != null)
-                {
-                    containerPai.Children.Clear();         // Remove todas as telas do container
-                    containerPai.Children.Add(telaVenda);  // Adiciona a tela de venda
-                }
-            }
         }
 
         // Botão "Nova Venda" — inicia uma nova sessão de venda
@@ -36,10 +24,16 @@ namespace PDVCSharp.WPF.Sections.Caixa
 
             this.Visibility = Visibility.Collapsed; // Esconde Caixa Livre
             var mainWindow = this.Parent as Grid;
+            if (mainWindow == null)
+            {
+                return;
+            }
 
-            var telaCaixaLivre = mainWindow.Children.OfType<PDVCSharp.WPF.Sections.Caixa.CaixaLivre>().FirstOrDefault();
             var telaVenda = mainWindow.Children.OfType<PDVCSharp.WPF.Sections.Venda>().FirstOrDefault();
-            telaVenda.Visibility = Visibility.Visible; // Mostra a tela de venda
+            if (telaVenda != null)
+            {
+                telaVenda.Visibility = Visibility.Visible; // Mostra a tela de venda
+            }
         }
     }
 }
