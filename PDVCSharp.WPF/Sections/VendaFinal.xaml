@@ -146,6 +146,7 @@
                                     FontWeight="Bold"
                                     Text="R$" />
                                 <TextBox
+                                    IsReadOnly="True"
                                     x:Name="TxtDesconto"
                                     Height="35"
                                     HorizontalContentAlignment="Right"
@@ -177,7 +178,8 @@
                                 Height="35"
                                 Margin="5"
                                 VerticalContentAlignment="Center"
-                                FontSize="14">
+                                FontSize="14"
+                                SelectionChanged="CmbFormaPagamento_SelectionChanged">
                                 <ComboBoxItem Content="CAIXA" IsSelected="True" />
                                 <ComboBoxItem Content="CARTÃO DE CRÉDITO" />
                                 <ComboBoxItem Content="CARTÃO DE DÉBITO" />
@@ -291,7 +293,15 @@
                     CanUserAddRows="False"
                     GridLinesVisibility="Horizontal"
                     HeadersVisibility="Column"
-                    IsReadOnly="True">
+                    IsReadOnly="True"
+                    SelectionMode="Single">
+
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Excluir" Click="MenuItem_Click" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Width="*"

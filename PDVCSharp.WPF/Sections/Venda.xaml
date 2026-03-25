@@ -150,8 +150,7 @@
                     x:Name="LstProdutos"
                     d:ItemsSource="{d:SampleData ItemCount=8}"
                     Background="Transparent"
-                    BorderThickness="0"
-                    ItemsSource="{Binding Produtos}">
+                    BorderThickness="0">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
