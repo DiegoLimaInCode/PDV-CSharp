@@ -12,7 +12,7 @@ namespace PDVCSharp.Domain.Entities {
     }
 
     public enum FormaPagamento {
-        Credito, Debito, Dinheiro, Cheque, Caixa
+        Credito, Debito, Dinheiro, Cheque, Caixa, Pix
     }
 
     public class Venda : BaseEntity {
@@ -23,6 +23,8 @@ namespace PDVCSharp.Domain.Entities {
         public decimal TotalRecebido { get; set; }
         public TipoCliente TipoCliente { get; set; }
         public FormaPagamento FormaPagamento { get; set; }
+        public Guid? CaixaSessaoId { get; set; }
+        public CaixaSessao? CaixaSessao { get; set; }
         public List<ItemVenda> Itens { get; set; } = new();
 
         [NotMapped]
@@ -31,9 +33,11 @@ namespace PDVCSharp.Domain.Entities {
         [NotMapped]
         public decimal Saldo => Total - TotalRecebido;
 
+        public const decimal PercentualDescontoPremium = 0.10m;
+
         public decimal CalcularDesconto() {
             if (TipoCliente == TipoCliente.Premium) {
-                return SubTotal / 2;
+                return Math.Round(SubTotal * PercentualDescontoPremium, 2);
             }
             return 0;
         }

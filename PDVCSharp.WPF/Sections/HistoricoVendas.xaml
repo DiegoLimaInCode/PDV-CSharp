@@ -1,0 +1,47 @@
+<UserControl
+    x:Class="PDVCSharp.WPF.Sections.HistoricoVendas"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:PDVCSharp.WPF.Controls">
+    <DockPanel Background="{StaticResource PageBackground}">
+        <controls:AppHeader Title="Histórico" DockPanel.Dock="Top" />
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel Margin="0,0,0,12">
+                <TextBlock FontSize="28" FontWeight="Bold" Foreground="{StaticResource BrandBlue}" Text="Histórico de vendas" />
+                <TextBlock Margin="0,6,0,0" Foreground="{StaticResource TextMuted}">
+                    <Run Text="Vendas nesta sessão: " />
+                    <Run Text="{Binding Quantidade, Mode=OneWay}" />
+                    <Run Text="  ·  Total: R$ " />
+                    <Run Text="{Binding Total, Mode=OneWay, StringFormat={}{0:N2}}" />
+                </TextBlock>
+            </StackPanel>
+            <DataGrid
+                Grid.Row="1"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding Vendas}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Data, StringFormat=dd/MM/yyyy HH:mm}" Header="Data" Width="150" />
+                    <DataGridTextColumn Binding="{Binding FormaPagamento}" Header="Pagamento" Width="120" />
+                    <DataGridTextColumn Binding="{Binding TipoCliente}" Header="Cliente" Width="100" />
+                    <DataGridTextColumn Binding="{Binding SubTotal, StringFormat=R$ {0:N2}}" Header="Subtotal" Width="110" />
+                    <DataGridTextColumn Binding="{Binding DescontoAplicado, StringFormat=R$ {0:N2}}" Header="Desconto" Width="110" />
+                    <DataGridTextColumn Binding="{Binding Total, StringFormat=R$ {0:N2}}" Header="Total" Width="110" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button
+                Grid.Row="2"
+                Width="180"
+                Margin="0,16,0,0"
+                HorizontalAlignment="Left"
+                Click="BtnVoltar_Click"
+                Content="Voltar ao caixa"
+                Style="{StaticResource PrimaryButton}" />
+        </Grid>
+    </DockPanel>
+</UserControl>

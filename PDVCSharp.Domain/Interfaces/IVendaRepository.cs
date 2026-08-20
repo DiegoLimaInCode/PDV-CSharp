@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace PDVCSharp.Domain.Interfaces {
-    public interface IVendaRepository : IRepository<Venda> {
-
-
+    public interface IVendaRepository : IRepository<Venda>
+    {
+        Task<IReadOnlyList<Venda>> ObterPorCaixaAsync(Guid caixaSessaoId);
     }
 }

@@ -13,7 +13,10 @@ namespace PDVCSharp.Domain.Entities
         public decimal TotalCartaoCredito { get; set; }
         public decimal TotalCartaoDebito { get; set; }
         public decimal TotalCheque { get; set; }
+        public decimal TotalPix { get; set; }
+        public decimal TotalSuprimentos { get; set; }
+        public decimal TotalSangrias { get; set; }
         public decimal TotalCaixa { get; set; }
-        public decimal SaldoFinal => ValorAbertura + TotalVendas;
+        public decimal SaldoFinal => ValorAbertura + TotalDinheiro + TotalSuprimentos - TotalSangrias;
     }
 }

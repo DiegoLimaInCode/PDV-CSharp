@@ -1,4 +1,4 @@
 namespace PDVCSharp.Domain.Entities
 {
-    public record ProdutoVendido(string Name, double QuantidadeVendida);
+    public record ProdutoVendido(Guid ProdutoId, string Name, double QuantidadeVendida);
 }

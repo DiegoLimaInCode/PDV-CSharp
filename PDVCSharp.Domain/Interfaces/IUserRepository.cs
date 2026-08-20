@@ -8,6 +8,8 @@ namespace PDVCSharp.Domain.Interfaces
 {
     public interface IUserRepository : IRepository<Usuario>
     {
+        Task<Usuario?> GetByLogin(string login);
+        Task<bool> ExistsByLogin(string login);
         Task<bool> DeleteByLoginHard(string login);
     }
 }

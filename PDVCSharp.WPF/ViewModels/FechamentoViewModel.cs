@@ -14,6 +14,9 @@ namespace PDVCSharp.WPF.ViewModels
         private decimal _totalCartaoCredito;
         private decimal _totalCartaoDebito;
         private decimal _totalCheque;
+        private decimal _totalPix;
+        private decimal _totalSuprimentos;
+        private decimal _totalSangrias;
         private decimal _totalCaixal;
 
         public FechamentoViewModel(FechamentoService fechamentoService)
@@ -105,6 +108,24 @@ namespace PDVCSharp.WPF.ViewModels
             }
         }
 
+        public decimal TotalPix
+        {
+            get => _totalPix;
+            set { _totalPix = value; OnPropertyChanged(); }
+        }
+
+        public decimal TotalSuprimentos
+        {
+            get => _totalSuprimentos;
+            set { _totalSuprimentos = value; OnPropertyChanged(); }
+        }
+
+        public decimal TotalSangrias
+        {
+            get => _totalSangrias;
+            set { _totalSangrias = value; OnPropertyChanged(); }
+        }
+
         public decimal TotalCaixal
         {
             get => _totalCaixal;
@@ -127,6 +148,9 @@ namespace PDVCSharp.WPF.ViewModels
                 TotalCartaoCredito = 0;
                 TotalCartaoDebito = 0;
                 TotalCheque = 0;
+                TotalPix = 0;
+                TotalSuprimentos = 0;
+                TotalSangrias = 0;
                 TotalCaixal = 0;
                 return;
             }
@@ -140,6 +164,9 @@ namespace PDVCSharp.WPF.ViewModels
             TotalCartaoCredito = resumo.TotalCartaoCredito;
             TotalCartaoDebito = resumo.TotalCartaoDebito;
             TotalCheque = resumo.TotalCheque;
+            TotalPix = resumo.TotalPix;
+            TotalSuprimentos = resumo.TotalSuprimentos;
+            TotalSangrias = resumo.TotalSangrias;
             TotalCaixal = resumo.TotalCaixa;
         }
 

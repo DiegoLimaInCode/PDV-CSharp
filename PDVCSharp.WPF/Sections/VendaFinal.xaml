@@ -3,40 +3,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:controls="clr-namespace:PDVCSharp.WPF.Controls"
     xmlns:local="clr-namespace:PDVCSharp.WPF.Sections"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Background="#E0E0E0"
+    Background="{StaticResource PageBackground}"
     mc:Ignorable="d">
     <DockPanel>
-        <Border
-            Height="30"
-            Background="#444444"
-            DockPanel.Dock="Top">
-            <Grid>
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="12"
-                    Foreground="White"
-                    Text="CAIXA - 01" />
-                <StackPanel
-                    Margin="0,0,10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <TextBlock
-                        Margin="5,0"
-                        FontSize="10"
-                        Foreground="White"
-                        Text="📶" />
-                    <TextBlock
-                        x:Name="TxtHora"
-                        FontSize="10"
-                        Foreground="White"
-                        Text="14:03" />
-                </StackPanel>
-            </Grid>
-        </Border>
+        <controls:AppHeader Title="Pagamento" DockPanel.Dock="Top" />
 
         <Border
             Padding="20,10"
@@ -185,6 +158,7 @@
                                 <ComboBoxItem Content="CARTÃO DE DÉBITO" />
                                 <ComboBoxItem Content="DINHEIRO" />
                                 <ComboBoxItem Content="CHEQUE" />
+                                <ComboBoxItem Content="PIX" />
                             </ComboBox>
                         </StackPanel>
                     </Border>

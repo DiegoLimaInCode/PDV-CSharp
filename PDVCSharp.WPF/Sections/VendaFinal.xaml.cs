@@ -2,6 +2,8 @@
 using PDVCSharp.Application.Services;
 using PDVCSharp.Domain.Entities;
 using PDVCSharp.WPF.Contexts;
+using PDVCSharp.WPF.Navigation;
+using PDVCSharp.WPF.ViewModels;
 using PDVCSharp.WPF.Models;
 using System;
 using System.Collections.Generic;
@@ -38,6 +40,7 @@ namespace PDVCSharp.WPF.Sections {
         public VendaFinal() {
             InitializeComponent();
             _finalService = App.ServiceProvider.GetRequiredService<VendaFinalService>();
+            DataContext = App.ServiceProvider.GetRequiredService<AberturaViewModel>();
             _produtos = new ObservableCollection<ProdutoVenda>();
             DgCartoes.ItemsSource = PagamentosCartao;
 
@@ -108,7 +111,7 @@ namespace PDVCSharp.WPF.Sections {
             }
 
             if (clienteVip) {
-                _desconto = _subtotal / 2;
+                _desconto = Math.Round(_subtotal * 0.10m, 2);
             }
             else {
                 _desconto = 0;
@@ -232,16 +235,15 @@ namespace PDVCSharp.WPF.Sections {
             int indiceSelecionado = CmbFormaPagamento.SelectedIndex;
             FormaPagamento formaPagamento;
 
-            if (indiceSelecionado == 0)
-                formaPagamento = FormaPagamento.Caixa;
-            else if (indiceSelecionado == 1)
-                formaPagamento = FormaPagamento.Credito;
-            else if (indiceSelecionado == 2)
-                formaPagamento = FormaPagamento.Debito;
-            else if (indiceSelecionado == 3)
-                formaPagamento = FormaPagamento.Dinheiro;
-            else
-                formaPagamento = FormaPagamento.Cheque;
+            formaPagamento = indiceSelecionado switch
+            {
+                1 => FormaPagamento.Credito,
+                2 => FormaPagamento.Debito,
+                3 => FormaPagamento.Dinheiro,
+                4 => FormaPagamento.Cheque,
+                5 => FormaPagamento.Pix,
+                _ => FormaPagamento.Caixa
+            };
 
             TipoCliente tipoCliente = TipoCliente.Comum;
             if (CmbCliente.SelectedIndex == 1) {
@@ -260,16 +262,18 @@ namespace PDVCSharp.WPF.Sections {
             }
 
             try {
-                await _finalService.FinalizarVenda(itensVenda, formaPagamento, tipoCliente, totalRecebido);
+                await _finalService.FinalizarVenda(
+                    itensVenda,
+                    formaPagamento,
+                    tipoCliente,
+                    totalRecebido,
+                    Master.Caixa?.CaixaSessaoId,
+                    Master.Usuario?.OperatorName ?? string.Empty);
                 MessageBox.Show("Venda finalizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 Master.Venda = null;
-                this.Visibility = Visibility.Collapsed;
-                var mainWindow = this.Parent as Grid;
-                var telaFechamento = mainWindow?.Children.OfType<Fechamento>().FirstOrDefault();
-                if (telaFechamento != null) {
-                    telaFechamento.Visibility = Visibility.Visible;
-                }
+                MainWindow.Navigation.GetScreen<Venda>()?.LimparCarrinho();
+                MainWindow.Navigation.Navigate(AppScreen.CaixaLivre);
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);

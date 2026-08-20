@@ -5,46 +5,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:PDVCSharp.WPF.Sections"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:PDVCSharp.WPF.Controls"
     xmlns:vm="clr-namespace:PDVCSharp.WPF.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
 
 
-    <Grid Background="#888888">
-        <Border Background="#F8F4F4" ClipToBounds="True" />
-
+    <Grid Background="{StaticResource PageBackground}">
         <DockPanel>
-            <Border
-                Height="30"
-                Background="#444444"
-                DockPanel.Dock="Top">
-                <Grid>
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        Foreground="White"
-                        Text="CAIXA - 01 " />
-
-                    <StackPanel
-                        Margin="0,0,10,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Margin="5,0"
-                            FontSize="10"
-                            Foreground="White"
-                            Text="📶" />
-                        <TextBlock
-                            x:Name="TxtHora"
-                            FontSize="10"
-                            Foreground="White"
-                            Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm}}" />
-                    </StackPanel>
-                </Grid>
-            </Border>
+            <controls:AppHeader Title="Fechamento" DockPanel.Dock="Top" />
             <Grid>
                 <StackPanel
                     Margin="30"
@@ -320,14 +290,14 @@
                                 Grid.Row="6"
                                 Grid.Column="2"
                                 BorderThickness="0"
-                                Text="{Binding TotalCheque, Mode=OneWay, StringFormat=R$ {0:N2}}"
+                                Text="{Binding TotalPix, Mode=OneWay, StringFormat=R$ {0:N2}}"
                                 TextAlignment="Right" />
 
-                            <!--  Voucher  -->
+                            <!--  Cheque  -->
                             <TextBlock
                                 Grid.Row="7"
                                 Grid.Column="0"
-                                Text="Voucher :" />
+                                Text="Cheque :" />
                             <TextBlock
                                 Grid.Row="7"
                                 Grid.Column="1"
@@ -338,7 +308,7 @@
                                 Grid.Row="7"
                                 Grid.Column="2"
                                 BorderThickness="0"
-                                Text="{Binding ValorAbertura, Mode=OneWay, StringFormat=R$ {0:N2}}"
+                                Text="{Binding TotalCheque, Mode=OneWay, StringFormat=R$ {0:N2}}"
                                 TextAlignment="Right" />
 
                             <!--  Linha divisória  -->
@@ -372,7 +342,7 @@
                                 Grid.Row="10"
                                 Grid.Column="2"
                                 BorderThickness="0"
-                                Text="{Binding ValorAbertura, Mode=OneWay, StringFormat=R$ {0:N2}}"
+                                Text="{Binding TotalSuprimentos, Mode=OneWay, StringFormat=R$ {0:N2}}"
                                 TextAlignment="Right" />
 
                             <!--  Sangrias  -->
@@ -390,7 +360,7 @@
                                 Grid.Row="11"
                                 Grid.Column="2"
                                 BorderThickness="0"
-                                Text="{Binding TotalCheque, Mode=OneWay, StringFormat=R$ {0:N2}}"
+                                Text="{Binding TotalSangrias, Mode=OneWay, StringFormat=R$ {0:N2}}"
                                 TextAlignment="Right" />
 
                             <!--  Total em Caixa  -->
@@ -431,7 +401,7 @@
                                 Grid.ColumnSpan="3"
                                 Margin="0,12,0,0"
                                 Click="BtnFinalizarCompra_Click"
-                                Content="FINALIZAR COMPRA"
+                                Content="VOLTAR AO CAIXA"
                                 Style="{StaticResource RoundedBlueButton}" />
 
                         </Grid>

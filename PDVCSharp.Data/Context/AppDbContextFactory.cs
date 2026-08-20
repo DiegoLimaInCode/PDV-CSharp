@@ -8,8 +8,9 @@ namespace PDVCSharp.Data.Context
         public AppDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            var connectionString = "Server=localhost;Database=pdvcsharp;User=root;Password=1234;";
-            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            var connectionString = Environment.GetEnvironmentVariable("PDV_CONNECTION")
+                ?? "Data Source=pdv.db";
+            optionsBuilder.UseSqlite(connectionString);
             return new AppDbContext(optionsBuilder.Options);
         }
     }

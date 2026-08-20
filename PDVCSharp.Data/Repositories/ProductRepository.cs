@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PDVCSharp.Data.Context;
 using PDVCSharp.Domain.Entities;
+using PDVCSharp.Domain.Exceptions;
 using PDVCSharp.Domain.Interfaces;
-using System.Text.Json;
 
 namespace PDVCSharp.Data.Repositories
 {
@@ -12,70 +12,74 @@ namespace PDVCSharp.Data.Repositories
         {
         }
 
-        public void CarregarProdutos()
+        public async Task<Produto?> GetBySkuOrName(string termo)
         {
-            try
-            {
-                if (File.Exists("Produtos.json"))
-                {
-                    var productsFile = File.ReadAllText("Produtos.json");
-                    var produtosBase = JsonSerializer.Deserialize<List<Produto>>(productsFile);
-
-                    if (produtosBase != null && produtosBase.Any())
-                    {
-                        foreach (var produto in produtosBase)
-                        {
-                            _context.Add(new Produto
-                                {
-                                    Name = produto.Name,
-                                    Price = produto.Price,
-                                    Quantity = produto.Quantity,
-                                    ImagePath = produto.ImagePath
-                                });
-                            _context.SaveChanges();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao carregar produtos do JSON", ex);
-            }
+            var busca = termo.Trim();
+            return await _dbSet
+                .AsNoTracking()
+                .Where(p => !p.IsDeleted)
+                .FirstOrDefaultAsync(p =>
+                    p.Sku.ToLower() == busca.ToLower() ||
+                    p.Name.ToLower().Contains(busca.ToLower()));
         }
 
         public async Task<bool> ValidarEstoque(IEnumerable<ProdutoVendido> itensVendidos)
         {
             foreach (var item in itensVendidos)
             {
-                var produtoBanco = await _dbSet
-                    .Where(p => p.Name == item.Name && !p.IsDeleted)
-                    .FirstOrDefaultAsync();
-
+                var produtoBanco = await BuscarProduto(item);
                 if (produtoBanco == null || produtoBanco.Quantity < item.QuantidadeVendida)
                     return false;
             }
             return true;
         }
-        public async Task BaixarEstoque(IEnumerable<ProdutoVendido> itensVendidos)
+
+        public async Task BaixarEstoque(IEnumerable<ProdutoVendido> itensVendidos, bool commit = true)
         {
             foreach (var item in itensVendidos)
             {
-                var produtoBanco = await _dbSet
-                    .Where(p => p.Name == item.Name && !p.IsDeleted)
-                    .FirstOrDefaultAsync();
-
-                if (produtoBanco == null)
-                    throw new Exception($"Produto '{item.Name}' não encontrado no banco ao baixar estoque.");
+                var produtoBanco = await BuscarProduto(item, tracking: true)
+                    ?? throw new DomainException($"Produto '{item.Name}' não encontrado no banco ao baixar estoque.");
 
                 if (produtoBanco.Quantity < item.QuantidadeVendida)
-                    throw new Exception($"Estoque insuficiente para '{item.Name}'. " + $"Disponível: {produtoBanco.Quantity}, solicitado: {item.QuantidadeVendida}.");
+                {
+                    throw new EstoqueInsuficienteException(
+                        $"Estoque insuficiente para '{produtoBanco.Name}'. Disponível: {produtoBanco.Quantity}, solicitado: {item.QuantidadeVendida}.");
+                }
 
+                var antes = produtoBanco.Quantity;
                 produtoBanco.Quantity -= item.QuantidadeVendida;
                 produtoBanco.UpdatedAt = DateTime.UtcNow;
-                _dbSet.Update(produtoBanco);
+
+                _context.MovimentacoesEstoque.Add(new MovimentacaoEstoque
+                {
+                    ProdutoId = produtoBanco.Id,
+                    ProdutoNome = produtoBanco.Name,
+                    QuantidadeAntes = antes,
+                    QuantidadeMovida = item.QuantidadeVendida,
+                    QuantidadeDepois = produtoBanco.Quantity,
+                    Tipo = TipoMovimentacao.Saida,
+                    Motivo = "Venda"
+                });
             }
-            await Commit();
+
+            if (commit)
+            {
+                await Commit();
+            }
         }
 
+        private async Task<Produto?> BuscarProduto(ProdutoVendido item, bool tracking = false)
+        {
+            var query = tracking ? _dbSet.AsQueryable() : _dbSet.AsNoTracking();
+            query = query.Where(p => !p.IsDeleted);
+
+            if (item.ProdutoId != Guid.Empty)
+            {
+                return await query.FirstOrDefaultAsync(p => p.Id == item.ProdutoId);
+            }
+
+            return await query.FirstOrDefaultAsync(p => p.Name == item.Name);
+        }
     }
 }

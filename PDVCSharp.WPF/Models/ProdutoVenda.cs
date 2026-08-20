@@ -12,6 +12,8 @@ namespace PDVCSharp.WPF.Models
         private string _imagePath = string.Empty;
 
         public Guid Id { get; set; }
+        public string Sku { get; set; } = string.Empty;
+        public string Categoria { get; set; } = string.Empty;
 
         public string Name
         {

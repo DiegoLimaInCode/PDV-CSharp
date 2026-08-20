@@ -10,6 +10,8 @@ namespace PDVCSharp.WPF.extensions
             services.AddTransient<LoginViewModel>();
             services.AddTransient<VendaViewModel>();
             services.AddTransient<AberturaViewModel>();
+            services.AddTransient<EstoqueViewModel>();
+            services.AddTransient<HistoricoVendasViewModel>();
 
             return services;
         }

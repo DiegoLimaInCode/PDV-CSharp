@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using PDVCSharp.Domain.Entities;
 
 namespace PDVCSharp.WPF.Contexts
 {
@@ -17,6 +18,10 @@ namespace PDVCSharp.WPF.Contexts
                 OnPropertyChanged();
             }
         }
+
+        public Cargo Cargo { get; set; }
+
+        public bool IsAdministrador => Cargo == Cargo.Administrador;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

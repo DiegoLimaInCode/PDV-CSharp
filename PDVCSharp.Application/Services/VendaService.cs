@@ -1,31 +1,32 @@
-﻿using PDVCSharp.Data.Repositories;
-using PDVCSharp.Domain.Entities;
+﻿using PDVCSharp.Domain.Entities;
+using PDVCSharp.Domain.Exceptions;
 using PDVCSharp.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace PDVCSharp.Application.Services {
- public class VendaService  {
-        private readonly IProductRepository _productRepository;
+namespace PDVCSharp.Application.Services;
 
-        public VendaService(IProductRepository productRepository) {
-            _productRepository = productRepository;
-        }
+public class VendaService
+{
+    private readonly IProductRepository _productRepository;
 
-        
-       public async Task<Produto> GetProductById(Guid id) {
-           var checkIfProductExists= await _productRepository.GetById(id);
-
-            if (checkIfProductExists == null) {
-                throw new ArgumentNullException("Não existe um produto com esse Id");
-            }
-
-           
-            return checkIfProductExists;
-            
-            
-        }
-
+    public VendaService(IProductRepository productRepository)
+    {
+        _productRepository = productRepository;
     }
+
+    public async Task<Produto> GetProductById(Guid id)
+    {
+        var produto = await _productRepository.GetById(id);
+        if (produto is null)
+        {
+            throw new DomainException("Não existe um produto com esse Id");
+        }
+
+        return produto;
+    }
+
+    public Task<Produto?> BuscarProduto(string termo)
+        => _productRepository.GetBySkuOrName(termo);
+
+    public Task<IReadOnlyList<Produto>> ListarCatalogoAsync()
+        => Task.FromResult<IReadOnlyList<Produto>>(_productRepository.GetAll().OrderBy(p => p.Name).ToList());
 }

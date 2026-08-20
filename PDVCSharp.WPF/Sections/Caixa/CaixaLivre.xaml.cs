@@ -1,39 +1,38 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using PDVCSharp.Domain.Entities;
 using PDVCSharp.WPF.Contexts;
-using System.Linq;
+using PDVCSharp.WPF.Navigation;
+using PDVCSharp.WPF.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace PDVCSharp.WPF.Sections.Caixa
 {
-    // Tela "Caixa Livre" — estado padrão quando o caixa está aberto mas sem venda ativa.
-    // O operador pode iniciar uma nova venda a partir daqui.
-    public partial class CaixaLivre : UserControl
+    public partial class CaixaLivre : UserControl, IScreenActivation
     {
+        private readonly AberturaViewModel _vm;
+
         public CaixaLivre()
         {
             InitializeComponent();
+            _vm = App.ServiceProvider.GetRequiredService<AberturaViewModel>();
+            DataContext = _vm;
         }
 
-        // Botão "Nova Venda" — inicia uma nova sessão de venda
-        private void Button_Click(object sender, RoutedEventArgs e)
+        public void OnNavigatedTo() => _vm.Refresh();
+
+        private void BtnIniciarVenda_Click(object sender, RoutedEventArgs e)
         {
-            // Cria uma nova sessão de venda (carrinho vazio)
             Master.Venda = new SessaoVenda();
-
-            this.Visibility = Visibility.Collapsed; // Esconde Caixa Livre
-            var mainWindow = this.Parent as Grid;
-            if (mainWindow == null)
-            {
-                return;
-            }
-
-            var telaVenda = mainWindow.Children.OfType<PDVCSharp.WPF.Sections.Venda>().FirstOrDefault();
-            if (telaVenda != null)
-            {
-                telaVenda.Visibility = Visibility.Visible; // Mostra a tela de venda
-            }
+            MainWindow.Navigation.Navigate(AppScreen.Venda);
         }
+
+        private void BtnEstoque_Click(object sender, RoutedEventArgs e)
+            => MainWindow.Navigation.Navigate(AppScreen.Estoque);
+
+        private void BtnHistorico_Click(object sender, RoutedEventArgs e)
+            => MainWindow.Navigation.Navigate(AppScreen.Historico);
+
+        private void BtnFechamento_Click(object sender, RoutedEventArgs e)
+            => MainWindow.Navigation.Navigate(AppScreen.Fechamento);
     }
 }

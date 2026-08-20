@@ -11,6 +11,18 @@ namespace PDVCSharp.Data.Repositories
         {
         }
 
+        public Task<Usuario?> GetByLogin(string login)
+        {
+            var loginNormalizado = login.Trim().ToLower();
+            return _dbSet.FirstOrDefaultAsync(u => !u.IsDeleted && u.Login.ToLower() == loginNormalizado);
+        }
+
+        public Task<bool> ExistsByLogin(string login)
+        {
+            var loginNormalizado = login.Trim().ToLower();
+            return _dbSet.AnyAsync(u => u.Login.ToLower() == loginNormalizado);
+        }
+
         public async Task<bool> DeleteByLoginHard(string login)
         {
             if (string.IsNullOrWhiteSpace(login))

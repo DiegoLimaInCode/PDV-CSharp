@@ -35,7 +35,7 @@ namespace PDVCSharp.Data.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<decimal>("PrecoUnitario")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("ProdutoId")
                         .HasColumnType("char(36)");
@@ -172,6 +172,18 @@ namespace PDVCSharp.Data.Migrations
                         .HasColumnType("varchar(200)")
                         .HasAnnotation("Relational:JsonPropertyName", "name");
 
+                    b.Property<string>("Sku")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasAnnotation("Relational:JsonPropertyName", "sku");
+
+                    b.Property<string>("Categoria")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("varchar(80)")
+                        .HasAnnotation("Relational:JsonPropertyName", "categoria");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)")
                         .HasAnnotation("Relational:JsonPropertyName", "price");
@@ -184,6 +196,8 @@ namespace PDVCSharp.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Sku");
 
                     b.ToTable("Produtos");
                 });
@@ -238,8 +252,11 @@ namespace PDVCSharp.Data.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<Guid?>("CaixaSessaoId")
+                        .HasColumnType("char(36)");
+
                     b.Property<decimal>("DescontoAplicado")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("FormaPagamento")
                         .HasColumnType("int");
@@ -248,21 +265,23 @@ namespace PDVCSharp.Data.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<decimal>("SubTotal")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("TipoCliente")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("TotalRecebido")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CaixaSessaoId");
 
                     b.ToTable("Vendas");
                 });
@@ -272,7 +291,7 @@ namespace PDVCSharp.Data.Migrations
                     b.HasOne("PDVCSharp.Domain.Entities.Produto", "Produto")
                         .WithMany()
                         .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("PDVCSharp.Domain.Entities.Venda", "Venda")
@@ -288,6 +307,13 @@ namespace PDVCSharp.Data.Migrations
 
             modelBuilder.Entity("PDVCSharp.Domain.Entities.Venda", b =>
                 {
+                    b.HasOne("PDVCSharp.Domain.Entities.CaixaSessao", "CaixaSessao")
+                        .WithMany()
+                        .HasForeignKey("CaixaSessaoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CaixaSessao");
+
                     b.Navigation("Itens");
                 });
 #pragma warning restore 612, 618

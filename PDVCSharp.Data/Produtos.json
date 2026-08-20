@@ -1,38 +1,20 @@
 ﻿[
-  {
-    "name": "Maçã",
-    "price": 6.90,
-    "quantity": 50,
-    "imagePath": "pack://application:,,,/Components/Photos/maca.jpg"
-  },
-  {
-    "name": "Pera",
-    "price": 8.50,
-    "quantity": 50,
-    "imagePath": "pack://application:,,,/Components/Photos/pera.jpg"
-  },
-  {
-    "name": "Banana",
-    "price": 4.90,
-    "quantity": 50,
-    "imagePath": "pack://application:,,,/Components/Photos/banana.jpg"
-  },
-  {
-    "name": "Morango",
-    "price": 13.90,
-    "quantity": 50,
-    "imagePath": "pack://application:,,,/Components/Photos/morango.jpg"
-  },
-  {
-    "name": "Abacaxi",
-    "price": 6.50,
-    "quantity": 50,
-    "imagePath": "pack://application:,,,/Components/Photos/abacaxi.jpg"
-  },
-  {
-    "name": "Uva",
-    "price": 12.90,
-    "quantity": 50,
-    "imagePath": "pack://application:,,,/Components/Photos/uva.jpg"
-  }
+  { "name": "Maçã", "sku": "FRU-001", "categoria": "Hortifruti", "price": 6.90, "quantity": 50, "imagePath": "pack://application:,,,/Components/Photos/maca.jpg" },
+  { "name": "Pera", "sku": "FRU-002", "categoria": "Hortifruti", "price": 8.50, "quantity": 40, "imagePath": "pack://application:,,,/Components/Photos/pera.jpg" },
+  { "name": "Banana", "sku": "FRU-003", "categoria": "Hortifruti", "price": 4.90, "quantity": 80, "imagePath": "pack://application:,,,/Components/Photos/banana.jpg" },
+  { "name": "Morango", "sku": "FRU-004", "categoria": "Hortifruti", "price": 13.90, "quantity": 25, "imagePath": "pack://application:,,,/Components/Photos/morango.jpg" },
+  { "name": "Abacaxi", "sku": "FRU-005", "categoria": "Hortifruti", "price": 6.50, "quantity": 20, "imagePath": "pack://application:,,,/Components/Photos/abacaxi.jpg" },
+  { "name": "Uva", "sku": "FRU-006", "categoria": "Hortifruti", "price": 12.90, "quantity": 30, "imagePath": "pack://application:,,,/Components/Photos/uva.jpg" },
+  { "name": "Leite Integral 1L", "sku": "LAT-010", "categoria": "Laticínios", "price": 5.49, "quantity": 60, "imagePath": "" },
+  { "name": "Queijo Mussarela 200g", "sku": "LAT-011", "categoria": "Laticínios", "price": 14.90, "quantity": 35, "imagePath": "" },
+  { "name": "Iogurte Natural", "sku": "LAT-012", "categoria": "Laticínios", "price": 3.79, "quantity": 45, "imagePath": "" },
+  { "name": "Pão Francês kg", "sku": "PAD-020", "categoria": "Padaria", "price": 12.90, "quantity": 40, "imagePath": "" },
+  { "name": "Café Torrado 500g", "sku": "MER-030", "categoria": "Mercearia", "price": 18.50, "quantity": 28, "imagePath": "" },
+  { "name": "Arroz 5kg", "sku": "MER-031", "categoria": "Mercearia", "price": 27.90, "quantity": 22, "imagePath": "" },
+  { "name": "Feijão 1kg", "sku": "MER-032", "categoria": "Mercearia", "price": 8.49, "quantity": 40, "imagePath": "" },
+  { "name": "Açúcar 1kg", "sku": "MER-033", "categoria": "Mercearia", "price": 4.29, "quantity": 50, "imagePath": "" },
+  { "name": "Refrigerante 2L", "sku": "BEB-040", "categoria": "Bebidas", "price": 9.90, "quantity": 36, "imagePath": "" },
+  { "name": "Água Mineral 500ml", "sku": "BEB-041", "categoria": "Bebidas", "price": 2.50, "quantity": 80, "imagePath": "" },
+  { "name": "Detergente 500ml", "sku": "LIM-050", "categoria": "Limpeza", "price": 3.19, "quantity": 48, "imagePath": "" },
+  { "name": "Papel Higiênico 12un", "sku": "HIG-060", "categoria": "Higiene", "price": 16.90, "quantity": 18, "imagePath": "" }
 ]

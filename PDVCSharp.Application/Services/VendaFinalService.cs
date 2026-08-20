@@ -1,63 +1,84 @@
-﻿using PDVCSharp.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PDVCSharp.Data.Context;
+using PDVCSharp.Domain.Entities;
+using PDVCSharp.Domain.Exceptions;
 using PDVCSharp.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace PDVCSharp.Application.Services {
-    public class VendaFinalService {
+namespace PDVCSharp.Application.Services;
 
-        private readonly IVendaRepository _vendaRepository;
-        private readonly IProductRepository _productRepository;
+public class VendaFinalService
+{
+    private readonly AppDbContext _context;
+    private readonly IProductRepository _productRepository;
 
-        public VendaFinalService(IVendaRepository vendaRepository, IProductRepository productRepository) {
-            _vendaRepository = vendaRepository;
-            _productRepository = productRepository;
+    public VendaFinalService(AppDbContext context, IProductRepository productRepository)
+    {
+        _context = context;
+        _productRepository = productRepository;
+    }
+
+    public async Task<Venda> FinalizarVenda(
+        List<ItemVenda> itens,
+        FormaPagamento formaPagamento,
+        TipoCliente tipoCliente,
+        decimal totalRecebido,
+        Guid? caixaSessaoId = null,
+        string loginOperador = "")
+    {
+        if (itens is null || itens.Count == 0)
+        {
+            throw new DomainException("A venda precisa ter ao menos um item.");
         }
 
-        public async Task<Venda> FinalizarVenda(List<ItemVenda> itens, FormaPagamento formaPagamento, TipoCliente tipoCliente, decimal totalRecebido) {
-            List<ItemVenda> _itens = itens;
+        var produtosVendidos = itens
+            .Select(item => new ProdutoVendido(item.ProdutoId, string.Empty, item.Quantidade))
+            .ToList();
 
-            List<ProdutoVendido> produtosVendidos = new List<ProdutoVendido>();
-
-            foreach (var item in itens) {
-               var produtoEncontrado= await _productRepository.GetById(item.ProdutoId);
-                var produtoVendido = new ProdutoVendido(produtoEncontrado.Name, item.Quantidade);
-                produtosVendidos.Add(produtoVendido);
-            }
-
-            var estoqueValidado = await _productRepository.ValidarEstoque(produtosVendidos);
-
-            if (!estoqueValidado) {
-                throw new Exception("Estoque insuficiente");
-            }
-
-            decimal subtotal = 0;
-            foreach (var item in itens) {
-                subtotal += item.Subtotal;
-            }
-
-            var venda = new Venda();
-
-            venda.Data = DateTime.Now;
-            venda.FormaPagamento = formaPagamento;
-            venda.TipoCliente = tipoCliente;
-            venda.SubTotal = subtotal;
-            venda.TotalRecebido = totalRecebido;
-            venda.Itens = itens;
-
-            venda.Calcular();
-
-            if (totalRecebido < venda.Total) {
-                throw new Exception("Pagamento insuficiente");
-            }
-
-            await _productRepository.BaixarEstoque(produtosVendidos);
-            await _vendaRepository.Add(venda);
-
-            return venda;
-
-
+        var estoqueValidado = await _productRepository.ValidarEstoque(produtosVendidos);
+        if (!estoqueValidado)
+        {
+            throw new EstoqueInsuficienteException("Estoque insuficiente");
         }
+
+        var subtotal = itens.Sum(item => item.Subtotal);
+        var venda = new Venda
+        {
+            Data = DateTime.Now,
+            FormaPagamento = formaPagamento,
+            TipoCliente = tipoCliente,
+            SubTotal = subtotal,
+            TotalRecebido = totalRecebido,
+            Itens = itens,
+            CaixaSessaoId = caixaSessaoId
+        };
+        venda.Calcular();
+
+        if (totalRecebido < venda.Total)
+        {
+            throw new PagamentoInsuficienteException("Pagamento insuficiente");
+        }
+
+        await using var transacao = await _context.Database.BeginTransactionAsync();
+
+        await _productRepository.BaixarEstoque(produtosVendidos, commit: false);
+        await _context.Vendas.AddAsync(venda);
+
+        if (caixaSessaoId is Guid sessaoId && sessaoId != Guid.Empty)
+        {
+            _context.MovimentosCaixa.Add(new MovimentoCaixa
+            {
+                CaixaSessaoId = sessaoId,
+                Tipo = TipoMovimentoCaixa.Entrada,
+                Origem = OrigemMovimentoCaixa.Venda,
+                Valor = venda.Total,
+                DataHora = DateTime.Now,
+                Observacao = $"Venda {venda.Id}",
+                LoginOperador = loginOperador
+            });
+        }
+
+        await _context.SaveChangesAsync();
+        await transacao.CommitAsync();
+        return venda;
     }
 }

@@ -1,35 +1,36 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using PDVCSharp.Data.Context;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PDVCSharp.Application.Services;
 using PDVCSharp.Domain.Entities;
-using PDVCSharp.Domain.Interfaces;
 using PDVCSharp.WPF.Contexts;
+using PDVCSharp.WPF.Navigation;
+using PDVCSharp.WPF.ViewModels;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace PDVCSharp.WPF.Sections
 {
-    public partial class Abertura : UserControl
+    public partial class Abertura : UserControl, IScreenActivation
     {
+        private readonly CaixaService _caixaService;
+        private readonly UsuarioService _usuarioService;
+
         public Abertura()
         {
             InitializeComponent();
-            Loaded += Abertura_Loaded;
-            IsVisibleChanged += Abertura_IsVisibleChanged;
+            DataContext = App.ServiceProvider.GetRequiredService<AberturaViewModel>();
+            _caixaService = App.ServiceProvider.GetRequiredService<CaixaService>();
+            _usuarioService = App.ServiceProvider.GetRequiredService<UsuarioService>();
         }
 
-        private void Abertura_Loaded(object sender, RoutedEventArgs e)
+        public void OnNavigatedTo()
         {
-            AtualizarAreaAdmin();
-        }
-
-        private void Abertura_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (Visibility == Visibility.Visible)
+            if (DataContext is AberturaViewModel vm)
             {
-                AtualizarAreaAdmin();
+                vm.Refresh();
             }
+
+            AtualizarAreaAdmin();
         }
 
         private void AtualizarAreaAdmin()
@@ -39,30 +40,18 @@ namespace PDVCSharp.WPF.Sections
                 return;
             }
 
-            var isAdmin = string.Equals(Master.Usuario?.OperatorName, "admin", StringComparison.OrdinalIgnoreCase);
+            var isAdmin = Master.Usuario?.IsAdministrador == true;
             AdminOperatorArea.Visibility = isAdmin ? Visibility.Visible : Visibility.Collapsed;
-
             if (!isAdmin)
             {
-                if (AdminOperatorPanel is not null)
-                {
-                    AdminOperatorPanel.Visibility = Visibility.Collapsed;
-                }
-
-                if (DeleteOperatorPanel is not null)
-                {
-                    DeleteOperatorPanel.Visibility = Visibility.Collapsed;
-                }
+                if (AdminOperatorPanel is not null) AdminOperatorPanel.Visibility = Visibility.Collapsed;
+                if (DeleteOperatorPanel is not null) DeleteOperatorPanel.Visibility = Visibility.Collapsed;
             }
         }
 
         private void BtnToggleOperatorPanel_Click(object sender, RoutedEventArgs e)
         {
-            if (AdminOperatorPanel is null)
-            {
-                return;
-            }
-
+            if (AdminOperatorPanel is null) return;
             AdminOperatorPanel.Visibility = AdminOperatorPanel.Visibility == Visibility.Visible
                 ? Visibility.Collapsed
                 : Visibility.Visible;
@@ -70,24 +59,17 @@ namespace PDVCSharp.WPF.Sections
 
         private void BtnCloseOperatorPanel_Click(object sender, RoutedEventArgs e)
         {
-            if (AdminOperatorPanel is null)
+            if (AdminOperatorPanel is not null)
             {
-                return;
+                AdminOperatorPanel.Visibility = Visibility.Collapsed;
             }
-
-            AdminOperatorPanel.Visibility = Visibility.Collapsed;
         }
 
         private async void BtnToggleDeleteOperatorPanel_Click(object sender, RoutedEventArgs e)
         {
-            if (DeleteOperatorPanel is null)
-            {
-                return;
-            }
-
+            if (DeleteOperatorPanel is null) return;
             var vaiMostrar = DeleteOperatorPanel.Visibility != Visibility.Visible;
             DeleteOperatorPanel.Visibility = vaiMostrar ? Visibility.Visible : Visibility.Collapsed;
-
             if (vaiMostrar)
             {
                 await CarregarUsuariosParaExclusao();
@@ -98,17 +80,8 @@ namespace PDVCSharp.WPF.Sections
         {
             try
             {
-                using var scope = App.ServiceProvider.CreateScope();
-                var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
                 var loginLogado = Master.Usuario?.OperatorName ?? string.Empty;
-                var logins = await context.Usuarios
-                    .AsNoTracking()
-                    .Where(u => !u.IsDeleted && u.Login.ToLower() != loginLogado.ToLower())
-                    .OrderBy(u => u.Login)
-                    .Select(u => u.Login)
-                    .ToListAsync();
-
+                var logins = await _usuarioService.ListarLoginsAsync(loginLogado);
                 CmbUsersToDelete.ItemsSource = logins;
                 CmbUsersToDelete.SelectedIndex = logins.Count > 0 ? 0 : -1;
             }
@@ -128,28 +101,13 @@ namespace PDVCSharp.WPF.Sections
                     return;
                 }
 
-                var confirmacao = MessageBox.Show(
-                    $"Deseja realmente excluir o usuário '{loginSelecionado}'?",
-                    "Confirmar exclusão",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
-
-                if (confirmacao != MessageBoxResult.Yes)
+                if (MessageBox.Show($"Deseja realmente excluir o usuário '{loginSelecionado}'?", "Confirmar exclusão",
+                        MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                 {
                     return;
                 }
 
-                using var scope = App.ServiceProvider.CreateScope();
-                var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
-
-                var removido = await userRepository.DeleteByLoginHard(loginSelecionado);
-                if (!removido)
-                {
-                    MessageBox.Show("Usuário não encontrado para exclusão.", "Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    await CarregarUsuariosParaExclusao();
-                    return;
-                }
-
+                await _usuarioService.ExcluirPorLoginAsync(loginSelecionado);
                 MessageBox.Show("Usuário excluído com sucesso.", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
                 await CarregarUsuariosParaExclusao();
             }
@@ -159,68 +117,28 @@ namespace PDVCSharp.WPF.Sections
             }
         }
 
-        private void BtnSaveOperator_Click(object sender, RoutedEventArgs e)
+        private async void BtnSaveOperator_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var nome = TxtOperatorName.Text.Trim();
-                var login = TxtOperatorLogin.Text.Trim();
-                var senha = PwdOperator.Password.Trim();
-
-                if (string.IsNullOrWhiteSpace(nome))
-                {
-                    MessageBox.Show("Informe o nome do operador.", "Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                if (string.IsNullOrWhiteSpace(login))
-                {
-                    MessageBox.Show("Informe o login do operador.", "Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                if (string.IsNullOrWhiteSpace(senha))
-                {
-                    MessageBox.Show("Informe a senha do operador.", "Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                if (CmbOperatorCargo.SelectedItem is not ComboBoxItem cargoItem)
+                if (CmbOperatorCargo.SelectedItem is not ComboBoxItem cargoItem ||
+                    !Enum.TryParse<Cargo>((cargoItem.Tag?.ToString() ?? string.Empty).Trim(), true, out var cargo))
                 {
                     MessageBox.Show("Selecione o cargo do operador.", "Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                var cargoTexto = (cargoItem.Tag?.ToString() ?? cargoItem.Content?.ToString() ?? string.Empty).Trim();
-                if (!Enum.TryParse<Cargo>(cargoTexto, true, out var cargoSelecionado))
-                {
-                    MessageBox.Show("Cargo inválido.", "Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                using var scope = App.ServiceProvider.CreateScope();
-                var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-                var loginJaExiste = context.Usuarios.Any(u => u.Login.ToLower() == login.ToLower());
-                if (loginJaExiste)
-                {
-                    MessageBox.Show("Já existe um usuário com esse login.", "Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                var novoUsuario = new Usuario
-                {
-                    Name = nome,
-                    Login = login,
-                    Password = senha,
-                    Cargo = cargoSelecionado
-                };
-
-                context.Usuarios.Add(novoUsuario);
-                context.SaveChanges();
+                await _usuarioService.CadastrarAsync(
+                    TxtOperatorName.Text,
+                    TxtOperatorLogin.Text,
+                    PwdOperator.Password,
+                    cargo);
 
                 MessageBox.Show("Operador cadastrado com sucesso.", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                LimparFormularioOperador();
+                TxtOperatorName.Text = string.Empty;
+                TxtOperatorLogin.Text = string.Empty;
+                PwdOperator.Password = string.Empty;
+                CmbOperatorCargo.SelectedIndex = 0;
                 AdminOperatorPanel.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
@@ -229,125 +147,39 @@ namespace PDVCSharp.WPF.Sections
             }
         }
 
-        private void LimparFormularioOperador()
+        private async void BtnConfirmar_Click(object sender, RoutedEventArgs e)
         {
-            TxtOperatorName.Text = string.Empty;
-            TxtOperatorLogin.Text = string.Empty;
-            PwdOperator.Password = string.Empty;
-            CmbOperatorCargo.SelectedIndex = 0;
-        }
-
-        private void PlaceHolder_ValueBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (PlaceHolder_ValueBox is null) return;
-
-            if (PlaceHolder_ValueBox.Text == "R$ 200,00")
-                PlaceHolder_ValueBox.Text = string.Empty;
-        }
-
-        private void PlaceHolder_ValueBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (PlaceHolder_ValueBox is null) return;
-
-            if (string.IsNullOrWhiteSpace(PlaceHolder_ValueBox.Text))
-                PlaceHolder_ValueBox.Text = "R$ 200,00";
-        }
-
-        private void BtnConfirmar_Click(Object sender, RoutedEventArgs e) {
-            try {
+            try
+            {
                 var textoDigitado = (PlaceHolder_ValueBox.Text ?? string.Empty).Trim();
                 decimal valorAbertura;
-
                 if (string.IsNullOrWhiteSpace(textoDigitado) || textoDigitado == "R$ 200,00")
                 {
                     valorAbertura = Master.Caixa?.ValorAbertura ?? 0m;
                 }
                 else
                 {
-                    var textoNormalizado = textoDigitado
-                        .Replace("R$", string.Empty)
-                        .Trim();
-
+                    var textoNormalizado = textoDigitado.Replace("R$", string.Empty).Trim();
                     if (!decimal.TryParse(textoNormalizado, NumberStyles.Number, new CultureInfo("pt-BR"), out valorAbertura))
                     {
                         throw new FormatException("Digite um valor válido no formato 200,00.");
                     }
                 }
 
-                using var scope = App.ServiceProvider.CreateScope();
-                var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var loginOperador = Master.Usuario?.OperatorName
+                    ?? throw new InvalidOperationException("Nenhum usuário encontrado para registrar a abertura de caixa.");
 
-                var sessoesAbertas = context.CaixaSessoes.Where(c => c.IsOpen).ToList();
-                foreach (var sessaoAberta in sessoesAbertas)
-                {
-                    sessaoAberta.IsOpen = false;
-                }
-                if (sessoesAbertas.Count > 0)
-                {
-                    context.SaveChanges();
-                }
-
-                var loginOperador = Master.Usuario?.OperatorName;
-                var usuario = !string.IsNullOrWhiteSpace(loginOperador)
-                    ? context.Usuarios.FirstOrDefault(u => u.Login == loginOperador)
-                    : context.Usuarios.FirstOrDefault();
-
-                if (usuario is null)
-                {
-                    throw new InvalidOperationException("Nenhum usuário encontrado para registrar a abertura de caixa.");
-                }
-
-                var novaSessaoCaixa = new CaixaSessao
-                {
-                    ValorAbertura = valorAbertura,
-                    DataHoraAbertura = DateTime.Now,
-                    IsOpen = true,
-                    UsuarioId = usuario.Id
-                };
-
-                context.CaixaSessoes.Add(novaSessaoCaixa);
-                context.SaveChanges();
-
-                var caixaMovimento = new MovimentoCaixa
-                {
-                    CaixaSessaoId = novaSessaoCaixa.Id,
-                    Tipo = TipoMovimentoCaixa.Entrada,
-                    Origem = OrigemMovimentoCaixa.Abertura,
-                    Valor = valorAbertura,
-                    DataHora = DateTime.Now,
-                    Observacao = "Abertura de caixa",
-                    LoginOperador = usuario.Login
-                };
-
-                context.MovimentosCaixa.Add(caixaMovimento);
-                context.SaveChanges();
-
+                var sessao = await _caixaService.AbrirCaixaAsync(loginOperador, valorAbertura);
                 Master.Caixa = new SessaoCaixa
                 {
-                    CaixaSessaoId = novaSessaoCaixa.Id,
-                    ValorAbertura = valorAbertura
+                    CaixaSessaoId = sessao.Id,
+                    ValorAbertura = sessao.ValorAbertura
                 };
 
-                this.Visibility = Visibility.Collapsed;
-                var mainWindow = this.Parent as Grid;
-                if (mainWindow == null) return;
-
-                var telaCaixaLivre = mainWindow.Children.OfType<PDVCSharp.WPF.Sections.Caixa.CaixaLivre>().FirstOrDefault();
-                var telaVenda = mainWindow.Children.OfType<PDVCSharp.WPF.Sections.Venda>().FirstOrDefault();
-
-                if (telaVenda != null && telaCaixaLivre != null)
-                {
-                    if (Master.Venda != null)
-                    {
-                        telaVenda.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        telaCaixaLivre.Visibility = Visibility.Visible;
-                    }
-                }
+                MainWindow.Navigation.Navigate(Master.Venda != null ? AppScreen.Venda : AppScreen.CaixaLivre);
             }
-            catch (FormatException ex) {
+            catch (FormatException ex)
+            {
                 MessageBox.Show(ex.Message, "Erro de Formato", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             catch (Exception ex)
@@ -356,15 +188,12 @@ namespace PDVCSharp.WPF.Sections
             }
         }
 
-        private void PlaceHolder_ValueBox_TextChanged(Object sender, TextChangedEventArgs e) {
-            string textoDigitado = PlaceHolder_ValueBox.Text;
-
-            if(TxtValorEntrada != null) {
-
-                TxtValorEntrada.Text = textoDigitado;
+        private void PlaceHolder_ValueBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (TxtValorEntrada != null)
+            {
+                TxtValorEntrada.Text = PlaceHolder_ValueBox.Text;
             }
         }
-
     }
 }
-

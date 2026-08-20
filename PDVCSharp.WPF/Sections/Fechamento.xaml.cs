@@ -1,34 +1,36 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PDVCSharp.WPF.Contexts;
+using PDVCSharp.WPF.Navigation;
 using PDVCSharp.WPF.ViewModels;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace PDVCSharp.WPF.Sections
 {
-    public partial class Fechamento : UserControl
+    public partial class Fechamento : UserControl, IScreenActivation
     {
         private readonly FechamentoViewModel _vm;
 
         public Fechamento()
         {
             InitializeComponent();
-
             _vm = App.ServiceProvider.GetRequiredService<FechamentoViewModel>();
             DataContext = _vm;
-
-            Loaded += async (_, _) => await _vm.CarregarAsync();
-            IsVisibleChanged += async (_, _) =>
-            {
-                if (Visibility == Visibility.Visible)
-                {
-                    await _vm.CarregarAsync();
-                }
-            };
         }
+
+        public void OnNavigatedTo() => _ = _vm.CarregarAsync();
 
         private async void BtnFecharCaixa_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show(
+                    "Confirma o fechamento deste caixa? O operador voltará para a tela de abertura.",
+                    "Fechar caixa",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
             var fechado = await _vm.FecharCaixaAsync();
             if (!fechado)
             {
@@ -36,8 +38,10 @@ namespace PDVCSharp.WPF.Sections
                 return;
             }
 
-            MessageBox.Show("Caixa fechado com sucesso.", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-            MostrarTelaAbertura();
+            Master.Caixa = null;
+            Master.Venda = null;
+            MessageBox.Show("Caixa fechado. Informe o valor de abertura para o próximo turno.", "Caixa encerrado", MessageBoxButton.OK, MessageBoxImage.Information);
+            MainWindow.Navigation.Navigate(AppScreen.Abertura);
         }
 
         private async void BtnFinalizarCompra_Click(object sender, RoutedEventArgs e)
@@ -46,35 +50,11 @@ namespace PDVCSharp.WPF.Sections
             if (!caixaAberto)
             {
                 MessageBox.Show("O caixa está fechado. Abra o caixa para continuar vendendo.", "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
-                MostrarTelaAbertura();
+                MainWindow.Navigation.Navigate(AppScreen.Abertura);
                 return;
             }
 
-            MostrarTelaVenda();
-        }
-
-        private void MostrarTelaAbertura()
-        {
-            this.Visibility = Visibility.Collapsed;
-            var mainWindow = this.Parent as Grid;
-
-            var telaAbertura = mainWindow?.Children.OfType<Abertura>().FirstOrDefault();
-            if (telaAbertura != null)
-            {
-                telaAbertura.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void MostrarTelaVenda()
-        {
-            this.Visibility = Visibility.Collapsed;
-            var mainWindow = this.Parent as Grid;
-
-            var telaVenda = mainWindow?.Children.OfType<Venda>().FirstOrDefault();
-            if (telaVenda != null)
-            {
-                telaVenda.Visibility = Visibility.Visible;
-            }
+            MainWindow.Navigation.Navigate(AppScreen.CaixaLivre);
         }
     }
 }

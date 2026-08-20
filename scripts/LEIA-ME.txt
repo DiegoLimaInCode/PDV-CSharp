@@ -1,0 +1,13 @@
+PDV Supermarket
+===============
+
+Como usar
+- Clique em PDVCSharp.WPF.exe para abrir o caixa.
+- Ou rode Instalar.cmd para copiar o programa para o seu usuario e criar atalho na Area de Trabalho.
+
+Login
+- caixa / caixa
+- admin / admin
+
+O banco fica no arquivo pdv.db, junto do programa.
+Nao precisa instalar MySQL, Docker nem Visual Studio.

@@ -1,0 +1,42 @@
+<UserControl
+    x:Class="PDVCSharp.WPF.Controls.AppHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Border Height="42" Background="{StaticResource HeaderBar}">
+        <Grid Margin="16,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="13"
+                FontWeight="SemiBold"
+                Foreground="White"
+                Text="SUPERMARKET  ·  CAIXA 01" />
+            <TextBlock
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                FontSize="13"
+                Foreground="#DDFFFFFF"
+                Text="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <StackPanel
+                Grid.Column="2"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,0,16,0"
+                    FontSize="12"
+                    Foreground="#CCFFFFFF"
+                    Text="{Binding OperatorName}" />
+                <TextBlock
+                    FontSize="13"
+                    FontWeight="SemiBold"
+                    Foreground="White"
+                    Text="{Binding Now, Mode=OneWay, StringFormat={}{0:HH:mm}}" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

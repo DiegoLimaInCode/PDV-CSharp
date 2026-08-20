@@ -1,34 +1,40 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using PDVCSharp.Application.Security;
 using PDVCSharp.Domain.Entities;
+using PDVCSharp.Domain.Exceptions;
 using PDVCSharp.Domain.Interfaces;
-using System.Text.Json;
 
-namespace PDVCSharp.Application.Services
+namespace PDVCSharp.Application.Services;
+
+public class AuthService
 {
-    public class AuthService
+    private readonly IUserRepository _userRepository;
+
+    public AuthService(IUserRepository userRepository)
     {
-        private readonly IUserRepository _userRepository;
+        _userRepository = userRepository;
+    }
 
-        public AuthService(IUserRepository userRepository)
+    public async Task<Usuario> Login(string usuario, string senha)
+    {
+        if (string.IsNullOrWhiteSpace(usuario) || string.IsNullOrWhiteSpace(senha))
         {
-            _userRepository = userRepository;
+            throw new AutenticacaoException("Informe usuário e senha.");
         }
 
-        public async Task<bool> Login(string usuario, string senha)
+        var user = await _userRepository.GetByLogin(usuario)
+            ?? throw new AutenticacaoException("Usuário não localizado");
+
+        if (!PasswordHasher.Verify(senha, user.Password))
         {
-            var user = await _userRepository.Where(_user => _user.Login.ToLower() == usuario.ToLower()).FirstOrDefaultAsync();
-
-            if (user is null)
-            {
-                throw new Exception("Usuário não localizado");
-            }
-
-            if (user.Password != senha)
-            {
-                throw new Exception("Senha incorreta");
-            }
-
-            return true;
+            throw new AutenticacaoException("Senha incorreta");
         }
+
+        if (!PasswordHasher.IsHashed(user.Password))
+        {
+            user.Password = PasswordHasher.Hash(senha);
+            await _userRepository.Update(user);
+        }
+
+        return user;
     }
 }

@@ -1,0 +1,62 @@
+<UserControl
+    x:Class="PDVCSharp.WPF.Sections.Estoque"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:PDVCSharp.WPF.Controls">
+    <DockPanel Background="{StaticResource PageBackground}">
+        <controls:AppHeader Title="Estoque" DockPanel.Dock="Top" />
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                Margin="0,0,0,12"
+                FontSize="28"
+                FontWeight="Bold"
+                Foreground="{StaticResource BrandBlue}"
+                Text="Estoque" />
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <DataGrid
+                    AutoGenerateColumns="False"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding Produtos}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Sku}" Header="SKU" Width="100" />
+                        <DataGridTextColumn Binding="{Binding Name}" Header="Produto" Width="*" />
+                        <DataGridTextColumn Binding="{Binding Categoria}" Header="Categoria" Width="120" />
+                        <DataGridTextColumn Binding="{Binding Quantity}" Header="Qtd" Width="70" />
+                        <DataGridTextColumn Binding="{Binding Price, StringFormat=R$ {0:N2}}" Header="Preço" Width="90" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <DataGrid
+                    Grid.Column="2"
+                    AutoGenerateColumns="False"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding Movimentacoes}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding CreatedAt, StringFormat=dd/MM HH:mm}" Header="Quando" Width="110" />
+                        <DataGridTextColumn Binding="{Binding ProdutoNome}" Header="Produto" Width="*" />
+                        <DataGridTextColumn Binding="{Binding Tipo}" Header="Tipo" Width="80" />
+                        <DataGridTextColumn Binding="{Binding QuantidadeMovida}" Header="Qtd" Width="60" />
+                        <DataGridTextColumn Binding="{Binding Motivo}" Header="Motivo" Width="120" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+            <Button
+                Grid.Row="2"
+                Width="180"
+                Margin="0,16,0,0"
+                HorizontalAlignment="Left"
+                Click="BtnVoltar_Click"
+                Content="Voltar ao caixa"
+                Style="{StaticResource PrimaryButton}" />
+        </Grid>
+    </DockPanel>
+</UserControl>

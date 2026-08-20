@@ -1,322 +1,70 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using PDVCSharp.Application.Services;
-using PDVCSharp.Data.Repositories;
-using PDVCSharp.Domain.Entities;
-using PDVCSharp.Domain.Interfaces;
 using PDVCSharp.WPF.Contexts;
-using PDVCSharp.WPF.Models;
-
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-
+using PDVCSharp.WPF.Navigation;
+using PDVCSharp.WPF.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
-using System.Windows.Media;
+namespace PDVCSharp.WPF.Sections
+{
+    public partial class Venda : UserControl, IScreenActivation
+    {
+        private readonly VendaViewModel _vm;
 
+        public void LimparCarrinho() => _vm.LimparCarrinho();
 
-namespace PDVCSharp.WPF.Sections {
-    // Tela principal de Venda — operador adiciona/remove produtos e finaliza a venda.
-    // INotifyPropertyChanged = permite atualizar a tela via Data Binding.
-    public partial class Venda : UserControl, INotifyPropertyChanged {
-        private readonly IProductRepository _productRepository;
-        private readonly IEstoqueRepository _estoqueRepository;
-        private readonly VendaService _vendaService;
-
-        // ObservableCollection = lista que NOTIFICA a tela quando itens são adicionados/removidos
-        private ObservableCollection<ProdutoVenda> _produtos;
-
-        public ObservableCollection<ProdutoVenda> Produtos {
-            get => _produtos;
-            set {
-                _produtos = value;
-                OnPropertyChanged();     // Notifica a tela que a lista mudou
-                AtualizarTotais();       // Recalcula subtotal/total
-            }
-        }
-
-
-
-        public Venda(VendaService vendaService) : this() {
-
-
-            _vendaService = vendaService;
-        }
-
-        public Venda() {
+        public Venda()
+        {
             InitializeComponent();
-
-            _productRepository = App.ServiceProvider.GetRequiredService<IProductRepository>();
-            _estoqueRepository = App.ServiceProvider.GetRequiredService<IEstoqueRepository>();
-            _vendaService = App.ServiceProvider.GetRequiredService<VendaService>();
-
-            Produtos = new ObservableCollection<ProdutoVenda>(); // Define a fonte de dados da lista na tela
-            LstProdutos.ItemsSource = Produtos;
-            // Quando a coleção mudar (add/remove), recalcula os totais
-            Produtos.CollectionChanged += (s, e) => AtualizarTotais();
-
-            CarregarProdutosDaBase();
+            _vm = App.ServiceProvider.GetRequiredService<VendaViewModel>();
+            DataContext = _vm;
         }
 
-        private void CarregarProdutosDaBase()
-        {
-            var produtosBanco = _productRepository.GetAll();
+        public void OnNavigatedTo() => _ = _vm.CarregarCatalogoAsync();
 
-            foreach (var produto in produtosBanco)
+        private async void TxtBusca_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
             {
-                Produtos.Add(new ProdutoVenda
+                await _vm.CarregarCatalogoAsync();
+                if (_vm.Catalogo.Count == 1)
                 {
-                    Id = produto.Id,
-                    Name = produto.Name,
-                    Price = produto.Price,
-                    Quantity = 1,
-                    EstoqueDisponivel = produto.Quantity,
-                    ImagePath = produto.ImagePath ?? string.Empty
-                });
-            }
-        }
-
-
-        public Produto? BuscarProduto(string codigo) {
-            return null;
-        }
-
-        // Botão "−" — diminui a quantidade do produto
-        // 💡 DICA: button.Tag contém o produto associado (definido no XAML via Tag="{Binding}")
-        private void BtnDiminuir_Click(object sender, RoutedEventArgs e) {
-            if (sender is Button button && button.Tag is ProdutoVenda produto) {
-                if (produto.Quantity > 1) {
-                    produto.Quantity -= 1;
-                    AtualizarTotais();
-                }
-                else {
-                    var result = MessageBox.Show(
-                        $"Deseja remover '{produto.Name}' da venda?",
-                        "Remover Produto",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question);
-
-                    if (result == MessageBoxResult.Yes) {
-                        Produtos.Remove(produto);
-                    }
+                    _vm.AdicionarAoCarrinho(_vm.Catalogo[0]);
+                    _vm.Busca = string.Empty;
+                    await _vm.CarregarCatalogoAsync();
                 }
             }
-        }
-
-        // Botão "+" — aumenta a quantidade do produto
-        private void BtnAumentar_Click(object sender, RoutedEventArgs e) {
-            if (sender is Button button && button.Tag is ProdutoVenda produto) {
-                produto.Quantity += 1;
-                AtualizarTotais();
+            else if (e.Key == Key.Escape)
+            {
+                BtnCancelar_Click(sender, e);
             }
         }
 
-        // Botão "Remover" — remove o produto da venda (com confirmação)
-        private void BtnRemover_Click(object sender, RoutedEventArgs e) {
-            if (sender is Button button && button.Tag is ProdutoVenda produto) {
-                var result = MessageBox.Show(
-                    $"Deseja remover '{produto.Name}' da venda?",
-                    "Remover Produto",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question);
-
-                if (result == MessageBoxResult.Yes) {
-                    Produtos.Remove(produto);
-                }
-            }
-        }
-
-        // Recalcula e atualiza subtotal, desconto e total na tela
-        private void AtualizarTotais() {
-            // .Sum() soma os totais de todos os produtos (preço × quantidade)
-            decimal subtotal = Produtos.Sum(p => p.Total);
-            decimal desconto = 0; // Desconto fixo em 0 por enquanto
-
-            // "F2" = formato com 2 casas decimais (ex: "15.50")
-            TxtSubtotal.Text = $"R$ {subtotal:F2}";
-            TxtDesconto.Text = $"R$ {desconto:F2}";
-            TxtTotal.Text = $"R$ {(subtotal - desconto):F2}";
-        }
-
-        // Botão "Finalizar Venda" — valida estoque, debita e navega para VendaFinal
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void BtnFinalizar_Click(object sender, RoutedEventArgs e)
         {
-            if (!Produtos.Any())
+            if (!_vm.Carrinho.Any())
             {
-                MessageBox.Show("Adicione produtos à venda antes de finalizar.",
-                    "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Adicione produtos à venda antes de finalizar.", "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            var itensVendidos = Produtos
-                .Select(p => new ProdutoVendido(p.Name, p.Quantity))
-                .ToList();
-
-            bool estoqueOk = await _productRepository.ValidarEstoque(itensVendidos);
-
-            if (!estoqueOk)
-            {
-                var produtosSemEstoque = Produtos
-                    .Where(p => p.Quantity > GetQuantidadeBanco(p.Name))
-                    .Select(p => p.Name)
-                    .ToList();
-
-                MessageBox.Show(
-                    $"Estoque insuficiente para: {string.Join(", ", produtosSemEstoque)}\n\n" +
-                    "Reduza a quantidade ou remova esses produtos da venda.",
-                    "Estoque insuficiente",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-                return;
-            }
-
-            try
-            {
-                foreach (var item in Produtos)
-                {
-                    await _estoqueRepository.RegistrarSaida(
-                        produtoId: item.Id,
-                        quantidade: item.Quantity,
-                        motivo: "Venda"
-                    );
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    $"Erro ao atualizar estoque: {ex.Message}",
-                    "Erro",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                return;
-            }
-
-            var mainWindow = this.Parent as Grid;
-            if (mainWindow == null)
-            {
-                return;
-            }
-
-            var telaVendaFinal = mainWindow.Children.OfType<VendaFinal>().FirstOrDefault();
-            if (telaVendaFinal != null)
-            {
-                telaVendaFinal.DefinirProdutos(Produtos);
-                this.Visibility = Visibility.Collapsed;
-                telaVendaFinal.Visibility = Visibility.Visible;
-            }
+            MainWindow.Navigation.GetScreen<VendaFinal>()?.DefinirProdutos(_vm.Carrinho);
+            MainWindow.Navigation.Navigate(AppScreen.VendaFinal);
         }
 
-        private double GetQuantidadeBanco(string nomeProduto)
+        private void BtnCancelar_Click(object sender, RoutedEventArgs e)
         {
-            return _productRepository.GetAll()
-                .Where(p => p.Name == nomeProduto)
-                .Select(p => p.Quantity)
-                .FirstOrDefault();
-        }
-
-        // Botão "Cancelar Venda" — volta para a tela de Caixa Livre
-        private void Button_Click_2(object sender, RoutedEventArgs e) {
-            if (Produtos.Any()) {
-                var result = MessageBox.Show(
-                    "Deseja realmente cancelar a venda atual?",
-                    "Cancelar Venda",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
-
-                if (result == MessageBoxResult.No)
-                    return;
+            if (_vm.Carrinho.Any() &&
+                MessageBox.Show("Deseja realmente cancelar a venda atual?", "Cancelar Venda",
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                return;
             }
 
+            _vm.LimparCarrinho();
             Master.Venda = null;
-            this.Visibility = Visibility.Collapsed;
-            var mainWindow = this.Parent as Grid;
-
-            var telaCaixaLivre = mainWindow?.Children.OfType<PDVCSharp.WPF.Sections.Caixa.CaixaLivre>().FirstOrDefault();
-            if (telaCaixaLivre != null) {
-                telaCaixaLivre.Visibility = Visibility.Visible;
-            }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-
-
-        private void TextBox_GotFocus(object sender, RoutedEventArgs e) {
-            var textBox = sender as TextBox;
-
-            if (textBox != null) {
-                textBox.BorderBrush = System.Windows.Media.Brushes.Gray;
-
-            }
-
-        }
-
-        private void TextBox_LostFocus(object sender, RoutedEventArgs e) {
-            var textBox = sender as TextBox;
-
-            if (textBox != null) {
-                textBox.BorderBrush = System.Windows.Media.Brushes.LightGray;
-
-            }
-        }
-
-        private async void TextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            if (e.Key != System.Windows.Input.Key.Enter)
-                return;
-
-            var textBox = sender as TextBox;
-            if (textBox == null)
-                return;
-
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-                return;
-
-            if (!Guid.TryParse(textBox.Text, out Guid result)) {
-                MessageBox.Show("Id inválido.");
-                return;
-            }
-
-            Produto? produto;
-            try {
-                produto = await _vendaService.GetProductById(result);
-            }
-            catch (Exception ex) {
-                MessageBox.Show(ex.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (produto == null) {
-                MessageBox.Show("Produto não encontrado.");
-                return;
-            }
-
-            var produtoExistente = Produtos.FirstOrDefault(p => p.Name == produto.Name);
-
-            if (produtoExistente != null) {
-                produtoExistente.Quantity += 1;
-            }
-            else {
-                var novoProdutoVenda = new ProdutoVenda {
-                    Id = produto.Id,
-                    Name = produto.Name,
-                    Price = produto.Price,
-                    Quantity = 1,
-                    EstoqueDisponivel = produto.Quantity,
-                    ImagePath = produto.ImagePath
-                };
-                Produtos.Add(novoProdutoVenda);
-            }
-
-            textBox.Text = "";
-            textBox.Focus();
+            MainWindow.Navigation.Navigate(AppScreen.CaixaLivre);
         }
     }
 }
